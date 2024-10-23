@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+         #
+#    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2024/10/23 09:36:26 by kecheong         ###   ########.fr        #
+#    Updated: 2024/10/23 10:27:16 by kytan            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,7 +43,7 @@ $(MLX):
 	make -C $(MLX_dir)
 
 $(NAME): $(objs)
-	$(CC) $(CFLAGS) $(LDFLAGS) $(LDLIBS) $(framework) $(objs) -o $(NAME)
+	$(CC) $(CFLAGS) $(objs) $(LDFLAGS) $(LDLIBS) $(framework)  -o $(NAME)
 
 $(obj_dir):
 	mkdir -p $(obj_dir)
