@@ -33,7 +33,7 @@ else
 endif
 
 srcs := test_mlx.c
-obj_dir := obj/
+obj_dir := obj
 objs := $(addprefix obj/, $(srcs:.c=.o))
 
 .PHONY: all
@@ -43,13 +43,13 @@ $(MLX):
 	make -C $(MLX_dir)
 
 $(NAME): $(objs)
-	$(CC) $(CFLAGS) $(objs) $(LDFLAGS) $(LDLIBS) $(framework)  -o $(NAME)
+	$(CC) $(CFLAGS) $(objs) $(includes) $(LDFLAGS) $(LDLIBS) $(framework)  -o $(NAME)
 
 $(obj_dir):
 	mkdir -p $(obj_dir)
 
-obj/%.o: %.c | obj
-	$(CC) $(CFLAGS) $< -c -o $@
+$(obj_dir)/%.o: %.c | obj
+	$(CC) $(CFLAGS) $(includes) $< -c -o $@
 
 .PHONY: clean
 clean:
