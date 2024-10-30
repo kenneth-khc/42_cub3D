@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:17:27 by kecheong          #+#    #+#             */
-/*   Updated: 2024/10/30 14:05:44 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/10/30 22:35:13 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ __unused static double	radians_to_degrees(double radians)
 	return (radians * 180.0 / M_PI);
 }
 
-void	init_player(t_Player *player)
+void	init_player(t_player *player)
 {
 	player->start_direction = EAST;
 	if (player->start_direction == EAST)
@@ -44,4 +44,10 @@ void	init_player(t_Player *player)
 	}
 	player->direction.x = cos(player->angle_in_radians);
 	player->direction.y = -sin(player->angle_in_radians);
+	// FIX: hardcoded
+	player->map_pos.y = 1;
+	player->map_pos.x = 1;
+	player->world_pos.x = 1 * 64;
+	player->world_pos.y = 1 * 64;
+	player->speed = 5.0;
 }

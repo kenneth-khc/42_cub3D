@@ -15,15 +15,21 @@
 
 # include "Player.h"
 # include "Map.h"
+# include "Raycaster.h"
 
-typedef struct s_Game
+#define SCREEN_WIDTH 1280
+
+typedef struct s_game
 {
 	void		*mlx;
 	void		*window;
 	int			screen_width;
 	int			screen_height;
-	t_Map		map;
-	t_Player	player;
-}	t_Game;
+	t_map		map;
+	t_image		ceiling;
+	t_image		floor;
+	t_player	player;
+	t_ray		rays[SCREEN_WIDTH];
+}	t_game;
 
 #endif

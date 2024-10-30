@@ -6,7 +6,7 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2024/10/30 14:43:08 by kecheong         ###   ########.fr        #
+#    Updated: 2024/10/30 22:34:00 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -36,7 +36,9 @@ src_dir := src
 dirs := $(src_dir) \
 		$(src_dir)/map \
 		$(src_dir)/player \
-		$(src_dir)/mlx_utils
+		$(src_dir)/mlx_utils \
+		$(src_dir)/raycast \
+		$(src_dir)/renderer
 
 srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c))
 
@@ -79,7 +81,7 @@ debug: CFLAGS += -g3
 debug: all
 
 .PHONY: fsan
-fsan: CFLAGS += -fsanitize=address -g3
+fsan: CFLAGS += -fsanitize=address,undefined -g3
 fsan: all
 
 .PHONY: norminette

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:43:29 by kecheong          #+#    #+#             */
-/*   Updated: 2024/10/30 15:22:38 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/10/30 16:07:19 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "Image.h"
 #include <stdio.h>
 
-void	create_image(void *mlx, t_Image *img, int width, int height)
+void	create_image(void *mlx, t_image *img, int width, int height)
 {
 	img->instance = mlx_new_image(mlx, width, height);
 	img->width = width;
@@ -24,7 +24,7 @@ void	create_image(void *mlx, t_Image *img, int width, int height)
 			&img->bits_per_pixel, &img->size_line, &img->endian);
 }
 
-uint32_t	*get_pixel_addr(t_Image *img, int x, int y)
+uint32_t	*get_pixel_addr(t_image *img, int x, int y)
 {
 	const int	bytes_per_pixel = img->bits_per_pixel / 8;
 	char		*pixel;

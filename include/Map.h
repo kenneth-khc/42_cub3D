@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:14:59 by kecheong          #+#    #+#             */
-/*   Updated: 2024/10/30 14:23:49 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/10/30 21:57:50 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,20 @@
 # define MAP_H
 
 # include "Image.h"
+# include "Player.h"
 
-typedef struct s_Map
+typedef struct t_map
 {
 	char	layout[10][10];
 	int		width;
 	int		height;
-	t_Image	img; // the mlx image used to display the map onto the screen
-}	t_Map;
+	t_image	img; // the mlx image used to display the map onto the screen
+}	t_map;
 
-void	init_map(t_Map *map, void *mlx);
+struct	s_game;
+
+void	init_map(t_map *map, struct s_game *game);
+void	clear_minimap(t_map *map);
+void	set_floors(t_map *map, t_player *player);
 
 #endif

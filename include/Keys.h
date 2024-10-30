@@ -13,8 +13,11 @@
 #ifndef KEYS_H
 # define KEYS_H
 
-enum e_Keys
+#include "Game.h"
+
+enum e_keys
 {
+	KEYPRESS_EVENT = 2,
 	KEY_W = 13,
 	KEY_A = 0,
 	KEY_S = 1,
@@ -23,5 +26,7 @@ enum e_Keys
 	KEY_RIGHT = 124,
 	KEY_ESC = 53
 };
+
+int	process_key(int keycode, t_game *game);
 
 #endif

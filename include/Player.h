@@ -15,7 +15,7 @@
 
 # include "Vector.h"
 
-enum e_Cardinal_Directions
+enum e_cardinal_directions
 {
 	EAST = 0,
 	NORTH = 1,
@@ -23,15 +23,16 @@ enum e_Cardinal_Directions
 	SOUTH = 3
 };
 
-typedef struct s_Player
+typedef struct s_player
 {
-	int			start_direction; // player initialized to NO/SO/EA/WE
-	double		angle_in_radians;
-	t_Vector	direction; // a normalized direction vector
-	t_Vector	map_pos; // position in the map/2D array
-	t_Vector	world_pos; // position in the game world, not the screen
-}	t_Player;
+	int				start_direction; // player initialized to NO/SO/EA/WE
+	double			angle_in_radians;
+	double			speed;
+	t_vector_double	direction; // a normalized direction vector
+	t_vector_int	map_pos; // position in the map/2D array
+	t_vector_double	world_pos; // position in the game world, not the screen
+}	t_player;
 
-void	init_player(t_Player *player);
+void	init_player(t_player *player);
 
 #endif

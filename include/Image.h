@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:25:39 by kecheong          #+#    #+#             */
-/*   Updated: 2024/10/30 14:28:32 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/10/30 18:15:24 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 # define IMAGE_H
 
 # include <stdint.h>
+# include "Vector.h"
 
 /* A wrapper for an mlx image */
-typedef struct s_Image
+typedef struct s_image
 {
 	void	*instance; // the image instance used by mlx
 	int		width;
@@ -26,10 +27,10 @@ typedef struct s_Image
 	int		bits_per_pixel; // how many bits is used to store a pixel
 	int		size_line; // how many pixels in 1 line horizontally across
 	int		endian;
-}	t_Image;
+}	t_image;
 
 /* 32 bits to store a RGBA value, access each component through the struct */
-typedef union u_Colour
+typedef union u_colour
 {
 	uint32_t	value;
 	struct
@@ -38,10 +39,12 @@ typedef union u_Colour
 		uint8_t	green;
 		uint8_t	red;
 		uint8_t	alpha;
-	}	s_Component;
-}	t_Colour;
+	}	s_component;
+}	t_colour;
 
-void		create_image(void *mlx, t_Image *img, int width, int height);
-uint32_t	*get_pixel_addr(t_Image *img, int x, int y);
+void		create_image(void *mlx, t_image *img, int width, int height);
+uint32_t	*get_pixel_addr(t_image *img, int x, int y);
+void	draw_line_in_image(t_image *img, t_vector_int start,
+							t_vector_int end, t_colour colour);
 
 #endif
