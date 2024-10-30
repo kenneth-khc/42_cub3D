@@ -1,20 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_mlx.c                                         :+:      :+:    :+:   */
+/*   Keys.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2024/10/23 08:49:55 by kecheong         ###   ########.fr       */
+/*   Created: 2024/10/30 14:00:51 by kecheong          #+#    #+#             */
+/*   Updated: 2024/10/30 14:02:44 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <mlx.h>
+#ifndef KEYS_H
+# define KEYS_H
 
-int	main(void)
+enum e_Keys
 {
-	void	*mlx = mlx_init();
-	void	*window = mlx_new_window(mlx, 1920, 1000, "Hello World"); (void)window;
-	mlx_loop(mlx);
-}
+	KEY_W = 13,
+	KEY_A = 0,
+	KEY_S = 1,
+	KEY_D = 2,
+	KEY_LEFT = 123,
+	KEY_RIGHT = 124,
+	KEY_ESC = 53
+};
+
+#endif
