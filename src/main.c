@@ -22,7 +22,7 @@ int	game_loop(t_game *game)
 {
 	mlx_clear_window(game->mlx, game->window);
 	raycast(&game->raycaster, game, &game->player);
-	render(game);
+	render(game, &game->raycaster);
 	return (0);
 }
 
@@ -39,7 +39,7 @@ int	main(void)
 	game.tile_height = 64.0;
 	init_player(&game.player);
 	init_map(&game.map, &game);
-	init_background(&game.floor, &game.ceiling, &game);
+	init_background(&game);
 	mlx_hook(game.window, KEYPRESS_EVENT, 0, process_key, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);

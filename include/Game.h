@@ -30,6 +30,7 @@ typedef struct s_game
 	double		tile_height; // height of 1 in-game tile
 	t_image		ceiling;
 	t_image		floor;
+	t_image		world; // image of the game to be displayed
 	t_player	player;
 	t_raycaster	raycaster;
 }	t_game;

@@ -15,7 +15,7 @@
 
 #include "Game.h"
 
-void	render(t_game *game);
-void	init_background(t_image *floor, t_image *ceiling, t_game *game);
+void	render(t_game *game, t_raycaster *raycaster);
+void	init_background(t_game *game);
 
 #endif

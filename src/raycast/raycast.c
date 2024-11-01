@@ -45,6 +45,9 @@ void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 		ray->direction.x = cos(ray->angle_in_radians);
 		ray->direction.y = -sin(ray->angle_in_radians); // TODO: do I need to inverse this sin as our y axis is flipped?
 		find_first_x_intersect(ray, game);
+		ray->horizontal_wall_pos = dda(raycaster, ray, game, &game->map);
+		find_first_y_intersect(ray, game);
+		ray->vertical_wall_pos = dda(raycaster, ray, game, &game->map);
 		i++;
 	}
 }
@@ -91,41 +94,45 @@ void	find_first_y_intersect(t_ray *ray, t_game *game)
 	double	opposite_length;
 	double	adjacent_length;
 
-
+	adjacent_length = ray->world_pos.x - ray->first_y_intersect.x;
+	opposite_length = tan(ray->angle_in_radians) * adjacent_length;
+	ray->first_y_intersect.y = ray->world_pos.y + opposite_length;
+	ray->y_step = game->tile_width * tan(ray->angle_in_radians);
 }
 
 #include <stdio.h>
-void	dda(t_raycaster *raycaster, t_game *game, t_map *map)
-{ (void)game;
-	int				i;
-	t_ray			*ray;
+t_vector_double	dda(t_raycaster *raycaster, t_ray *ray, t_game *game, t_map *map)
+{ (void)game; (void)raycaster;
 	t_vector_double	ray_pos;
 	
-	i = 0;
-	while (i < raycaster->number_of_rays)
+	ray->hit_wall = false;
+	ray_pos = copy_vector_double(&ray->first_x_intersect);
+	while (!ray->hit_wall)
 	{
-		ray = &raycaster->rays[i];
-		ray->hit_wall = false;
-		ray_pos = copy_vector_double(&ray->first_x_intersect);
-		while (!ray->hit_wall)
+		ray->map_pos = world_to_map_pos(&ray_pos);
+		if (map->layout[ray->map_pos.y][ray->map_pos.x] == '1')
 		{
-			ray->map_pos = world_to_map_pos(&ray_pos);
-			if (map->layout[ray->map_pos.y][ray->map_pos.x] == '1')
-			{
-				ray->hit_wall = true;
-				ray->horizontal_wall_pos = copy_vector_double(&ray_pos);
-				printf("> Hit x:%f y:%f\n", ray->horizontal_wall_pos.x, ray->horizontal_wall_pos.y);
-				break ;
-			}
-			ray_pos.x += ray->x_step;
-			ray_pos.y += ray->y_step;
+			ray->hit_wall = true;
+			ray->horizontal_wall_pos = copy_vector_double(&ray_pos);
+			return (copy_vector_double(&ray_pos));
 		}
-		i++;
+		ray_pos.x += ray->x_step;
+		ray_pos.y += ray->y_step;
 	}
+	// TODO: ???
+	return ray_pos;
 }
 
 void	raycast(t_raycaster *raycaster, t_game *game, t_player *player)
 {
+	int		i;
+	t_ray	*ray;
+
 	init_raycaster(raycaster, player, game);
-	dda(raycaster, game, &game->map);
+	i = 0;
+	while (i < raycaster->number_of_rays)
+	{
+		ray = &raycaster->rays[i];
+		i++;
+	}
 }

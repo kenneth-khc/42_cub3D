@@ -16,6 +16,7 @@
 # include <stdbool.h>
 # include "Player.h"
 # include "Vector.h"
+# include "Map.h"
 
 # define SCREEN_WIDTH 1280
 
@@ -52,6 +53,8 @@ typedef struct s_game	t_game;
 void	raycast(t_raycaster *raycaster, t_game *game, t_player *player);
 void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game);
 void	find_first_x_intersect(t_ray *ray, t_game *game);
+void	find_first_y_intersect(t_ray *ray, t_game *game);
+t_vector_double	dda(t_raycaster *raycaster, t_ray *ray, t_game *game, t_map *map);
 
 double	degrees_to_radians(double degrees);
 double	radians_to_degrees(double radians);
