@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Vector.h                                           :+:      :+:    :+:   */
+/*   vectors.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/30 12:28:29 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/01 15:22:03 by kecheong         ###   ########.fr       */
+/*   Created: 2024/11/01 15:19:41 by kecheong          #+#    #+#             */
+/*   Updated: 2024/11/01 15:34:29 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef VECTOR_H
-# define VECTOR_H
+#include "Vector.h"
 
-typedef struct s_vector_double
+t_vector_double	copy_vector_double(t_vector_double *src)
 {
-	double	x;
-	double	y;
-}	t_vector_double;
+	t_vector_double	dst;
 
-typedef struct s_vector_int
+	dst.x = src->x;
+	dst.y = src->y;
+	return (dst);
+}
+
+t_vector_int	copy_vector_int(t_vector_int *src)
 {
-	int	x;
-	int	y;
-}	t_vector_int;
+	t_vector_int	dst;
 
-t_vector_double	copy_vector_double(t_vector_double *src);
-t_vector_int	copy_vector_int(t_vector_int *src);
-
-#endif
+	dst.x = src->x;
+	dst.y = src->y;
+	return (dst);
+}

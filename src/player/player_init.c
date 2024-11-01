@@ -6,22 +6,14 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:17:27 by kecheong          #+#    #+#             */
-/*   Updated: 2024/10/30 22:35:13 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/10/30 23:05:06 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include "Player.h"
-
-static double	degrees_to_radians(double degrees)
-{
-	return (degrees * M_PI / 180.0);
-}
-
-__unused static double	radians_to_degrees(double radians)
-{
-	return (radians * 180.0 / M_PI);
-}
+#include "Utils.h"
+#include "Map.h"
 
 void	init_player(t_player *player)
 {
@@ -45,9 +37,12 @@ void	init_player(t_player *player)
 	player->direction.x = cos(player->angle_in_radians);
 	player->direction.y = -sin(player->angle_in_radians);
 	// FIX: hardcoded
+	player->field_of_view = degrees_to_radians(90);
 	player->map_pos.y = 1;
 	player->map_pos.x = 1;
-	player->world_pos.x = 1 * 64;
-	player->world_pos.y = 1 * 64;
+	// pos in the world, player should spawn in the center of a square so we
+	// add half of the tile size
+	player->world_pos.x = 1 * 64 + (TILE_WIDTH / 2);
+	player->world_pos.y = 1 * 64 + (TILE_HEIGHT / 2);
 	player->speed = 5.0;
 }
