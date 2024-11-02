@@ -126,7 +126,7 @@ t_vector_double	dda(t_raycaster *raycaster, t_ray *ray, t_game *game, t_map *map
 void	raycast(t_raycaster *raycaster, t_game *game, t_player *player)
 {
 	int		i;
-	t_ray	*ray;
+	t_ray	*ray; (void)ray;
 
 	init_raycaster(raycaster, player, game);
 	i = 0;

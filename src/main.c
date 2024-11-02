@@ -31,8 +31,8 @@ int	main(void)
 	t_game	game;
 
 	game.mlx = mlx_init();
-	game.screen_width = 1280;
-	game.screen_height = 720;
+	game.screen_width = 500;
+	game.screen_height = 500;
 	game.window = mlx_new_window(game.mlx, game.screen_width,
 			game.screen_height, "cute3D");
 	game.tile_width = 64.0;
@@ -40,7 +40,7 @@ int	main(void)
 	init_player(&game.player);
 	init_map(&game.map, &game);
 	init_background(&game);
-	mlx_hook(game.window, KEYPRESS_EVENT, 0, process_key, &game);
+	mlx_hook(game.window, KEYPRESS_EVENT, 1L << 0, process_key, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);
 }

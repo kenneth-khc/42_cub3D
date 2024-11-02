@@ -13,7 +13,32 @@
 #ifndef KEYS_H
 # define KEYS_H
 
-#include "Game.h"
+# include "Game.h"
+
+enum e_events
+{
+	KEYPRESS_EVENT = 2
+};
+
+enum e_event_masks
+{
+	KEYPRESS_MASK = 1L << 0
+};
+
+# if defined(__linux__)
+
+enum e_keys
+{
+	KEY_ESC = 65307,
+	KEY_W = 119,
+	KEY_A = 97,
+	KEY_S = 115,
+	KEY_D = 100,
+	KEY_LEFT = 65361,
+	KEY_RIGHT = 65363
+};
+
+# elif defined(__APPLE__)
 
 enum e_keys
 {
@@ -26,6 +51,8 @@ enum e_keys
 	KEY_RIGHT = 124,
 	KEY_ESC = 53
 };
+
+# endif
 
 int	process_key(int keycode, t_game *game);
 

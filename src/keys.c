@@ -43,6 +43,7 @@ int	process_key(int keycode, t_game *game)
 {
 	t_player	*player = &game->player;
 	t_map		*map = &game->map;
+	printf("> %d\n", keycode);
 	if (keycode == KEY_ESC)
 	{
 		exit(0);
