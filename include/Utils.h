@@ -1,20 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   test_mlx.c                                         :+:      :+:    :+:   */
+/*   Utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2024/10/23 08:49:55 by kecheong         ###   ########.fr       */
+/*   Created: 2024/10/30 23:04:43 by kecheong          #+#    #+#             */
+/*   Updated: 2024/10/30 23:04:56 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <mlx.h>
+#ifndef UTILS_H
+# define UTILS_H
 
-int	main(void)
-{
-	void	*mlx = mlx_init();
-	void	*window = mlx_new_window(mlx, 1920, 1000, "Hello World"); (void)window;
-	mlx_loop(mlx);
-}
+double	degrees_to_radians(double degrees);
+double	radians_to_degrees(double radians);
+
+#endif

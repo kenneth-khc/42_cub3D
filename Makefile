@@ -6,7 +6,7 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2024/10/23 10:27:16 by kytan            ###   ########.fr        #
+#    Updated: 2024/10/30 22:34:00 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,19 +22,28 @@ ifeq ($(UNAME), Darwin)
 	MLX := $(MLX_dir)/libmlx.a
 	LDFLAGS := -Lmlx_mac
 	LDLIBS := -lmlx
-	includes := -Imlx_mac
+	includes := -Imlx_mac -Iinclude
 	framework := -framework OpenGL -framework AppKit
 else
 	MLX_dir := mlx_linux
 	MLX := $(MLX_dir)/libmlx_Linux.a
 	LDFLAGS := -Lmlx_linux
 	LDLIBS := -lmlx_Linux -lXext -lX11 -lm -lz
-	includes := -Imlx_linux
+	includes := -Imlx_linux -Iinclude
 endif
 
-srcs := test_mlx.c
+src_dir := src
+dirs := $(src_dir) \
+		$(src_dir)/map \
+		$(src_dir)/player \
+		$(src_dir)/mlx_utils \
+		$(src_dir)/raycast \
+		$(src_dir)/renderer
+
+srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c))
+
 obj_dir := obj
-objs := $(addprefix obj/, $(srcs:.c=.o))
+objs := $(srcs:$(src_dir)/%.c=$(obj_dir)/%.o)
 
 .PHONY: all
 all: $(MLX) $(NAME)
@@ -48,7 +57,8 @@ $(NAME): $(objs)
 $(obj_dir):
 	mkdir -p $(obj_dir)
 
-$(obj_dir)/%.o: %.c | obj
+$(obj_dir)/%.o: $(src_dir)/%.c | obj
+	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(includes) $< -c -o $@
 
 .PHONY: clean
@@ -62,10 +72,18 @@ fclean: clean
 .PHONY: re
 re: fclean all
 
+.PHONY: optimized
+optimized: CFLAGS += -O3
+optimized: all
+
 .PHONY: debug
 debug: CFLAGS += -g3
 debug: all
 
 .PHONY: fsan
-fsan: CFLAGS += -fsanitize=address -g3
+fsan: CFLAGS += -fsanitize=address,undefined -g3
 fsan: all
+
+.PHONY: norminette
+norminette:
+	norminette $(src_dir) include/
