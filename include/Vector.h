@@ -13,6 +13,8 @@
 #ifndef VECTOR_H
 # define VECTOR_H
 
+#include <stdbool.h>
+
 typedef struct s_vector_double
 {
 	double	x;
@@ -27,5 +29,6 @@ typedef struct s_vector_int
 
 t_vector_double	copy_vector_double(t_vector_double *src);
 t_vector_int	copy_vector_int(t_vector_int *src);
+bool			compare_vectors(t_vector_int *v1, t_vector_int *v2);
 
 #endif

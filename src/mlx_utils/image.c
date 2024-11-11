@@ -12,6 +12,8 @@
 
 #include <mlx.h>
 #include "Image.h"
+#include "Vector.h"
+#include "Game.h"
 #include <stdio.h>
 
 void	create_image(void *mlx, t_image *img, int width, int height)
@@ -38,4 +40,12 @@ uint32_t	*get_pixel_addr(t_image *img, int x, int y)
 	{
 		return (NULL);
 	}
+}
+
+/* Wrapper for mlx_put_image, taking in an Image object and the point
+ * on the screen to display it at */
+void	put_image(t_game *game, t_image *img, t_vector_int *screen)
+{
+	mlx_put_image_to_window(game->mlx, game->window, img->instance,
+						 screen->x, screen->y);
 }

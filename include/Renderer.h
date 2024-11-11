@@ -16,6 +16,7 @@
 #include "Game.h"
 
 void	render(t_game *game, t_raycaster *raycaster);
-void	init_background(t_game *game);
+void	init_world2D(t_game *game, t_map *map);
+void	init_world3D(t_game *game);
 
 #endif

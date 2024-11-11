@@ -20,17 +20,20 @@ CFLAGS := -Wall -Werror -Wextra
 ifeq ($(UNAME), Darwin)
 	MLX_dir := mlx_mac
 	MLX := $(MLX_dir)/libmlx.a
-	LDFLAGS := -Lmlx_mac
-	LDLIBS := -lmlx
-	includes := -Imlx_mac -Iinclude
+	LDFLAGS := -Lmlx_mac -Llibft
+	LDLIBS := -lmlx -lft
+	includes := -Imlx_mac -Iinclude -Ilibft/includes
 	framework := -framework OpenGL -framework AppKit
 else
 	MLX_dir := mlx_linux
 	MLX := $(MLX_dir)/libmlx_Linux.a
-	LDFLAGS := -Lmlx_linux
-	LDLIBS := -lmlx_Linux -lXext -lX11 -lm -lz
-	includes := -Imlx_linux -Iinclude
+	LDFLAGS := -Lmlx_linux -Llibft
+	LDLIBS := -lmlx_Linux -lft -lXext -lX11 -lm -lz
+	includes := -Imlx_linux -Iinclude -Ilibft/includes
 endif
+
+LIBFT_DIR := libft
+LIBFT := $(LIBFT_DIR)/libft.a
 
 src_dir := src
 dirs := $(src_dir) \
@@ -81,7 +84,7 @@ debug: CFLAGS += -g3
 debug: all
 
 .PHONY: fsan
-fsan: CFLAGS += -fsanitize=address,undefined -g3
+fsan: CFLAGS += -fsanitize=address -g3
 fsan: all
 
 .PHONY: norminette

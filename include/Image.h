@@ -42,9 +42,12 @@ typedef union u_colour
 	}	s_component;
 }	t_colour;
 
+typedef struct s_game	t_game;
+
 void		create_image(void *mlx, t_image *img, int width, int height);
 uint32_t	*get_pixel_addr(t_image *img, int x, int y);
 void	draw_line_in_image(t_image *img, t_vector_int start,
 							t_vector_int end, t_colour colour);
+void	put_image(t_game *game, t_image *img, t_vector_int *point);
 
 #endif

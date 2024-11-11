@@ -44,5 +44,5 @@ void	init_player(t_player *player)
 	// add half of the tile size
 	player->world_pos.x = 1 * 64 + (TILE_WIDTH / 2);
 	player->world_pos.y = 1 * 64 + (TILE_HEIGHT / 2);
-	player->speed = 5.0;
+	player->speed = 2.0;
 }
