@@ -18,10 +18,11 @@
 #include "Player.h"
 #include "Vector.h"
 
+// TODO: minimap lmao
 /* The minimap represents the view of the world in 2D.
- * It has a scale of 1:10, meaning that for a game with 1000x1000 resolution,
- * the minimap will be 100x100, and for each 10 pixels we traverse in world
- * coordinates we move by 1 on the minimap
+ * It has a scale of ??:??, meaning that for a game with ???:??? resolution,
+ * the minimap will be ???:???, and for each ?? pixels we traverse in world
+ * coordinates we move by ? on the minimap
  */
 
 #define MAP_WIDTH 10
@@ -31,13 +32,13 @@ char	g_layout[MAP_HEIGHT][MAP_WIDTH] =
 {
 {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
 {'1', 'E', '1', '0', '0', '0', '0', '0', '0', '1'},
-{'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-{'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-{'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-{'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-{'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-{'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-{'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+{'1', '0', '0', '0', '0', '0', '0', '0', '1', '1'},
+{'1', '0', '0', '0', '0', '0', '0', '1', '0', '1'},
+{'1', '0', '0', '0', '0', '0', '1', '0', '0', '1'},
+{'1', '0', '0', '0', '0', '1', '0', '0', '0', '1'},
+{'1', '0', '0', '0', '1', '0', '0', '0', '0', '1'},
+{'1', '1', '0', '1', '0', '0', '0', '0', '0', '1'},
+{'1', '0', '1', '0', '0', '0', '0', '0', '0', '1'},
 {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1'}
 };
 

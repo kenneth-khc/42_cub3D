@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 21:46:37 by kecheong          #+#    #+#             */
-/*   Updated: 2024/10/30 22:25:05 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/11 20:35:54 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "Game.h"
+#include "Vector.h"
 #include "Keys.h"
 
+/* Keys to be processed
+ * For player movement, WASD is used
+ * For rotating the camera, left and right arrow keys are used
+ * For closing the game, ESC is used
+ * Can be optimized further
+ * ?? TODO: index into a keymap table and call its associated function rather
+ *			 than checking if elses :thinking:
+ */
 bool	is_movement_key(int keycode)
 {
 	return (keycode == KEY_W
@@ -25,21 +34,107 @@ bool	is_movement_key(int keycode)
 			|| keycode == KEY_D);
 }
 
-/*void	move_player(int keycode, t_player *player, t_game *game)*/
-/*{*/
-/*	int	dx;*/
-/*	int	dy;*/
-/**/
-/*	dx = 0;*/
-/*	dy = 0;*/
-/*	if (keycode == KEY_W)*/
-/*	{*/
-/*		dx = 0;*/
-/*		dy = -1;*/
-/*	}*/
-/*}*/
+bool	is_rotate_camera_key(int keycode)
+{
+	return (keycode == KEY_LEFT || keycode == KEY_RIGHT);
+}
+
+/* The player starts at a certain angle based on the input of the map.
+ * (E)ast - 0 degrees | 0 or 2PI radians
+ * (N)orth - 90 degrees | PI/2 radians
+ * (W)est - 180 degrees | PI radians
+ * (S)outh - 270 degrees | 3PI/2 radians
+ *
+ * By pressing the left arrow key, we increment the angle (going counterclockwise)
+ * and the player's field of view moves to the left accordingly
+ * By pressing the right arrow key, we decrement the angle causing it to go clockwise
+ * and the field of view moves to the right accordingly
+ * */
+void	rotate_camera(t_player *player, int keycode)
+{
+	printf("Player ori direction: %f\n", radians_to_degrees(player->angle_in_radians));
+	printf("Dir vector: %f %f\n", player->direction.x, player->direction.y);
+	if (keycode == KEY_LEFT) // turn left
+	{
+		player->angle_in_radians += 0.1;
+		if (radians_to_degrees(player->angle_in_radians) > 360)
+		{
+			player->angle_in_radians -= degrees_to_radians(360);
+		}
+		player->direction.x = cos(player->angle_in_radians);
+		player->direction.y = -sin(player->angle_in_radians);
+	}
+	else if (keycode == KEY_RIGHT) // turn right
+	{
+		player->angle_in_radians -= 0.1;
+		if (radians_to_degrees(player->angle_in_radians < 0))
+		{
+			player->angle_in_radians += degrees_to_radians(360);
+		}
+		player->direction.x = cos(player->angle_in_radians);
+		player->direction.y = -sin(player->angle_in_radians);
+	}
+	printf("Player new direction: %f\n", radians_to_degrees(player->angle_in_radians));
+	printf("Dir vector: %f %f\n\n", player->direction.x, player->direction.y);
+}
 
 extern char g_layout[10][10];
+void	move_player(t_player *player, int keycode, t_game *game)
+{
+	t_vector_double	test;
+	// TODO: move properly, ideally implement diagonals too
+	g_layout[player->map_pos.y][player->map_pos.x] = '0';
+	printf("Player ori pos: %f %f\n", player->world_pos.x, player->world_pos.y);
+	if (keycode == KEY_W) // move up
+	{
+		test.x = player->world_pos.x + player->direction.x * player->speed;
+		test.y = player->world_pos.y + player->direction.y * player->speed;
+		if (test.y >= 0 && test.y <= game->tile_height * 64
+			&& test.x >= 0 && test.x <= game->tile_width * 64)
+		{
+			player->world_pos.x += player->direction.x * player->speed;
+			player->world_pos.y += player->direction.y * player->speed;
+		}
+	}
+	else if (keycode == KEY_S) // move back
+	{
+		test.x = player->world_pos.x + player->direction.x * player->speed;
+		test.y = player->world_pos.y + player->direction.y * player->speed;
+		if (test.y >= 0 && test.y <= game->tile_height * 64
+			&& test.x >= 0 && test.x <= game->tile_width * 64)
+		{
+			player->world_pos.x += -player->direction.x * player->speed;
+			player->world_pos.y += -player->direction.y * player->speed;
+		}
+	}
+	else if (keycode == KEY_A)
+	{
+		test.x = player->world_pos.x + player->direction.x * player->speed;
+		test.y = player->world_pos.y + player->direction.y * player->speed;
+		if (test.y >= 0 && test.y <= game->tile_height * 64
+			&& test.x >= 0 && test.x <= game->tile_width * 64)
+		{
+			player->world_pos.x += cos(player->angle_in_radians + M_PI / 2) * player->speed;
+			player->world_pos.y += sin(player->angle_in_radians + M_PI / 2) * player->speed;
+		}
+	}
+	else if (keycode == KEY_D)
+	{
+		test.x = player->world_pos.x + player->direction.x * player->speed;
+		test.y = player->world_pos.y + player->direction.y * player->speed;
+		if (test.y >= 0 && test.y <= game->tile_height * 64
+			&& test.x >= 0 && test.x <= game->tile_width * 64)
+		{
+			player->world_pos.x += cos(player->angle_in_radians - M_PI / 2) * player->speed;
+			player->world_pos.y += sin(player->angle_in_radians - M_PI / 2) * player->speed;
+		}
+	}
+	printf("Player new pos: %f %f\n\n", player->world_pos.x, player->world_pos.y);
+	player->map_pos.x = player->world_pos.x / game->tile_width;
+	player->map_pos.y = player->world_pos.y / game->tile_height;
+	g_layout[player->map_pos.y][player->map_pos.x] = 'E';
+}
+
 // TODO: use parsed map instead of global map
 int	process_key(int keycode, t_game *game)
 {
@@ -49,63 +144,15 @@ int	process_key(int keycode, t_game *game)
 	if (keycode == KEY_ESC)
 	{
 		exit(0);
-		return (0);
 	}
-	if (keycode == KEY_LEFT) // turn left
+	else if (is_rotate_camera_key(keycode))
 	{
-		printf("turning left\n");
-		player->angle_in_radians += 0.1;
-		if (radians_to_degrees(player->angle_in_radians) > 360)
-		{
-			player->angle_in_radians -= degrees_to_radians(360);
-		}
-		player->direction.x = cos(game->player.angle_in_radians);
-		player->direction.y = -sin(game->player.angle_in_radians);
+		rotate_camera(player, keycode);
 	}
-	else if (keycode == KEY_RIGHT) // turn right
+	else if (is_movement_key(keycode))
 	{
-		printf("turning right\n");
-		player->angle_in_radians -= 0.1;
-		if (radians_to_degrees(player->angle_in_radians < 0))
-		{
-			player->angle_in_radians += degrees_to_radians(360);
-		}
-		player->direction.x = cos(game->player.angle_in_radians);
-		player->direction.y = -sin(game->player.angle_in_radians);
+		move_player(player, keycode, game);
 	}
-	// TODO: move properly, ideally implement diagonals too
-	g_layout[player->map_pos.y][player->map_pos.x] = '0';
-	if (keycode == KEY_W) // move up
-	{
-		printf("Player MapX: %d MapY: %d\n", player->map_pos.x, player->map_pos.y);
-		printf("Player WPosX: %f WPosY: %f\n", player->world_pos.x, player->world_pos.y);
-		printf("Moving...\n");
-		player->world_pos.y += player->direction.y * player->speed;
-		player->world_pos.x += player->direction.x * player->speed;
-		g_layout[player->map_pos.y][player->map_pos.x] = 'E';
-		printf("Player MapX: %d MapY: %d\n", player->map_pos.x, player->map_pos.y);
-		printf("Player WPosX: %f WPosY: %f\n", player->world_pos.x, player->world_pos.y);
-	}
-	else if (keycode == KEY_S) // move back
-	{
-		player->world_pos.y -= player->direction.y * player->speed;
-		player->world_pos.x -= player->direction.x * player->speed;
-	}
-	else if (keycode == KEY_A)
-	{
-
-	}
-	else if (keycode == KEY_D)
-	{
-
-	}
-	else // TODO: hook into other keys rather than just moving
-	{
-		return (0);
-	}
-	player->map_pos.y = player->world_pos.y / game->tile_height;
-	player->map_pos.x = player->world_pos.x / game->tile_width;
-	g_layout[player->map_pos.y][player->map_pos.x] = 'E';
 	return (0);
 }
 

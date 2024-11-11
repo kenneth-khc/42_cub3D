@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:43:08 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/01 17:48:03 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/11 20:55:59 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ typedef struct s_ray
 	double			x_step; // how much worldX to step by when it goes 1 mapY
 	double			y_step; // how much worldY to step by when it goes 1 mapX
 	/*bool			hit_wall;*/
-	t_vector_double	horizontal_wall_pos; // the world_pos of a horizontal wall hit
-	t_vector_double	vertical_wall_pos; // the world_pos of a vertical wall hit
 	double			distance_to_h_wall;
 	double			distance_to_v_wall;
 	double			distance_travelled; // total distance travelled until a wall is hit

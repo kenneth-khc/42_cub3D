@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:31:10 by kecheong          #+#    #+#             */
-/*   Updated: 2024/10/30 22:32:44 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/11 20:24:39 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void	render(t_game *game, t_raycaster *raycaster)
 			line_height = game->screen_height / ray->distance_to_v_wall;
 			draw_wall(&game->world3D, x, line_height, game);
 		}
+		/*printf("Line to draw: %f\n", line_height);*/
 	}
 	put_image(game, &game->world3D, &(t_vector_int){0, 0});
 }
@@ -84,10 +85,10 @@ void	draw_wall(t_image *world, int screen_x, double wall_height, t_game *game)
 	{
 		wall_height = game->screen_height;
 	}
-	else
-	{
-		wall_height = game->screen_height / wall_height;
-	}
+	/*else*/
+	/*{*/
+	/*	wall_height = game->screen_height / wall_height;*/
+	/*}*/
 	int				y;
 	const int		half_screen_y = game->screen_height / 2;
 	const double	half_wall_height = wall_height / 2;

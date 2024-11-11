@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:38:09 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/01 17:46:26 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/11 20:57:55 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,8 +63,8 @@ void	check_horizontal(t_ray *ray, t_map *map, double x_step, double y_step, t_pl
 		{
 			hit = true;
 			ray->distance_to_h_wall = fabs(player->world_pos.x - ray_pos.x) / cos(angle);
-			ray->distance_to_h_wall = ray->distance_to_h_wall * cos(angle);
-			printf("FOUND H DISTANCE: %f\n", ray->distance_to_h_wall);
+			ray->distance_to_h_wall = ray->distance_to_h_wall * cos(player->angle_in_radians - angle);
+			/*printf("FOUND H DISTANCE: %f\n", ray->distance_to_h_wall);*/
 			break ;
 		}
 		if (ray_pos.x > 0)
@@ -96,8 +96,8 @@ void	check_vertical(t_ray *ray, t_map *map, double x_step, double y_step, t_play
 		{
 			hit = true;
 			ray->distance_to_v_wall = fabs(player->world_pos.x - ray_pos.x) / cos(angle);
-			ray->distance_to_v_wall = ray->distance_to_v_wall * cos(angle);
-			printf("FOUND V DISTANCE: %f\n", ray->distance_to_v_wall);
+			ray->distance_to_v_wall = ray->distance_to_v_wall * cos(player->angle_in_radians - angle);
+			/*printf("FOUND V DISTANCE: %f\n", ray->distance_to_v_wall);*/
 			break ;
 		}
 		ray_pos.x += x_step;
@@ -128,17 +128,17 @@ void	cast(t_ray *ray, double angle, t_player *player, t_map *map, t_game *game)
 		y_step = 64;
 	}
 
-	if (angle == M_PI / 2 || angle == 0)
-	{
-		printf("OMG\n");
-		ray->horizontal_intersect.x = world_pos.x;
-		x_step = 0;
-	}
-	else
-	{
+	/*if (angle == M_PI / 2 || angle == 0)*/
+	/*{*/
+	/*	printf("OMG\n");*/
+	/*	ray->horizontal_intersect.x = world_pos.x;*/
+	/*	x_step = 0;*/
+	/*}*/
+	/*else*/
+	/*{*/
 		ray->horizontal_intersect.x = world_pos.x + (world_pos.y - ray->horizontal_intersect.y) / tan(angle);
 		x_step = 64 / tan(angle);
-	}
+	/*}*/
 	check_horizontal(ray, map, x_step, y_step, player, angle);
 	fprintf(game->logfile, "Ray %d: H: %f", ray->id, ray->distance_to_h_wall);
 
@@ -152,17 +152,17 @@ void	cast(t_ray *ray, double angle, t_player *player, t_map *map, t_game *game)
 		ray->vertical_intersect.x = floor(world_pos.x / 64) * 64 + 64;
 		x_step = 64;
 	}
-	if (angle == M_PI / 2 || angle == 0)
-	{
-		printf("OMG\n");
-		ray->vertical_intersect.y = world_pos.y;
-		y_step = 0;
-	}
-	else
-	{
+	/*if (angle == M_PI / 2 || angle == 0)*/
+	/*{*/
+	/*	printf("OMG\n");*/
+	/*	ray->vertical_intersect.y = world_pos.y;*/
+	/*	y_step = 0;*/
+	/*}*/
+	/*else*/
+	/*{*/
 		ray->vertical_intersect.y = world_pos.y + (world_pos.x - ray->vertical_intersect.x) * tan(angle);
 		y_step = 64 * tan(angle);
-	}
+	/*}*/
 	check_vertical(ray, map, x_step, y_step, player, angle);
 	fprintf(game->logfile, " V: %f\n", ray->distance_to_v_wall);
 }
