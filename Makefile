@@ -6,7 +6,7 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2024/10/30 22:34:00 by kecheong         ###   ########.fr        #
+#    Updated: 2024/11/12 13:51:20 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -84,7 +84,7 @@ debug: CFLAGS += -g3
 debug: all
 
 .PHONY: fsan
-fsan: CFLAGS += -fsanitize=address -g3
+fsan: CFLAGS += -fsanitize=address,undefined -g3
 fsan: all
 
 .PHONY: norminette

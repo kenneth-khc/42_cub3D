@@ -1,24 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Renderer.h                                         :+:      :+:    :+:   */
+/*   collision.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/30 22:31:28 by kecheong          #+#    #+#             */
-/*   Updated: 2024/10/30 22:34:30 by kecheong         ###   ########.fr       */
+/*   Created: 2024/11/12 01:53:56 by kecheong          #+#    #+#             */
+/*   Updated: 2024/11/12 01:58:26 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RENDERER_H
-# define RENDERER_H
-
 #include "Game.h"
+#include "Map.h"
+#include "Vector.h"
 
-void	render(t_game *game, t_raycaster *raycaster);
-void	init_world2D(t_game *game, t_map *map);
-void	init_world3D(t_game *game);
-void	draw_vertical(t_image *img, t_vector_int start, t_vector_int end,
-				t_colour colour);
+extern char	g_layout[10][10];
 
-#endif
+bool	collide(t_map *map, t_vector_double *world_pos, t_game *game)
+{
+	(void)map;
+	t_vector_int	pos;
+
+	pos.x = world_pos->x / game->tile_width;
+	pos.y = world_pos->y / game->tile_height;
+	if (g_layout[pos.y][pos.x] == '1')
+	{
+		return (true);
+	}
+	else
+	{
+		return (false);
+	}
+
+}

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:31:10 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/11 20:24:39 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/12 13:54:57 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,24 +19,23 @@
 #include "Vector.h"
 #include "Map.h"
 
-void	draw_wall(t_image *world, int screen_x, double wall_height, t_game *game);
+void
+draw_wall(t_image *world, int screen_x, double wall_height, t_game *game);
 
 void	clear_walls(t_game *game)
 {
-	int			y;
-	int			x;
-	t_colour	purple;
-	t_colour	grey;
+	int				y;
+	int				x;
+	const t_colour	purple = create_colour(0x00, 0xAE, 0x71, 0xF5);
+	const t_colour	grey = create_colour(0x00, 0xAC, 0xA6, 0xB3);
 
-	purple = (t_colour){.s_component = {.alpha = 0x00, .red = 0xAE, .green = 0x71, .blue = 0xF5}};
-	grey = (t_colour){.s_component = {.alpha = 0x00, .red = 0xAC, .green = 0xA6, .blue = 0xb3}};
 	y = 0;
 	while (y < game->screen_height / 2)
 	{
 		x = 0;
 		while (x < game->screen_width)
 		{
-			*get_pixel_addr(&game->world3D, x, y) = purple.value;
+			draw_pixel(&game->world3D, x, y, purple);
 			x++;
 		}
 		y++;
@@ -46,7 +45,7 @@ void	clear_walls(t_game *game)
 		x = 0;
 		while (x < game->screen_width)
 		{
-			*get_pixel_addr(&game->world3D, x - game->world3D.width, y) = grey.value;
+			draw_pixel(&game->world3D, x, y, grey);
 			x++;
 		}
 		y++;
@@ -120,7 +119,7 @@ void	init_world3D(t_game *game)
 		x = 0;
 		while (x < game->screen_width)
 		{
-			*get_pixel_addr(&game->world3D, x, y) = purple.value;
+			draw_pixel(&game->world3D, x, y, purple);
 			x++;
 		}
 		y++;
@@ -130,7 +129,8 @@ void	init_world3D(t_game *game)
 		x = 0;
 		while (x < game->screen_width)
 		{
-			*get_pixel_addr(&game->world3D, x - game->world3D.width, y) = grey.value;
+			/**get_pixel_addr(&game->world3D, x - game->world3D.width, y) = grey.value;*/
+			draw_pixel(&game->world3D, x, y, grey);
 			x++;
 		}
 		y++;

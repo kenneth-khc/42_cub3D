@@ -19,14 +19,16 @@
 /* A wrapper for an mlx image */
 typedef struct s_image
 {
-	void	*instance; // the image instance used by mlx
-	int		width;
-	int		height;
-	char	*addr; // the start of the address where the image is stored
-	int		pixels; // the number of pixels in this image
-	int		bits_per_pixel; // how many bits is used to store a pixel
-	int		size_line; // how many pixels in 1 line horizontally across
-	int		endian;
+	void		*instance; // the image instance used by mlx
+	int			width;
+	int			height;
+	char		*addr; // the start of the address where the image is stored
+	int			pixels; // the number of pixels in this image
+	int			bits_per_pixel; // how many bits is used to store a pixel
+	int			bytes_per_pixel;
+	uint64_t	bytes; // the number of bytes used for this image
+	int			size_line; // how many pixels in 1 line horizontally across
+	int			endian;
 }	t_image;
 
 /* 32 bits to store a RGBA value, access each component through the struct */
@@ -44,8 +46,11 @@ typedef union u_colour
 
 typedef struct s_game	t_game;
 
+t_colour	create_colour(uint8_t alpha, uint8_t red, uint8_t green,
+					uint8_t blue);
 void		create_image(void *mlx, t_image *img, int width, int height);
 uint32_t	*get_pixel_addr(t_image *img, int x, int y);
+bool	draw_pixel(t_image *img, int x, int y, t_colour colour);
 void	draw_line_in_image(t_image *img, t_vector_int start,
 							t_vector_int end, t_colour colour);
 void	put_image(t_game *game, t_image *img, t_vector_int *point);
