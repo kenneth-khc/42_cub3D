@@ -13,14 +13,24 @@
 #include <Vector.h>
 #include "Image.h"
 
+/* Draws a line of pixels vertically onto an Image */
 void	draw_vertical(t_image *img, t_vector_int start, t_vector_int end,
 				t_colour colour)
 {
-	const int y = start.y;
+	const int	x = start.x;
+	int			step;
 
-	while (start.x != end.x)
+	if (start.y > end.y)
 	{
-		draw_pixel(img, start.x, y, colour);
-		start.x++;
+		step = -1;
+	}
+	else
+	{
+		step = +1;
+	}
+	while (start.y != end.y)
+	{
+		draw_pixel(img, x, start.y, colour);
+		start.y += step;
 	}
 }

@@ -37,7 +37,7 @@ void	init_player(t_player *player)
 	player->direction.x = cos(player->angle_in_radians);
 	player->direction.y = -sin(player->angle_in_radians);
 	// FIX: hardcoded
-	player->field_of_view = degrees_to_radians(90);
+	player->field_of_view = degrees_to_radians(10);
 	player->map_pos.y = 1;
 	player->map_pos.x = 1;
 	// pos in the world, player should spawn in the center of a square so we

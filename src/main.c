@@ -32,7 +32,6 @@ int	main(void)
 {
 	t_game	game;
 
-	game.logfile = fopen("logfile.txt", "w+");
 	game.mlx = mlx_init();
 	game.screen_width = SCREEN_WIDTH;
 	game.screen_height = SCREEN_HEIGHT;

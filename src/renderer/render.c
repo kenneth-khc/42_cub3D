@@ -19,8 +19,29 @@
 #include "Vector.h"
 #include "Map.h"
 
-void
-draw_wall(t_image *world, int screen_x, double wall_height, t_game *game);
+void	render(t_game *game, t_raycaster *raycaster)
+{
+	t_ray	*ray;
+	double	line_height;
+
+	clear_walls(game);
+	for (int x = 0; x < game->screen_width; x++)
+	{
+		ray = &raycaster->rays[x];
+		if (ray->distance_to_h_wall < ray->distance_to_v_wall)
+		{
+			line_height = game->screen_height / ray->distance_to_h_wall;
+			draw_wall(&game->world3D, x, line_height, game);
+		}
+		else
+		{
+			line_height = game->screen_height / ray->distance_to_v_wall;
+			draw_wall(&game->world3D, x, line_height, game);
+		}
+		/*printf("Line to draw: %f\n", line_height);*/
+	}
+	put_image(game, &game->world3D, &(t_vector_int){0, 0});
+}
 
 void	clear_walls(t_game *game)
 {
@@ -52,32 +73,6 @@ void	clear_walls(t_game *game)
 	}
 }
 
-void	render(t_game *game, t_raycaster *raycaster)
-{ (void)game; (void)raycaster;
-
-	t_ray	*ray;
-	double	line_height;
-
-	clear_walls(game);
-	ray = &raycaster->rays[0];
-	for (int x = 0; x < game->screen_width; x++)
-	{
-		ray = &raycaster->rays[x];
-		if (ray->distance_to_h_wall < ray->distance_to_v_wall)
-		{
-			line_height = game->screen_height / ray->distance_to_h_wall;
-			draw_wall(&game->world3D, x, line_height, game);
-		}
-		else
-		{
-			line_height = game->screen_height / ray->distance_to_v_wall;
-			draw_wall(&game->world3D, x, line_height, game);
-		}
-		/*printf("Line to draw: %f\n", line_height);*/
-	}
-	put_image(game, &game->world3D, &(t_vector_int){0, 0});
-}
-
 void	draw_wall(t_image *world, int screen_x, double wall_height, t_game *game)
 { (void)world;
 	if (wall_height == 0)
@@ -91,14 +86,16 @@ void	draw_wall(t_image *world, int screen_x, double wall_height, t_game *game)
 	int				y;
 	const int		half_screen_y = game->screen_height / 2;
 	const double	half_wall_height = wall_height / 2;
-	t_colour		red = {.s_component = {.alpha = 0x00, .red = 0x55, .green = 0x55, .blue = 0x55}};
+	const t_colour	red = create_colour(0x00, 0x55, 0x55, 0x55);
 
 	y = half_screen_y;
 	t_vector_int	center_point = {.x = screen_x, .y = half_screen_y};
 	t_vector_int	upper_end = {.x = screen_x, .y = y - half_wall_height};
 	t_vector_int	lower_end = {.x = screen_x, .y = y + half_wall_height};
-	draw_line_in_image(world, center_point, upper_end, red);
-	draw_line_in_image(world, center_point, lower_end, red);
+	draw_vertical(world, center_point, upper_end, red);
+	draw_vertical(world, center_point, lower_end, red);
+	/*draw_line_in_image(world, center_point, upper_end, red);*/
+	/*draw_line_in_image(world, center_point, lower_end, red);*/
 }
 
 void	init_world3D(t_game *game)

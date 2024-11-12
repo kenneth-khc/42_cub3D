@@ -140,7 +140,6 @@ void	cast(t_ray *ray, double angle, t_player *player, t_map *map, t_game *game)
 		x_step = 64 / tan(angle);
 	/*}*/
 	check_horizontal(ray, map, x_step, y_step, player, angle);
-	fprintf(game->logfile, "Ray %d: H: %f", ray->id, ray->distance_to_h_wall);
 
 	if (dir.x < 0)
 	{
@@ -164,7 +163,6 @@ void	cast(t_ray *ray, double angle, t_player *player, t_map *map, t_game *game)
 		y_step = 64 * tan(angle);
 	/*}*/
 	check_vertical(ray, map, x_step, y_step, player, angle);
-	fprintf(game->logfile, " V: %f\n", ray->distance_to_v_wall);
 }
 
 void	raycast(t_raycaster *raycaster, t_player *player, t_game *game)
