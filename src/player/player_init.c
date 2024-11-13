@@ -34,15 +34,17 @@ void	init_player(t_player *player)
 	{
 		player->angle_in_radians = degrees_to_radians(270);
 	}
+	// FIX: testing hardcoded angles
+	player->angle_in_radians = degrees_to_radians(270);
 	player->direction.x = cos(player->angle_in_radians);
 	player->direction.y = -sin(player->angle_in_radians);
 	// FIX: hardcoded
-	player->field_of_view = degrees_to_radians(10);
+	player->field_of_view = degrees_to_radians(60);
 	player->map_pos.y = 1;
 	player->map_pos.x = 1;
 	// pos in the world, player should spawn in the center of a square so we
 	// add half of the tile size
-	player->world_pos.x = 1 * 64 + (TILE_WIDTH / 2);
-	player->world_pos.y = 1 * 64 + (TILE_HEIGHT / 2);
+	player->world_pos.x = 1 * TILE_WIDTH + (TILE_WIDTH / 2);
+	player->world_pos.y = 1 * TILE_HEIGHT + (TILE_HEIGHT / 2);
 	player->speed = 2.0;
 }

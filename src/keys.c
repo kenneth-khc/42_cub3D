@@ -25,7 +25,7 @@
  * For closing the game, ESC is used
  * Can be optimized further
  * maybe TODO: index into a keymap table and call its associated function rather
- *		     than checking if elses :thinking:
+ *					than checking if elses :thinking:
  */
 bool	is_movement_key(int keycode)
 {
@@ -79,72 +79,74 @@ void	rotate_camera(t_player *player, int keycode)
 	printf("Dir vector: %f %f\n\n", player->direction.x, player->direction.y);
 }
 
-extern char g_layout[10][10];
-void	move_player(t_player *player, int keycode, t_game *game)
+void	move_player(t_player *player, int keycode, t_game *game, t_map *map)
 {
 	t_vector_double	test;
 	// TODO: move properly, ideally implement diagonals too
 	// TODO: refactor this garbage
-	g_layout[player->map_pos.y][player->map_pos.x] = '0';
 	printf("Player ori pos: %f %f\n", player->world_pos.x, player->world_pos.y);
 	if (keycode == KEY_W) // move up
 	{
 		test.x = player->world_pos.x + player->direction.x * player->speed;
 		test.y = player->world_pos.y + player->direction.y * player->speed;
-		if (!collide(&game->map, &test, game) && test.y >= 0 && test.y <= 10 * 64
-			&& test.x >= 0 && test.x <= 10 * 64)
+		if (!collide(&game->map, &test, game)
+			&& within_world_bounds(&test, map, game))
 		{
-			player->world_pos.x += player->direction.x * player->speed;
-			player->world_pos.y += player->direction.y * player->speed;
+			map->layout[player->map_pos.y][player->map_pos.x] = '0';
+			player->world_pos.x = test.x;
+			player->world_pos.y = test.y;
 			player->map_pos.x = player->world_pos.x / game->tile_width;
 			player->map_pos.y = player->world_pos.y / game->tile_height;
-			g_layout[player->map_pos.y][player->map_pos.x] = 'E';
+			map->layout[player->map_pos.y][player->map_pos.x] = 'E';
 		}
 	}
 	else if (keycode == KEY_S) // move back
 	{
-		test.x = player->world_pos.x + player->direction.x * player->speed;
-		test.y = player->world_pos.y + player->direction.y * player->speed;
-		if (!collide(&game->map, &test, game) && test.y >= 0 && test.y <= 10 * 64
-			&& test.x >= 0 && test.x <= 10 * 64)
+		test.x = player->world_pos.x + -player->direction.x * player->speed;
+		test.y = player->world_pos.y + -player->direction.y * player->speed;
+		if (!collide(&game->map, &test, game)
+			&& within_world_bounds(&test, map, game))
 		{
-			player->world_pos.x += -player->direction.x * player->speed;
-			player->world_pos.y += -player->direction.y * player->speed;
+			map->layout[player->map_pos.y][player->map_pos.x] = '0';
+			player->world_pos.x = test.x;
+			player->world_pos.y = test.y;
 			player->map_pos.x = player->world_pos.x / game->tile_width;
 			player->map_pos.y = player->world_pos.y / game->tile_height;
-			g_layout[player->map_pos.y][player->map_pos.x] = 'E';
+			map->layout[player->map_pos.y][player->map_pos.x] = 'E';
 		}
 	}
 	else if (keycode == KEY_A)
 	{
 		test.x = player->world_pos.x + cos(player->angle_in_radians + M_PI / 2) * player->speed;
-		test.y = player->world_pos.y + sin(player->angle_in_radians + M_PI / 2) * player->speed;
-		if (!collide(&game->map, &test, game) && test.y >= 0 && test.y <= 10 * 64
-			&& test.x >= 0 && test.x <= 10 * 64)
+		test.y = player->world_pos.y + -sin(player->angle_in_radians + M_PI / 2) * player->speed;
+		if (!collide(&game->map, &test, game)
+			&& within_world_bounds(&test, map, game))
 		{
-			player->world_pos.x += cos(player->angle_in_radians + M_PI / 2) * player->speed;
-			player->world_pos.y += sin(player->angle_in_radians + M_PI / 2) * player->speed;
+			map->layout[player->map_pos.y][player->map_pos.x] = '0';
+			player->world_pos.x = test.x;
+			player->world_pos.y = test.y;
 			player->map_pos.x = player->world_pos.x / game->tile_width;
 			player->map_pos.y = player->world_pos.y / game->tile_height;
-			g_layout[player->map_pos.y][player->map_pos.x] = 'E';
+			map->layout[player->map_pos.y][player->map_pos.x] = 'E';
 		}
 	}
 	else if (keycode == KEY_D)
 	{
 		test.x = player->world_pos.x + cos(player->angle_in_radians - M_PI / 2) * player->speed;
-		test.y = player->world_pos.y + sin(player->angle_in_radians - M_PI / 2) * player->speed;
-		if (!collide(&game->map, &test, game) && test.y >= 0 && test.y <= 10 * 64
-			&& test.x >= 0 && test.x <= 10 * 64)
+		test.y = player->world_pos.y + -sin(player->angle_in_radians - M_PI / 2) * player->speed;
+		if (!collide(&game->map, &test, game)
+			&& within_world_bounds(&test, map, game))
 		{
-			player->world_pos.x += cos(player->angle_in_radians - M_PI / 2) * player->speed;
-			player->world_pos.y += sin(player->angle_in_radians - M_PI / 2) * player->speed;
+			map->layout[player->map_pos.y][player->map_pos.x] = '0';
+			player->world_pos.x = test.x;
+			player->world_pos.y = test.y;
 			player->map_pos.x = player->world_pos.x / game->tile_width;
 			player->map_pos.y = player->world_pos.y / game->tile_height;
-			g_layout[player->map_pos.y][player->map_pos.x] = 'E';
+			map->layout[player->map_pos.y][player->map_pos.x] = 'E';
 		}
 	}
 	printf("Player new pos: %f %f\n\n", player->world_pos.x, player->world_pos.y);
-	print_map(g_layout);
+	print_map(map->layout);
 }
 
 // TODO: use parsed map instead of global map
@@ -163,7 +165,7 @@ int	process_key(int keycode, t_game *game)
 	}
 	else if (is_movement_key(keycode))
 	{
-		move_player(player, keycode, game);
+		move_player(player, keycode, game, map);
 	}
 	return (0);
 }

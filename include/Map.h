@@ -34,5 +34,6 @@ void	clear_minimap(t_map *map);
 void	set_floors(t_map *map, t_player *player);
 void	print_map(char layout[10][10]);
 bool	collide(t_map *map, t_vector_double *world_pos, t_game *game);
+bool	within_world_bounds(t_vector_double *pos, t_map *map, t_game *game);
 
 #endif

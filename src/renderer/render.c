@@ -18,6 +18,7 @@
 #include "Renderer.h"
 #include "Vector.h"
 #include "Map.h"
+#include <assert.h>
 
 void	render(t_game *game, t_raycaster *raycaster)
 {
@@ -31,11 +32,13 @@ void	render(t_game *game, t_raycaster *raycaster)
 		if (ray->distance_to_h_wall < ray->distance_to_v_wall)
 		{
 			line_height = game->screen_height / ray->distance_to_h_wall;
+			/*printf("Dividing %d with distance %f\n", game->screen_height, ray->distance_to_h_wall);*/
 			draw_wall(&game->world3D, x, line_height, game);
 		}
 		else
 		{
 			line_height = game->screen_height / ray->distance_to_v_wall;
+			/*printf("Dividing %d with distance %f\n", game->screen_height, ray->distance_to_v_wall);*/
 			draw_wall(&game->world3D, x, line_height, game);
 		}
 		/*printf("Line to draw: %f\n", line_height);*/

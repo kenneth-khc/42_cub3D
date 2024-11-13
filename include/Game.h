@@ -14,10 +14,10 @@
 # define GAME_H
 
 #ifndef SCREEN_WIDTH
-#define SCREEN_WIDTH 1500
+#define SCREEN_WIDTH 1000
 #endif
 #ifndef SCREEN_HEIGHT
-#define SCREEN_HEIGHT 1500
+#define SCREEN_HEIGHT 1000
 #endif
 
 # include "Player.h"

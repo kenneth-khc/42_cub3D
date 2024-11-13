@@ -42,7 +42,7 @@ void	create_image(void *mlx, t_image *img, int width, int height)
 	img->instance = mlx_new_image(mlx, width, height);
 	img->width = width;
 	img->height = height;
-	img->pixels = img->width * height;
+	img->pixels = img->width * img->height;
 	img->addr = mlx_get_data_addr(img->instance,
 			&img->bits_per_pixel, &img->size_line, &img->endian);
 	img->bytes_per_pixel = img->bits_per_pixel / 8;

@@ -23,9 +23,9 @@ typedef struct s_image
 	int			width;
 	int			height;
 	char		*addr; // the start of the address where the image is stored
-	int			pixels; // the number of pixels in this image
+	uint64_t	pixels; // the number of pixels in this image
 	int			bits_per_pixel; // how many bits is used to store a pixel
-	int			bytes_per_pixel;
+	uint8_t		bytes_per_pixel;
 	uint64_t	bytes; // the number of bytes used for this image
 	int			size_line; // how many pixels in 1 line horizontally across
 	int			endian;
