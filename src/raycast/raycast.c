@@ -24,7 +24,7 @@
 extern char	g_layout[10][10];
 
 void	raycast(t_raycaster *raycaster, t_player *player, t_game *game)
-{ (void)game;
+{
 	t_ray	*ray;
 
 	init_raycaster(raycaster, &game->player, game);
@@ -32,25 +32,42 @@ void	raycast(t_raycaster *raycaster, t_player *player, t_game *game)
 	{
 		ray = &raycaster->rays[x];
 		cast(ray, player, &game->map, game);
-		/*get_shortest_distance(ray);*/
+		get_shortest_distance(ray, player, raycaster);
 	}
 }
 
 // TODO: correct perspective distance
-void	get_shortest_distance(t_ray *ray)
-{ (void)ray;
-	printf("Ray %d: toH = %f, toV = %f\n",
-		ray->id, ray->distance_to_h_wall, ray->distance_to_v_wall);
+void	get_shortest_distance(t_ray *ray, t_player *player, t_raycaster *rc)
+{
+	double	corrected_distance;
+
+	// FIX: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// for some reason both horizontal and vertical intersections can't be found sometimes, !!!
+	// leading me to mark both as infinity and we can't get a proper distance				!!!
+	// not sure why, probably gotta implement proper DDA,									!!!
+	// for now just use the previous' ray's distance so it doesn't look messed up,			!!!
+	// plz fix soon!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	if (!ray->hit_vertical && !ray->hit_horizontal)
+	{
+		if (ray->id > 0)
+		{
+			ray->distance_to_h_wall = rc->rays[ray->id - 1].distance_to_h_wall;
+			ray->distance_to_v_wall = rc->rays[ray->id - 1].distance_to_v_wall;
+		}
+	}
 
 	if (ray->distance_to_h_wall < ray->distance_to_v_wall)
 	{
-		printf("Ray %d hits H\n", ray->id);
+		corrected_distance
+			= (ray->distance_to_h_wall * cos(player->angle_in_radians - ray->angle_in_radians));
 	}
 	else
 	{
-		printf("Ray %d hits V\n", ray->id);
+		corrected_distance
+			= (ray->distance_to_v_wall * cos(player->angle_in_radians - ray->angle_in_radians));
 	}
-	printf("\n");
+	ray->distance_travelled = corrected_distance;
 }
 
 void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
@@ -79,18 +96,14 @@ void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 
 /* Send forth a ray until it hits a wall. Behold, my wizard casting powers */
 void	cast(t_ray *ray, t_player *player, t_map *map, t_game *game)
-{(void)game;
-	ray->dir.x = cos(ray->angle_in_radians);
-	ray->dir.y = -sin(ray->angle_in_radians);
+{
 	t_vector_double	step;
 
-	// start set horizontal
+	ray->dir.x = cos(ray->angle_in_radians);
+	ray->dir.y = -sin(ray->angle_in_radians);
 	step = find_first_h_intersect(game, ray);
-	//// end set horizontal
 	check_horizontal(ray, map, step, player, game);
-	// start set vertical
 	step = find_first_v_intersect(game, ray);
-	// end set vertical
 	check_vertical(ray, map, step, player, game);
 }
 
@@ -162,7 +175,6 @@ void	check_horizontal(t_ray *ray, t_map *map, t_vector_double step, t_player *pl
 			|| check_map_pos.y >= map->height || check_map_pos.y < 0)
 		{
 			ray->distance_to_h_wall = INFINITY;
-			hit = true;
 			return ;
 		}
 		if (map->layout[check_map_pos.y][check_map_pos.x] == '1')
@@ -171,9 +183,10 @@ void	check_horizontal(t_ray *ray, t_map *map, t_vector_double step, t_player *pl
 			ray->hit_horizontal = true;
 			ray->distance_to_h_wall
 				= fabs(player->world_pos.x - ray_pos.x) / cos(ray_angle);
-			ray->distance_to_h_wall
-				= fabs(ray->distance_to_h_wall * cos(player->angle_in_radians - ray_angle));
-			/*printf("FOUND H DISTANCE: %f\n", ray->distance_to_h_wall);*/
+			double	adjacent = ray_pos.x - player->world_pos.x;
+			double	opposite = ray_pos.y - player->world_pos.y;
+			// TODO: use trig instead of pythagoras
+			ray->distance_to_h_wall = sqrt((adjacent * adjacent) + (opposite * opposite));
 			break ;
 		}
 		ray_pos.x += step.x;
@@ -199,7 +212,6 @@ void	check_vertical(t_ray *ray, t_map *map, t_vector_double step, t_player *play
 			check_map_pos.y >= map->height || check_map_pos.y < 0)
 		{
 			ray->distance_to_v_wall = INFINITY;
-			hit = true;
 			return;
 		}
 		if (map->layout[check_map_pos.y][check_map_pos.x] == '1')
@@ -208,9 +220,10 @@ void	check_vertical(t_ray *ray, t_map *map, t_vector_double step, t_player *play
 			ray->hit_vertical = true;
 			ray->distance_to_v_wall
 				= fabs(player->world_pos.x - ray_pos.x) / cos(ray_angle);
-			ray->distance_to_v_wall
-				= fabs(ray->distance_to_v_wall * cos(player->angle_in_radians - ray_angle));
-			/*printf("FOUND V DISTANCE: %f\n", ray->distance_to_v_wall);*/
+			double	adjacent = ray_pos.x - player->world_pos.x;
+			double	opposite = ray_pos.y - player->world_pos.y;
+			// TODO: use trig instead of pythagoras
+			ray->distance_to_v_wall = sqrt((adjacent * adjacent) + (opposite * opposite));
 			break ;
 		}
 		ray_pos.x += step.x;

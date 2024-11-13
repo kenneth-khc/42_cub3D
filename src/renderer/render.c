@@ -29,19 +29,8 @@ void	render(t_game *game, t_raycaster *raycaster)
 	for (int x = 0; x < game->screen_width; x++)
 	{
 		ray = &raycaster->rays[x];
-		if (ray->distance_to_h_wall < ray->distance_to_v_wall)
-		{
-			line_height = game->screen_height / ray->distance_to_h_wall;
-			/*printf("Dividing %d with distance %f\n", game->screen_height, ray->distance_to_h_wall);*/
-			draw_wall(&game->world3D, x, line_height, game);
-		}
-		else
-		{
-			line_height = game->screen_height / ray->distance_to_v_wall;
-			/*printf("Dividing %d with distance %f\n", game->screen_height, ray->distance_to_v_wall);*/
-			draw_wall(&game->world3D, x, line_height, game);
-		}
-		/*printf("Line to draw: %f\n", line_height);*/
+		line_height = game->screen_height / ray->distance_travelled;
+		draw_wall(&game->world3D, x, line_height, game);
 	}
 	put_image(game, &game->world3D, &(t_vector_int){0, 0});
 }
@@ -77,15 +66,7 @@ void	clear_walls(t_game *game)
 }
 
 void	draw_wall(t_image *world, int screen_x, double wall_height, t_game *game)
-{ (void)world;
-	if (wall_height == 0)
-	{
-		wall_height = game->screen_height;
-	}
-	/*else*/
-	/*{*/
-	/*	wall_height = game->screen_height / wall_height;*/
-	/*}*/
+{
 	int				y;
 	const int		half_screen_y = game->screen_height / 2;
 	const double	half_wall_height = wall_height / 2;
@@ -97,8 +78,6 @@ void	draw_wall(t_image *world, int screen_x, double wall_height, t_game *game)
 	t_vector_int	lower_end = {.x = screen_x, .y = y + half_wall_height};
 	draw_vertical(world, center_point, upper_end, red);
 	draw_vertical(world, center_point, lower_end, red);
-	/*draw_line_in_image(world, center_point, upper_end, red);*/
-	/*draw_line_in_image(world, center_point, lower_end, red);*/
 }
 
 void	init_world3D(t_game *game)
@@ -108,11 +87,10 @@ void	init_world3D(t_game *game)
 	t_colour	purple;
 	t_colour	grey;
 
-	y = 0;
 	// TODO: fix image initializations
 	create_image(game->mlx, &game->world3D, game->screen_width, game->screen_height);
-	purple = (t_colour){.s_component = {.alpha = 0x00, .red = 0xAE, .green = 0x71, .blue = 0xF5}};
-	grey = (t_colour){.s_component = {.alpha = 0x00, .red = 0xAC, .green = 0xA6, .blue = 0xb3}};
+	purple = create_colour(0x00, 0xAE, 0x71, 0xF5);
+	grey = create_colour(0x00, 0xAC, 0xA6, 0xB3);
 	y = 0;
 	while (y < game->screen_height / 2)
 	{
@@ -129,7 +107,6 @@ void	init_world3D(t_game *game)
 		x = 0;
 		while (x < game->screen_width)
 		{
-			/**get_pixel_addr(&game->world3D, x - game->world3D.width, y) = grey.value;*/
 			draw_pixel(&game->world3D, x, y, grey);
 			x++;
 		}

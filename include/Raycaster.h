@@ -73,7 +73,7 @@ t_vector_double	find_first_h_intersect(t_game *game, t_ray *ray);
 t_vector_double	find_first_v_intersect(t_game *game, t_ray *ray);
 void			check_horizontal(t_ray *ray, t_map *map, t_vector_double step, t_player *player, t_game *game);
 void			check_vertical(t_ray *ray, t_map *map, t_vector_double step, t_player *player, t_game *game);
-void			get_shortest_distance(t_ray *ray);
+void			get_shortest_distance(t_ray *ray, t_player *player, t_raycaster*);
 
 double			degrees_to_radians(double degrees);
 double			radians_to_degrees(double radians);
