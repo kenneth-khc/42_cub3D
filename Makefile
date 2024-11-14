@@ -6,7 +6,7 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2024/11/12 13:51:20 by kecheong         ###   ########.fr        #
+#    Updated: 2024/11/14 18:06:12 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,7 +41,8 @@ dirs := $(src_dir) \
 		$(src_dir)/player \
 		$(src_dir)/mlx_utils \
 		$(src_dir)/raycast \
-		$(src_dir)/renderer
+		$(src_dir)/renderer \
+		$(src_dir)/minimap
 
 srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c))
 

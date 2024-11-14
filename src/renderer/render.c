@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:31:10 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/12 13:54:57 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/14 18:11:57 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,22 @@ void	render(t_game *game, t_raycaster *raycaster)
 	t_ray	*ray;
 	double	line_height;
 
-	clear_walls(game);
-	for (int x = 0; x < game->screen_width; x++)
+	// TODO: debugging, if world3d doesn't exist we don't render it
+	if (game->world_3d.instance)
 	{
-		ray = &raycaster->rays[x];
-		line_height = game->screen_height / ray->distance_travelled;
-		draw_wall(&game->world3D, x, line_height, game);
+		clear_walls(game);
+		for (int x = 0; x < game->screen_width; x++)
+		{
+			ray = &raycaster->rays[x];
+			line_height = game->screen_height / ray->distance_travelled;
+			draw_wall(&game->world_3d, x, line_height, game);
+		}
+		put_image(game, &game->world_3d, &(t_vector_int){0, 0});
 	}
-	put_image(game, &game->world3D, &(t_vector_int){0, 0});
+	if (game->minimap.img.instance && game->minimap.display)
+	{
+		put_image(game, &game->minimap.img, &(t_vector_int){10, 10});
+	}
 }
 
 void	clear_walls(t_game *game)
@@ -48,7 +56,7 @@ void	clear_walls(t_game *game)
 		x = 0;
 		while (x < game->screen_width)
 		{
-			draw_pixel(&game->world3D, x, y, purple);
+			draw_pixel(&game->world_3d, x, y, purple);
 			x++;
 		}
 		y++;
@@ -58,7 +66,7 @@ void	clear_walls(t_game *game)
 		x = 0;
 		while (x < game->screen_width)
 		{
-			draw_pixel(&game->world3D, x, y, grey);
+			draw_pixel(&game->world_3d, x, y, grey);
 			x++;
 		}
 		y++;
@@ -80,7 +88,7 @@ void	draw_wall(t_image *world, int screen_x, double wall_height, t_game *game)
 	draw_vertical(world, center_point, lower_end, red);
 }
 
-void	init_world3D(t_game *game)
+void	init_world_3d(t_game *game)
 {
 	int			y;
 	int			x;
@@ -88,7 +96,7 @@ void	init_world3D(t_game *game)
 	t_colour	grey;
 
 	// TODO: fix image initializations
-	create_image(game->mlx, &game->world3D, game->screen_width, game->screen_height);
+	create_image(game->mlx, &game->world_3d, game->screen_width, game->screen_height);
 	purple = create_colour(0x00, 0xAE, 0x71, 0xF5);
 	grey = create_colour(0x00, 0xAC, 0xA6, 0xB3);
 	y = 0;
@@ -97,7 +105,7 @@ void	init_world3D(t_game *game)
 		x = 0;
 		while (x < game->screen_width)
 		{
-			draw_pixel(&game->world3D, x, y, purple);
+			draw_pixel(&game->world_3d, x, y, purple);
 			x++;
 		}
 		y++;
@@ -107,7 +115,7 @@ void	init_world3D(t_game *game)
 		x = 0;
 		while (x < game->screen_width)
 		{
-			draw_pixel(&game->world3D, x, y, grey);
+			draw_pixel(&game->world_3d, x, y, grey);
 			x++;
 		}
 		y++;
