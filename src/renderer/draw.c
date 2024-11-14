@@ -1,28 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   Renderer.h                                         :+:      :+:    :+:   */
+/*   draw.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/30 22:31:28 by kecheong          #+#    #+#             */
-/*   Updated: 2024/10/30 22:34:30 by kecheong         ###   ########.fr       */
+/*   Created: 2024/11/12 13:37:20 by kecheong          #+#    #+#             */
+/*   Updated: 2024/11/12 13:54:07 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RENDERER_H
-# define RENDERER_H
+#include <Vector.h>
+#include "Image.h"
 
-#include "Game.h"
-
-void	render(t_game *game, t_raycaster *raycaster);
-void	init_world2D(t_game *game, t_map *map);
-void	init_world3D(t_game *game);
+/* Draws a line of pixels vertically onto an Image */
 void	draw_vertical(t_image *img, t_vector_int start, t_vector_int end,
-				t_colour colour);
-void	clear_walls(t_game *game);
-void	draw_wall(t_image *world, int screen_x, double wall_height, t_game *game);
-void	draw_vertical(t_image *img, t_vector_int start, t_vector_int end,
-				t_colour colour);
+				t_colour colour)
+{
+	const int	x = start.x;
+	int			step;
 
-#endif
+	if (start.y > end.y)
+	{
+		step = -1;
+	}
+	else
+	{
+		step = +1;
+	}
+	while (start.y != end.y)
+	{
+		draw_pixel(img, x, start.y, colour);
+		start.y += step;
+	}
+}

@@ -42,7 +42,6 @@ enum e_keys
 
 enum e_keys
 {
-	KEYPRESS_EVENT = 2,
 	KEY_W = 13,
 	KEY_A = 0,
 	KEY_S = 1,

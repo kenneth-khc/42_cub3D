@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:38:09 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/01 17:46:26 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/12 01:58:31 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,122 +17,216 @@
 #include "Raycaster.h"
 #include "Utils.h"
 #include "Vector.h"
+#include <stdio.h>
+#include <assert.h>
+#include <stdlib.h>
+
+extern char	g_layout[10][10];
+
+void	raycast(t_raycaster *raycaster, t_player *player, t_game *game)
+{
+	t_ray	*ray;
+
+	init_raycaster(raycaster, &game->player, game);
+	for (int x = 0; x < game->screen_width; x++)
+	{
+		ray = &raycaster->rays[x];
+		cast(ray, player, &game->map, game);
+		get_shortest_distance(ray, player, raycaster);
+	}
+}
+
+// TODO: correct perspective distance
+void	get_shortest_distance(t_ray *ray, t_player *player, t_raycaster *rc)
+{
+	double	corrected_distance;
+
+	// FIX: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// for some reason both horizontal and vertical intersections can't be found sometimes, !!!
+	// leading me to mark both as infinity and we can't get a proper distance				!!!
+	// not sure why, probably gotta implement proper DDA,									!!!
+	// for now just use the previous' ray's distance so it doesn't look messed up,			!!!
+	// plz fix soon!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	if (!ray->hit_vertical && !ray->hit_horizontal)
+	{
+		if (ray->id > 0)
+		{
+			ray->distance_to_h_wall = rc->rays[ray->id - 1].distance_to_h_wall;
+			ray->distance_to_v_wall = rc->rays[ray->id - 1].distance_to_v_wall;
+		}
+	}
+
+	if (ray->distance_to_h_wall < ray->distance_to_v_wall)
+	{
+		corrected_distance
+			= (ray->distance_to_h_wall * cos(player->angle_in_radians - ray->angle_in_radians));
+	}
+	else
+	{
+		corrected_distance
+			= (ray->distance_to_v_wall * cos(player->angle_in_radians - ray->angle_in_radians));
+	}
+	ray->distance_travelled = corrected_distance;
+}
 
 void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 {
-	int		i;
 	t_ray	*ray;
+	int		i;
 
 	raycaster->number_of_rays = game->screen_width;
-	i = 0;
-	while (i < raycaster->number_of_rays)
-	{ // TODO: probably not necessary to initialize a ray's fields to 0
-		memset(&raycaster->rays[i], 0, sizeof(t_ray));
-		i++;
-	}
 	raycaster->angle_increment = player->field_of_view / raycaster->number_of_rays;
 	// TODO: are these angles correct?
 	raycaster->leftmost_ray_angle = player->angle_in_radians + (player->field_of_view / 2);
 	raycaster->rightmost_ray_angle = player->angle_in_radians - (player->field_of_view / 2);
-	// TODO: should we set up all the rays before firing them or set up as we fire them?
 	i = 0;
+	// TODO: is this even necessary
 	while (i < raycaster->number_of_rays)
 	{
 		ray = &raycaster->rays[i];
-		ray->map_pos = copy_vector_int(&player->map_pos);
-		ray->world_pos = copy_vector_double(&player->world_pos);
-		ray->angle_in_radians = raycaster->leftmost_ray_angle + (raycaster->angle_increment * i);
-		ray->direction.x = cos(ray->angle_in_radians);
-		ray->direction.y = -sin(ray->angle_in_radians); // TODO: do I need to inverse this sin as our y axis is flipped?
-		find_first_x_intersect(ray, game);
-		ray->horizontal_wall_pos = dda(raycaster, ray, game, &game->map);
-		find_first_y_intersect(ray, game);
-		ray->vertical_wall_pos = dda(raycaster, ray, game, &game->map);
+		memset(ray, 0, sizeof(t_ray));
+		ray->id = i;
+		ray->world_pos = player->world_pos;
+		ray->angle_in_radians
+			= raycaster->leftmost_ray_angle - (ray->id * raycaster->angle_increment);
 		i++;
 	}
 }
 
-void	find_first_x_intersect(t_ray *ray, t_game *game)
+/* Send forth a ray until it hits a wall. Behold, my wizard casting powers */
+void	cast(t_ray *ray, t_player *player, t_map *map, t_game *game)
 {
-	if (ray->direction.y < 0) // ray is flying upwards
-	{
-		ray->first_x_intersect.y = floor(ray->world_pos.y / game->tile_height)
-									* game->tile_height - 1;
-		ray->y_step = -game->tile_height;
-	}
-	else if (ray->direction.y > 0) // ray is flying downwards
-	{
-		ray->first_x_intersect.y = floor(ray->world_pos.y / game->tile_height)
-									* game->tile_height + game->tile_height;
-		ray->y_step = game->tile_height;
-	}
-	// triangles!
-	double	opposite_length;
-	double	adjacent_length;
+	t_vector_double	step;
 
-	opposite_length = ray->world_pos.y - ray->first_x_intersect.y;
-	adjacent_length = opposite_length / tan(ray->angle_in_radians);
-	ray->first_x_intersect.x = ray->world_pos.x + adjacent_length;
-	ray->x_step = game->tile_height / tan(ray->angle_in_radians);
+	ray->dir.x = cos(ray->angle_in_radians);
+	ray->dir.y = -sin(ray->angle_in_radians);
+	step = find_first_h_intersect(game, ray);
+	check_horizontal(ray, map, step, player, game);
+	step = find_first_v_intersect(game, ray);
+	check_vertical(ray, map, step, player, game);
 }
 
-void	find_first_y_intersect(t_ray *ray, t_game *game)
+t_vector_double	find_first_h_intersect(t_game *game, t_ray *ray)
 {
-	if (ray->direction.x < 0) // ray is flying left
-	{
-		ray->first_y_intersect.x = floor(ray->world_pos.x / game->tile_width)
-									* game->tile_width - 1;
-		ray->x_step = -game->tile_width;
-	}
-	else if (ray->direction.x > 0)
-	{
-		ray->first_y_intersect.x = floor(ray->world_pos.x / game->tile_width)
-									* game->tile_width + game->tile_width;
-		ray->x_step = game->tile_width;
-	}
-	// triangles!!!!!
-	double	opposite_length;
-	double	adjacent_length;
+	const int				tile_width = game->tile_width;
+	const int				tile_height = game->tile_height;
+	const t_vector_double	world_pos = ray->world_pos;
+	t_vector_double			step;
 
-	adjacent_length = ray->world_pos.x - ray->first_y_intersect.x;
-	opposite_length = tan(ray->angle_in_radians) * adjacent_length;
-	ray->first_y_intersect.y = ray->world_pos.y + opposite_length;
-	ray->y_step = game->tile_width * tan(ray->angle_in_radians);
+	if (ray->dir.y < 0)
+	{
+		ray->horizontal_intersect.y
+			= floor(world_pos.y / tile_width) * tile_width - 1;
+		step.y = -tile_height;
+	}
+	else
+	{
+		ray->horizontal_intersect.y
+			= floor(world_pos.y / tile_width) * tile_width + tile_width;
+		step.y = +tile_height;
+	}
+	ray->horizontal_intersect.x
+		= world_pos.x + (world_pos.y - ray->horizontal_intersect.y) / tan(ray->angle_in_radians);
+	step.x = tile_width * tan(ray->angle_in_radians);
+	return (step);
 }
 
-#include <stdio.h>
-t_vector_double	dda(t_raycaster *raycaster, t_ray *ray, t_game *game, t_map *map)
-{ (void)game; (void)raycaster;
+t_vector_double	find_first_v_intersect(t_game *game, t_ray *ray)
+{
+	const int				tile_width = game->tile_width;
+	const int				tile_height = game->tile_height;
+	const t_vector_double	world_pos = ray->world_pos;
+	t_vector_double			step;
+
+	if (ray->dir.x < 0)
+	{
+		ray->vertical_intersect.x
+			= floor(world_pos.x / tile_height) * tile_height - 1;
+		step.x = -tile_width;
+	}
+	else
+	{
+		ray->vertical_intersect.x
+			= floor(world_pos.x / tile_height) * tile_height + tile_height;
+		step.x = +tile_width;
+	}
+	ray->vertical_intersect.y
+		= world_pos.y + (world_pos.x - ray->vertical_intersect.x) * tan(ray->angle_in_radians);
+	step.y = tile_height * tan(ray->angle_in_radians);
+	return (step);
+}
+
+// TODO: check with parsed map
+void	check_horizontal(t_ray *ray, t_map *map, t_vector_double step, t_player *player, t_game *game)
+{
+	bool			hit;
 	t_vector_double	ray_pos;
-	
-	ray->hit_wall = false;
-	ray_pos = copy_vector_double(&ray->first_x_intersect);
-	while (!ray->hit_wall)
+	t_vector_int	check_map_pos;
+	const double	ray_angle = ray->angle_in_radians;
+
+	hit = false;
+	ray_pos = ray->horizontal_intersect;
+	while (!hit)
 	{
-		ray->map_pos = world_to_map_pos(&ray_pos);
-		if (map->layout[ray->map_pos.y][ray->map_pos.x] == '1')
+		check_map_pos.x = ray_pos.x / game->tile_width;
+		check_map_pos.y = ray_pos.y / game->tile_height;
+		if (check_map_pos.x >= map->width || check_map_pos.x < 0
+			|| check_map_pos.y >= map->height || check_map_pos.y < 0)
 		{
-			ray->hit_wall = true;
-			ray->horizontal_wall_pos = copy_vector_double(&ray_pos);
-			return (copy_vector_double(&ray_pos));
+			ray->distance_to_h_wall = INFINITY;
+			return ;
 		}
-		ray_pos.x += ray->x_step;
-		ray_pos.y += ray->y_step;
+		if (map->layout[check_map_pos.y][check_map_pos.x] == '1')
+		{
+			hit = true;
+			ray->hit_horizontal = true;
+			ray->distance_to_h_wall
+				= fabs(player->world_pos.x - ray_pos.x) / cos(ray_angle);
+			double	adjacent = ray_pos.x - player->world_pos.x;
+			double	opposite = ray_pos.y - player->world_pos.y;
+			// TODO: use trig instead of pythagoras
+			ray->distance_to_h_wall = sqrt((adjacent * adjacent) + (opposite * opposite));
+			break ;
+		}
+		ray_pos.x += step.x;
+		ray_pos.y += step.y;
 	}
-	// TODO: ???
-	return ray_pos;
 }
 
-void	raycast(t_raycaster *raycaster, t_game *game, t_player *player)
+// TODO: check with parsed map
+void	check_vertical(t_ray *ray, t_map *map, t_vector_double step, t_player *player, t_game *game)
 {
-	int		i;
-	t_ray	*ray; (void)ray;
+	bool			hit;
+	t_vector_double	ray_pos;
+	t_vector_int	check_map_pos;
+	const double	ray_angle = ray->angle_in_radians;
 
-	init_raycaster(raycaster, player, game);
-	i = 0;
-	while (i < raycaster->number_of_rays)
+	hit = false;
+	ray_pos = ray->vertical_intersect;
+	while (!hit)
 	{
-		ray = &raycaster->rays[i];
-		i++;
+		check_map_pos.x = ray_pos.x / game->tile_width;
+		check_map_pos.y = ray_pos.y / game->tile_height;
+		if (check_map_pos.x >= map->width || check_map_pos.x < 0 ||
+			check_map_pos.y >= map->height || check_map_pos.y < 0)
+		{
+			ray->distance_to_v_wall = INFINITY;
+			return;
+		}
+		if (map->layout[check_map_pos.y][check_map_pos.x] == '1')
+		{
+			hit = true;
+			ray->hit_vertical = true;
+			ray->distance_to_v_wall
+				= fabs(player->world_pos.x - ray_pos.x) / cos(ray_angle);
+			double	adjacent = ray_pos.x - player->world_pos.x;
+			double	opposite = ray_pos.y - player->world_pos.y;
+			// TODO: use trig instead of pythagoras
+			ray->distance_to_v_wall = sqrt((adjacent * adjacent) + (opposite * opposite));
+			break ;
+		}
+		ray_pos.x += step.x;
+		ray_pos.y += step.y;
 	}
 }

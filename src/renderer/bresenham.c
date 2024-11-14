@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:38:12 by kecheong          #+#    #+#             */
-/*   Updated: 2024/10/30 18:37:07 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/12 13:43:38 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,8 @@ static void	draw_low(t_image *img, t_vector_int start,
 	int	decision = (2 * dy) - dx;
 	while (start.x < end.x)
 	{
-		*get_pixel_addr(img, start.x, start.y) = colour.value;
+		/**get_pixel_addr(img, start.x, start.y) = colour.value;*/
+		draw_pixel(img, start.x, start.y, colour);
 		if (decision > 0)
 		{
 			start.y += dir;
@@ -66,7 +67,8 @@ static void	draw_high(t_image *img, t_vector_int start,
 	int	decision = (2 * dx) - dy;
 	while (start.y < end.y)
 	{
-		*get_pixel_addr(img, start.x, start.y) = colour.value;
+		/**get_pixel_addr(img, start.x, start.y) = colour.value;*/
+		draw_pixel(img, start.x, start.y, colour);
 		if (decision > 0)
 		{
 			start.x += dir;

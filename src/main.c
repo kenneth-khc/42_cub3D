@@ -21,25 +21,27 @@
 int	game_loop(t_game *game)
 {
 	mlx_clear_window(game->mlx, game->window);
-	raycast(&game->raycaster, game, &game->player);
+	raycast(&game->raycaster, &game->player, game);
 	render(game, &game->raycaster);
 	return (0);
 }
+
+#include <fcntl.h>
 
 int	main(void)
 {
 	t_game	game;
 
 	game.mlx = mlx_init();
-	game.screen_width = 500;
-	game.screen_height = 500;
+	game.screen_width = SCREEN_WIDTH;
+	game.screen_height = SCREEN_HEIGHT;
 	game.window = mlx_new_window(game.mlx, game.screen_width,
 			game.screen_height, "cute3D");
-	game.tile_width = 64.0;
-	game.tile_height = 64.0;
+	game.tile_width = 50.0f;
+	game.tile_height = 50.0f;
 	init_player(&game.player);
 	init_map(&game.map, &game);
-	init_background(&game);
+	init_world3D(&game);
 	mlx_hook(game.window, KEYPRESS_EVENT, 1L << 0, process_key, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);

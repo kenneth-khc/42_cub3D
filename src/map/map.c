@@ -16,6 +16,14 @@
 #include "Map.h"
 #include "Image.h"
 #include "Player.h"
+#include "Vector.h"
+
+// TODO: minimap lmao
+/* The minimap represents the view of the world in 2D.
+ * It has a scale of ??:??, meaning that for a game with ???:??? resolution,
+ * the minimap will be ???:???, and for each ?? pixels we traverse in world
+ * coordinates we move by ? on the minimap
+ */
 
 #define MAP_WIDTH 10
 #define MAP_HEIGHT 10
@@ -23,16 +31,30 @@
 char	g_layout[MAP_HEIGHT][MAP_WIDTH] =
 {
 {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1'},
-{'1', 'E', '0', '0', '0', '0', '0', '0', '0', '1'},
-{'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-{'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-{'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-{'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-{'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-{'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
-{'1', '0', '0', '0', '0', '0', '0', '0', '0', '1'},
+{'1', 'E', '1', '0', '0', '0', '0', '0', '0', '1'},
+{'1', '0', '0', '0', '0', '0', '0', '0', '1', '1'},
+{'1', '0', '0', '0', '0', '0', '0', '1', '0', '1'},
+{'1', '0', '0', '0', '0', '0', '1', '0', '0', '1'},
+{'1', '0', '0', '0', '0', '1', '0', '0', '0', '1'},
+{'1', '0', '0', '0', '1', '0', '0', '0', '0', '1'},
+{'1', '1', '0', '1', '0', '0', '0', '0', '0', '1'},
+{'1', '1', '1', '1', '0', '0', '0', '0', '0', '1'},
 {'1', '1', '1', '1', '1', '1', '1', '1', '1', '1'}
 };
+
+#include <stdio.h>
+
+void	print_map(char layout[10][10])
+{
+	for (int y = 0; y < MAP_HEIGHT; y++)
+	{
+		for (int x = 0; x < MAP_WIDTH; x++)
+		{
+			printf("%c ", layout[y][x]);
+		}
+		printf("\n");
+	}
+}
 
 #define MINIMAP_GRID_WIDTH 20
 #define MINIMAP_GRID_HEIGHT 20
@@ -116,6 +138,39 @@ void	draw_field_of_view(t_map *map, t_player *player)
 	/*draw_line_in_image(&map->img, player->map_pos, end, green);*/
 }
 
+void	draw_map(t_map *map, t_game *game, t_player *player)
+{ (void)game;
+	t_colour	black = {.value = 0x00000000};
+	const int	grid_width = TILE_WIDTH / 10;
+	const int	grid_height = TILE_HEIGHT / 10;
+	int	y;
+	int	x;
+
+	y = 0;
+	while (y < map->height)
+	{
+		x = 0;
+		while (x < map->width)
+		{
+			if (map->layout[y][x] == '0'
+				|| compare_vectors(&player->map_pos, &(t_vector_int){.x = x, .y = y}))
+			{
+				for (int yy = 0; yy < grid_height - 1; yy++)
+				{
+					for (int xx = 0; xx < grid_width - 1; xx++)
+					{
+						*get_pixel_addr(&map->img,
+							x * grid_width + xx,
+							y * grid_height + yy) = black.value;
+					}
+				}
+			}
+			x++;
+		}
+		y++;
+	}
+}
+
 void	init_map(t_map *map, t_game *game)
 {
 	extern char	g_layout[MAP_HEIGHT][MAP_WIDTH];
@@ -124,11 +179,10 @@ void	init_map(t_map *map, t_game *game)
 	memcpy(&map->layout, g_layout, sizeof(g_layout));
 	map->width = MAP_WIDTH;
 	map->height = MAP_HEIGHT;
-	create_image(game->mlx, &map->img,
-		map->width * MINIMAP_GRID_WIDTH,
-		map->height * MINIMAP_GRID_HEIGHT);	
+	create_image(game->mlx, &map->img, game->screen_width / 10, game->screen_height / 10);
 
-	clear_minimap(map);
-	set_floors(map, &game->player);
-	draw_field_of_view(map, &game->player);
+	/*clear_minimap(map);*/
+	/*draw_map(map, game, &game->player);*/
+	/*set_floors(map, &game->player);*/
+	/*draw_field_of_view(map, &game->player);*/
 }
