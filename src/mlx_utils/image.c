@@ -116,11 +116,9 @@ void	draw_box(t_image *img,
 	start.x = centre.x - half_dimension;
 	start.y = centre.y - half_dimension;
 	x = start.x;
-	printf("End at: %d\n", end.y);
 	while (start.y != end.y)
 	{
 		start.x = x;
-		printf("Drawing at: %d\n", start.y);
 		while (start.x != end.x)
 		{
 			draw_pixel(img, start.x, start.y, colour);

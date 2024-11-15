@@ -50,7 +50,7 @@ int	main(void)
 	init_player(&game.player);
 	init_map(&game.map, &game);
 	init_minimap(&game, &game.map, &game.minimap);
-	/*init_world_3d(&game);*/
+	init_world_3d(&game);
 	mlx_hook(game.window, KEYPRESS_EVENT, 1L << 0, process_key, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);

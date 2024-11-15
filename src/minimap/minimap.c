@@ -16,15 +16,17 @@
 #include "Map.h"
 #include "Image.h"
 #include "Vector.h"
+#include <stdlib.h>
 
-void	init_camera(t_camera *camera, t_game *game, t_player *player)
+// FIX: refactor this garbage
+//
+void	init_camera(t_camera *camera, t_minimap *minimap, t_game *game, t_player *player)
 { (void)game;
 	const t_vector_double	p = player->world_pos;
 
-	camera->centre = (t_vector_double){100, 100};
-	camera->half_dimension = 100.0;
-	camera->offset.x = camera->centre.x - player->world_pos.x;
-	camera->offset.y = camera->centre.y - player->world_pos.y;
+	camera->centred_at = p;
+	camera->half_dimension = (double)minimap->width / 2;
+	camera->centre = (t_vector_double){camera->half_dimension, camera->half_dimension};
 	camera->top_left.x = p.x - camera->half_dimension;
 	camera->top_left.y = p.y - camera->half_dimension;
 	camera->top_right.x = p.x + camera->half_dimension;
@@ -35,11 +37,34 @@ void	init_camera(t_camera *camera, t_game *game, t_player *player)
 	camera->bot_right.y = p.y + camera->half_dimension;
 }
 
-void	fill_minimap(t_image *img, t_camera camera, t_map *map, t_game *game)
+void	update_minimap(t_minimap *minimap, t_game *game)
 {
-	int	x = camera.top_left.x;
-	int	map_x;
-	int	map_y;
+	update_camera(&minimap->camera, minimap, &game->player);
+	fill_minimap(&minimap->img, minimap->camera, &game->map, game, &game->player);
+}
+
+void	update_camera(t_camera *camera, t_minimap *minimap, t_player *player)
+{
+	const t_vector_double	p = player->world_pos;
+
+	camera->centred_at = p;
+	camera->half_dimension = (double)minimap->width / 2;
+	camera->centre = (t_vector_double){camera->half_dimension, camera->half_dimension};
+	camera->top_left.x = p.x - camera->half_dimension;
+	camera->top_left.y = p.y - camera->half_dimension;
+	camera->top_right.x = p.x + camera->half_dimension;
+	camera->top_right.y = p.y - camera->half_dimension;
+	camera->bot_left.x = p.x - camera->half_dimension;
+	camera->bot_left.y = p.y + camera->half_dimension;
+	camera->bot_right.x = p.x + camera->half_dimension;
+	camera->bot_right.y = p.y + camera->half_dimension;
+}
+
+void	fill_minimap(t_image *img, t_camera camera, t_map *map, t_game *game, t_player *player)
+{
+	int				x = camera.top_left.x;
+	int				map_x;
+	int				map_y;
 	t_vector_double	pos;
 	t_vector_int	cam;
 
@@ -47,6 +72,7 @@ void	fill_minimap(t_image *img, t_camera camera, t_map *map, t_game *game)
 	pos.y = camera.top_left.y;
 	cam.x = 0;
 	cam.y = 0;
+	fill_image(img, game->colours.cyan);
 	while (pos.y < camera.bot_right.y)
 	{
 		pos.x = x;
@@ -59,12 +85,8 @@ void	fill_minimap(t_image *img, t_camera camera, t_map *map, t_game *game)
 				map_y = pos.y / game->tile_height;
 				if (map->layout[map_y][map_x] == '1')
 				{
-					draw_pixel(img, cam.x, cam.y, game->colours.purple);
+					draw_pixel(img, cam.x, cam.y, game->colours.grey);
 				}
-			}
-			else
-			{
-				draw_pixel(img, cam.x, cam.y, game->colours.black);
 			}
 			pos.x++;
 			cam.x++;
@@ -72,6 +94,21 @@ void	fill_minimap(t_image *img, t_camera camera, t_map *map, t_game *game)
 		pos.y++;
 		cam.y++;
 	}
+	draw_box(img, v2d_to_v2i(camera.centre), 5, game->colours.green);
+	draw_fov(img, &game->minimap, player, game);
+}
+
+void	draw_fov(t_image *img, t_minimap *minimap, t_player *player, t_game *game)
+{
+	t_vector_int	start;
+	t_vector_int	end;
+
+	start.x = minimap->camera.centre.x;
+	start.y = minimap->camera.centre.y;
+	end.x = start.x + (player->direction.x * 20); // FIX: hardcoded magnitude lol
+	end.y = start.y + (player->direction.y * 20);
+	draw_line_in_image(img, start, end, game->colours.red);
+
 }
 
 void	init_minimap(t_game *game, t_map *map, t_minimap *minimap)
@@ -80,9 +117,8 @@ void	init_minimap(t_game *game, t_map *map, t_minimap *minimap)
 	minimap->display = true;
 	minimap->width = game->screen_width * MINIMAP_SCALE;
 	minimap->height = game->screen_height * MINIMAP_SCALE;
-	init_camera(&minimap->camera, game, &game->player);
+	init_camera(&minimap->camera, &game->minimap, game, &game->player);
 	create_image(game->mlx, &minimap->img, minimap->width, minimap->height);
-	fill_image(&minimap->img, game->colours.cyan);
-	fill_minimap(&minimap->img, minimap->camera, map, game);
-	draw_box(&minimap->img, v2d_to_v2i(minimap->camera.centre), 5, game->colours.green);
+	fill_minimap(&minimap->img, minimap->camera, map, game, &game->player);
 }
+

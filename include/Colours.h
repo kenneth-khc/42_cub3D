@@ -39,7 +39,7 @@ typedef struct s_colours
 	t_colour	cyan;
 	t_colour	purple;
 	t_colour	grey;
-
+	t_colour	yellow;
 }	t_colours;
 
 t_colour	create_colour(uint8_t alpha, uint8_t red, uint8_t green,

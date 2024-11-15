@@ -39,19 +39,23 @@ bool	within_world_bounds(t_vector_double *world_pos, t_map *map, t_game *game)
 	bool			within_x_axis;
 	bool			within_y_axis;
 
+	if (world_pos->x < 0 || world_pos->y < 0)
+	{
+		return (false);
+	}
 	m.x = world_pos->x / game->tile_width;
 	m.y = world_pos->y / game->tile_height;
 	within_x_axis = m.x >= 0 && m.x < map->width;
 	within_y_axis = m.y >= 0 && m.y < map->height;
 	if (within_x_axis)
 	{
-		printf("X: 0 <= %f <= %f\n", world_pos->x, game->tile_width * map->width);
-		printf("Within x axis.\n");
+		/*printf("X: 0 <= %f <= %f\n", world_pos->x, game->tile_width * map->width);*/
+		/*printf("Within x axis.\n");*/
 	}
 	if (within_y_axis)
 	{
-		printf("Y: 0 <= %f <= %f\n", world_pos->y, game->tile_height * map->height);
-		printf("Within y axis.\n");
+		/*printf("Y: 0 <= %f <= %f\n", world_pos->y, game->tile_height * map->height);*/
+		/*printf("Within y axis.\n");*/
 	}
 	return (within_x_axis && within_y_axis);
 }
