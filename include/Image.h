@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:25:39 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/14 18:19:26 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/15 23:19:09 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,5 +43,6 @@ void	put_image(t_game *game, t_image *img, t_vector_int *point);
 void	fill_image(t_image *img, const t_colour color);
 void	draw_box(t_image *img,
 			  const t_vector_int centre, const int half_dimension, const t_colour colour);
+void	draw_border(t_image *img, const int thiccness, const t_colour colour);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:43:29 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/14 18:25:21 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/15 23:19:13 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,31 +99,5 @@ void	fill_image(t_image *img, const t_colour colour)
 			x++;
 		}
 		y++;
-	}
-}
-
-/* Draws a square with a length of 2*half_dimensions based on the centre point */
-void	draw_box(t_image *img,
-				const t_vector_int centre,
-				const int half_dimension,
-				const t_colour colour)
-{
-	const t_vector_int	end
-		= {.x = centre.x + half_dimension, .y = centre.y + half_dimension};
-	t_vector_int		start;
-	int					x;
-
-	start.x = centre.x - half_dimension;
-	start.y = centre.y - half_dimension;
-	x = start.x;
-	while (start.y != end.y)
-	{
-		start.x = x;
-		while (start.x != end.x)
-		{
-			draw_pixel(img, start.x, start.y, colour);
-			start.x++;
-		}
-		start.y++;
 	}
 }

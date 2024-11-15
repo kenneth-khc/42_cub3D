@@ -6,35 +6,26 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:43:39 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/14 18:36:06 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/15 23:24:52 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Minimap.h"
-#include <stdio.h>
 #include "Game.h"
 #include "Map.h"
 #include "Image.h"
 #include "Vector.h"
-#include <stdlib.h>
 
 // FIX: refactor this garbage
-//
-void	init_camera(t_camera *camera, t_minimap *minimap, t_game *game, t_player *player)
-{ (void)game;
-	const t_vector_double	p = player->world_pos;
 
-	camera->centred_at = p;
-	camera->half_dimension = (double)minimap->width / 2;
-	camera->centre = (t_vector_double){camera->half_dimension, camera->half_dimension};
-	camera->top_left.x = p.x - camera->half_dimension;
-	camera->top_left.y = p.y - camera->half_dimension;
-	camera->top_right.x = p.x + camera->half_dimension;
-	camera->top_right.y = p.y - camera->half_dimension;
-	camera->bot_left.x = p.x - camera->half_dimension;
-	camera->bot_left.y = p.y + camera->half_dimension;
-	camera->bot_right.x = p.x + camera->half_dimension;
-	camera->bot_right.y = p.y + camera->half_dimension;
+void	init_minimap(t_game *game, t_map *map, t_minimap *minimap)
+{ (void)map;
+
+	minimap->display = true;
+	minimap->width = game->screen_width * MINIMAP_SCALE;
+	minimap->height = game->screen_height * MINIMAP_SCALE;
+	create_image(game->mlx, &minimap->img, minimap->width, minimap->height);
+	update_minimap(minimap, game);
 }
 
 void	update_minimap(t_minimap *minimap, t_game *game)
@@ -52,10 +43,6 @@ void	update_camera(t_camera *camera, t_minimap *minimap, t_player *player)
 	camera->centre = (t_vector_double){camera->half_dimension, camera->half_dimension};
 	camera->top_left.x = p.x - camera->half_dimension;
 	camera->top_left.y = p.y - camera->half_dimension;
-	camera->top_right.x = p.x + camera->half_dimension;
-	camera->top_right.y = p.y - camera->half_dimension;
-	camera->bot_left.x = p.x - camera->half_dimension;
-	camera->bot_left.y = p.y + camera->half_dimension;
 	camera->bot_right.x = p.x + camera->half_dimension;
 	camera->bot_right.y = p.y + camera->half_dimension;
 }
@@ -94,10 +81,12 @@ void	fill_minimap(t_image *img, t_camera camera, t_map *map, t_game *game, t_pla
 		pos.y++;
 		cam.y++;
 	}
+	draw_border(img, 5, game->colours.black);
 	draw_box(img, v2d_to_v2i(camera.centre), 5, game->colours.green);
 	draw_fov(img, &game->minimap, player, game);
 }
 
+/* TODO: draw rays showing the fov instead of just one single line */
 void	draw_fov(t_image *img, t_minimap *minimap, t_player *player, t_game *game)
 {
 	t_vector_int	start;
@@ -108,17 +97,5 @@ void	draw_fov(t_image *img, t_minimap *minimap, t_player *player, t_game *game)
 	end.x = start.x + (player->direction.x * 20); // FIX: hardcoded magnitude lol
 	end.y = start.y + (player->direction.y * 20);
 	draw_line_in_image(img, start, end, game->colours.red);
-
-}
-
-void	init_minimap(t_game *game, t_map *map, t_minimap *minimap)
-{ (void)map;
-
-	minimap->display = true;
-	minimap->width = game->screen_width * MINIMAP_SCALE;
-	minimap->height = game->screen_height * MINIMAP_SCALE;
-	init_camera(&minimap->camera, &game->minimap, game, &game->player);
-	create_image(game->mlx, &minimap->img, minimap->width, minimap->height);
-	fill_minimap(&minimap->img, minimap->camera, map, game, &game->player);
 }
 

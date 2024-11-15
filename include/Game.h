@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:40:30 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/14 18:23:38 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/15 22:59:41 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,9 @@ typedef struct s_game
 	t_raycaster	raycaster;
 }	t_game;
 
+void	init_game(t_game *game);
 void	init_minimap(t_game *game, t_map *map, t_minimap *minimap);
+int		game_loop(t_game *game);
+int		process_mouse(int x, int y, void *param);
 
 #endif

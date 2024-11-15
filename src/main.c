@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/14 18:35:59 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/15 23:19:35 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,26 +19,7 @@
 #include "Raycaster.h"
 #include "Colours.h" // probably don't need all these colours, remove later
 
-int	game_loop(t_game *game)
-{
-	mlx_clear_window(game->mlx, game->window);
-	raycast(&game->raycaster, &game->player, game);
-	render(game, &game->raycaster);
-	return (0);
-}
-
-#include <fcntl.h>
-
-void	init_game(t_game *game)
-{
-	game->mlx = mlx_init();
-	game->screen_width = SCREEN_WIDTH;
-	game->screen_height = SCREEN_HEIGHT;
-	game->window = mlx_new_window(game->mlx, game->screen_width,
-			game->screen_height, "cute3D");
-	game->tile_width = 50.0f;
-	game->tile_height = 50.0f;
-}
+#include <fcntl.h> // del
 
 int	main(void)
 {
@@ -51,7 +32,28 @@ int	main(void)
 	init_map(&game.map, &game);
 	init_minimap(&game, &game.map, &game.minimap);
 	init_world_3d(&game);
-	mlx_hook(game.window, KEYPRESS_EVENT, 1L << 0, process_key, &game);
+	mlx_hook(game.window, KEYPRESS_EVENT, KEYPRESS_MASK, process_key, &game);
+	mlx_hook(game.window, MOUSEMOVE_EVENT, POINTER_MOTION_MASK, process_mouse, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);
 }
+
+void	init_game(t_game *game)
+{
+	game->mlx = mlx_init();
+	game->screen_width = SCREEN_WIDTH;
+	game->screen_height = SCREEN_HEIGHT;
+	game->window = mlx_new_window(game->mlx, game->screen_width,
+			game->screen_height, "cute3D");
+	game->tile_width = 50.0f;
+	game->tile_height = 50.0f;
+}
+
+int	game_loop(t_game *game)
+{
+	mlx_clear_window(game->mlx, game->window);
+	raycast(&game->raycaster, &game->player, game);
+	render(game, &game->raycaster);
+	return (0);
+}
+

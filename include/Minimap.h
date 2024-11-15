@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:34:27 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/14 18:14:54 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/15 23:11:56 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdbool.h>
 # include "Map.h"
 # include "Image.h"
-#include "Vector.h"
+# include "Vector.h"
 
 # ifndef MINIMAP_SCALE
 #  define MINIMAP_SCALE 0.3
@@ -26,14 +26,10 @@
 typedef struct s_camera
 {
 	t_vector_double	centre;
-	t_vector_double	centred_at;
+	t_vector_double	centred_at; // the player's position
 	double			half_dimension; // how much from the centre to view until
-
-	// FIX: not all corners are necessary
-	t_vector_double	top_left;
-	t_vector_double	top_right;
-	t_vector_double	bot_left;
-	t_vector_double	bot_right;
+	t_vector_double	top_left; // top left point of the box
+	t_vector_double	bot_right; // bottom right point of the box
 }	t_camera;
 
 typedef struct s_minimap
@@ -43,8 +39,6 @@ typedef struct s_minimap
 	int				width;
 	int				height;
 	t_camera		camera;
-
-
 }	t_minimap;
 
 void	update_minimap(t_minimap *minimap, t_game *game);
