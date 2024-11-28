@@ -31,6 +31,15 @@ t_vector_int	copy_vector_int(t_vector_int *src)
 	return (dst);
 }
 
+t_vector_int	v2d_to_v2i(t_vector_double d)
+{
+	t_vector_int	i;
+
+	i.x = d.x;
+	i.y = d.y;
+	return (i);
+}
+
 bool	compare_vectors(t_vector_int *v1, t_vector_int *v2)
 {
 	return (v1->x == v2->x && v1->y == v2->y);

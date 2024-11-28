@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 21:46:37 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/12 02:51:30 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/15 22:51:01 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "Vector.h"
 #include "Keys.h"
 #include "Map.h"
+#include "Minimap.h"
 
 /* Keys to be processed
  * For player movement, WASD is used
@@ -98,6 +99,7 @@ void	move_player(t_player *player, int keycode, t_game *game, t_map *map)
 			player->map_pos.x = player->world_pos.x / game->tile_width;
 			player->map_pos.y = player->world_pos.y / game->tile_height;
 			map->layout[player->map_pos.y][player->map_pos.x] = 'E';
+			update_minimap(&game->minimap, game);
 		}
 	}
 	else if (keycode == KEY_S) // move back
@@ -113,6 +115,7 @@ void	move_player(t_player *player, int keycode, t_game *game, t_map *map)
 			player->map_pos.x = player->world_pos.x / game->tile_width;
 			player->map_pos.y = player->world_pos.y / game->tile_height;
 			map->layout[player->map_pos.y][player->map_pos.x] = 'E';
+			update_minimap(&game->minimap, game);
 		}
 	}
 	else if (keycode == KEY_A)
@@ -128,6 +131,7 @@ void	move_player(t_player *player, int keycode, t_game *game, t_map *map)
 			player->map_pos.x = player->world_pos.x / game->tile_width;
 			player->map_pos.y = player->world_pos.y / game->tile_height;
 			map->layout[player->map_pos.y][player->map_pos.x] = 'E';
+			update_minimap(&game->minimap, game);
 		}
 	}
 	else if (keycode == KEY_D)
@@ -143,6 +147,7 @@ void	move_player(t_player *player, int keycode, t_game *game, t_map *map)
 			player->map_pos.x = player->world_pos.x / game->tile_width;
 			player->map_pos.y = player->world_pos.y / game->tile_height;
 			map->layout[player->map_pos.y][player->map_pos.x] = 'E';
+			update_minimap(&game->minimap, game);
 		}
 	}
 	printf("Player new pos: %f %f\n\n", player->world_pos.x, player->world_pos.y);
@@ -162,6 +167,7 @@ int	process_key(int keycode, t_game *game)
 	else if (is_rotate_camera_key(keycode))
 	{
 		rotate_camera(player, keycode);
+		update_minimap(&game->minimap, game);
 	}
 	else if (is_movement_key(keycode))
 	{

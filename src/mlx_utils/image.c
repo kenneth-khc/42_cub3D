@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:43:29 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/12 13:53:44 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/15 23:19:13 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <assert.h>
-
-/* Create a colour by passing in components of alpha, red, green and blue
- * The components are 8 bit each, packed together in a union to form a 32 bit
- * colour pixel */
-t_colour	create_colour(uint8_t alpha, uint8_t red, uint8_t green,
-					uint8_t blue)
-{
-	t_colour	colour;
-
-	colour.s_component.alpha = alpha;
-	colour.s_component.red = red;
-	colour.s_component.green = green;
-	colour.s_component.blue = blue;
-	return (colour);
-}
 
 /* Create an Image object wrapping an MLX image object, along with data
  * required to manipulate it 
@@ -95,5 +80,24 @@ bool	draw_pixel(t_image *img, int x, int y, t_colour colour)
 void	put_image(t_game *game, t_image *img, t_vector_int *screen)
 {
 	mlx_put_image_to_window(game->mlx, game->window, img->instance,
-						 screen->x, screen->y);
+		screen->x, screen->y);
+}
+
+/* Fill an Image with a certain colour, think memset but for Images */
+void	fill_image(t_image *img, const t_colour colour)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (y < img->height)
+	{
+		x = 0;
+		while (x < img->width)
+		{
+			draw_pixel(img, x, y, colour);
+			x++;
+		}
+		y++;
+	}
 }

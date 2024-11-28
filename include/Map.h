@@ -16,8 +16,8 @@
 # include "Image.h"
 # include "Player.h"
 
-# define TILE_WIDTH 64.0
-# define TILE_HEIGHT 64.0
+# define TILE_WIDTH 50
+# define TILE_HEIGHT 50
 
 typedef struct t_map
 {

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 23:03:30 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/01 17:06:36 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/17 00:19:58 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ double	radians_to_degrees(double radians)
 	return (radians * 180.0 / M_PI);
 }
 
-#define TILE_WIDTH 64;
-#define TILE_HEIGHT 64;
+#define TILE_WIDTH 50;
+#define TILE_HEIGHT 50;
 
 t_vector_int	world_to_map_pos(t_vector_double *world_pos)
 {

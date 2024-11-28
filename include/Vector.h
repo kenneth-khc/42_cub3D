@@ -29,6 +29,7 @@ typedef struct s_vector_int
 
 t_vector_double	copy_vector_double(t_vector_double *src);
 t_vector_int	copy_vector_int(t_vector_int *src);
+t_vector_int	v2d_to_v2i(t_vector_double d);
 bool			compare_vectors(t_vector_int *v1, t_vector_int *v2);
 
 #endif
