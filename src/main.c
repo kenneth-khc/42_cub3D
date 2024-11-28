@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/15 23:19:35 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/17 01:54:59 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	main(void)
 	init_game(&game);
 	init_player(&game.player);
 	init_map(&game.map, &game);
+	init_raycaster(&game.raycaster, &game.player, &game);
 	init_minimap(&game, &game.map, &game.minimap);
 	init_world_3d(&game);
 	mlx_hook(game.window, KEYPRESS_EVENT, KEYPRESS_MASK, process_key, &game);
@@ -45,8 +46,8 @@ void	init_game(t_game *game)
 	game->screen_height = SCREEN_HEIGHT;
 	game->window = mlx_new_window(game->mlx, game->screen_width,
 			game->screen_height, "cute3D");
-	game->tile_width = 50.0f;
-	game->tile_height = 50.0f;
+	game->tile_width = 50;
+	game->tile_height = 50;
 }
 
 int	game_loop(t_game *game)

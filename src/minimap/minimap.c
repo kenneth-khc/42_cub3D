@@ -6,10 +6,11 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:43:39 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/15 23:24:52 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/11/15 23:28:51 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <math.h>
 #include "Minimap.h"
 #include "Game.h"
 #include "Map.h"
@@ -60,6 +61,7 @@ void	fill_minimap(t_image *img, t_camera camera, t_map *map, t_game *game, t_pla
 	cam.x = 0;
 	cam.y = 0;
 	fill_image(img, game->colours.cyan);
+	draw_fov(img, &game->minimap, player, game); // HACK: we draw FOV first before layering the walls on top of it so the rays don't look like they're going through the walls
 	while (pos.y < camera.bot_right.y)
 	{
 		pos.x = x;
@@ -83,19 +85,28 @@ void	fill_minimap(t_image *img, t_camera camera, t_map *map, t_game *game, t_pla
 	}
 	draw_border(img, 5, game->colours.black);
 	draw_box(img, v2d_to_v2i(camera.centre), 5, game->colours.green);
-	draw_fov(img, &game->minimap, player, game);
 }
 
-/* TODO: draw rays showing the fov instead of just one single line */
+/* TODO: fix drawing rays to stop upon hitting a wall */
 void	draw_fov(t_image *img, t_minimap *minimap, t_player *player, t_game *game)
 {
 	t_vector_int	start;
 	t_vector_int	end;
+	const double	angle_increment 
+		= player->field_of_view / game->raycaster.number_of_rays;
+	const double	leftmost_ray_angle
+		= player->angle_in_radians + (player->field_of_view / 2);
 
 	start.x = minimap->camera.centre.x;
 	start.y = minimap->camera.centre.y;
-	end.x = start.x + (player->direction.x * 20); // FIX: hardcoded magnitude lol
-	end.y = start.y + (player->direction.y * 20);
-	draw_line_in_image(img, start, end, game->colours.red);
+	for (int i = 0; i < game->raycaster.number_of_rays; i++)
+	{
+		double	angle = leftmost_ray_angle - (i * angle_increment);
+		double	dirX = cos(angle);
+		double	dirY = -sin(angle);
+		end.x = start.x + (dirX * 100); // FIX: hardcoded magnitude lol
+		end.y = start.y + (dirY * 100);
+		draw_line_in_image(img, start, end, game->colours.red);
+	}
 }
 
