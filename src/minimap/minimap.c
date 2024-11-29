@@ -106,7 +106,7 @@ void	draw_fov(t_image *img, t_minimap *minimap, t_player *player, t_game *game)
 		double	dirY = -sin(angle);
 		end.x = start.x + (dirX * 100); // FIX: hardcoded magnitude lol
 		end.y = start.y + (dirY * 100);
-		draw_line_in_image(img, start, end, game->colours.red);
+		draw_line_in_image(img, start, end, game->colours.purple);
 	}
 }
 

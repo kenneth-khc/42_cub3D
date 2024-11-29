@@ -43,12 +43,11 @@ void	render(t_game *game, t_raycaster *raycaster)
 	}
 }
 
+/* Clear away walls on the screen by redrawing the ceiling and floor */
 void	clear_walls(t_game *game)
 {
-	int				y;
-	int				x;
-	const t_colour	purple = create_colour(0x00, 0xAE, 0x71, 0xF5);
-	const t_colour	grey = create_colour(0x00, 0xAC, 0xA6, 0xB3);
+	int	y;
+	int	x;
 
 	y = 0;
 	while (y < game->screen_height / 2)
@@ -56,7 +55,7 @@ void	clear_walls(t_game *game)
 		x = 0;
 		while (x < game->screen_width)
 		{
-			draw_pixel(&game->world_3d, x, y, purple);
+			draw_pixel(&game->world_3d, x, y, game->colours.purple);
 			x++;
 		}
 		y++;
@@ -66,7 +65,7 @@ void	clear_walls(t_game *game)
 		x = 0;
 		while (x < game->screen_width)
 		{
-			draw_pixel(&game->world_3d, x, y, grey);
+			draw_pixel(&game->world_3d, x, y, game->colours.grey);
 			x++;
 		}
 		y++;
@@ -75,37 +74,48 @@ void	clear_walls(t_game *game)
 
 void	draw_wall(t_image *world, int screen_x, double wall_height, t_game *game)
 {
-	int				y;
-	const int		half_screen_y = game->screen_height / 2;
-	const double	half_wall_height = wall_height / 2;
-	const t_colour	red = create_colour(0x00, 0x55, 0x55, 0x55);
+	/*int				y;*/
+	/*const int		half_screen_y = game->screen_height / 2;*/
+	/*const double	half_wall_height = wall_height / 2;*/
+	/**/
+	/*y = half_screen_y;*/
+	/*t_vector_int	center_point = {.x = screen_x, .y = half_screen_y};*/
+	/*t_vector_int	upper_end = {.x = screen_x, .y = y - half_wall_height};*/
+	/*t_vector_int	lower_end = {.x = screen_x, .y = y + half_wall_height};*/
+	/*draw_vertical(world, center_point, upper_end, game->colours.white);*/
+	/*draw_vertical(world, center_point, lower_end, game->colours.white);*/
 
-	y = half_screen_y;
-	t_vector_int	center_point = {.x = screen_x, .y = half_screen_y};
-	t_vector_int	upper_end = {.x = screen_x, .y = y - half_wall_height};
-	t_vector_int	lower_end = {.x = screen_x, .y = y + half_wall_height};
-	draw_vertical(world, center_point, upper_end, red);
-	draw_vertical(world, center_point, lower_end, red);
+	t_vector_int	draw_start;
+	draw_start.y = (int)-wall_height / 2 + game->screen_height / 2;
+	draw_start.x = screen_x;
+	if (draw_start.y < 0)
+	{
+		draw_start.y = 0;
+	}
+	t_vector_int	draw_end;
+	draw_end.y = (int)wall_height / 2 + game->screen_height / 2;
+	draw_end.x = screen_x;
+	if (draw_end.y > 0)
+	{
+		draw_end.y = game->screen_height - 1;
+	}
+	draw_vertical(world, draw_start, draw_end, game->colours.white);
 }
 
 void	init_world_3d(t_game *game)
 {
 	int			y;
 	int			x;
-	t_colour	purple;
-	t_colour	grey;
 
 	// TODO: fix image initializations
 	create_image(game->mlx, &game->world_3d, game->screen_width, game->screen_height);
-	purple = create_colour(0x00, 0xAE, 0x71, 0xF5);
-	grey = create_colour(0x00, 0xAC, 0xA6, 0xB3);
 	y = 0;
 	while (y < game->screen_height / 2)
 	{
 		x = 0;
 		while (x < game->screen_width)
 		{
-			draw_pixel(&game->world_3d, x, y, purple);
+			draw_pixel(&game->world_3d, x, y, game->colours.purple);
 			x++;
 		}
 		y++;
@@ -115,7 +125,7 @@ void	init_world_3d(t_game *game)
 		x = 0;
 		while (x < game->screen_width)
 		{
-			draw_pixel(&game->world_3d, x, y, grey);
+			draw_pixel(&game->world_3d, x, y, game->colours.grey);
 			x++;
 		}
 		y++;
