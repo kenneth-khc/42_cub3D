@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:43:08 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/11 20:55:59 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/02 10:00:25 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,13 @@
 # define SCREEN_HEIGHT 1000
 #endif
 
+typedef enum e_hit_side
+{
+	NO_HIT = 0,
+	HIT_HORIZONTAL,
+	HIT_VERTICAL
+}	t_hit_side;
+
 /* A single ray being casted */
 typedef struct s_ray
 {
@@ -34,30 +41,17 @@ typedef struct s_ray
 	t_vector_double	world_pos;
 	double			angle_in_radians;
 	t_vector_double	dir; // normalized direction by cos/sine'ing angles
-	// the point where the ray intersects an X boundary for the first time
-	t_vector_double	horizontal_intersect;
-	// the point where the ray intersects an Y boundary for the first time
-	t_vector_double	vertical_intersect;
 	double			x_step; // how much worldX to step by when it goes 1 mapY
 	double			y_step; // how much worldY to step by when it goes 1 mapX
-	bool			hit_horizontal;
-	bool			hit_vertical;
 	bool			hit;
-	double			distance_travelled; // total distance travelled until a wall is hit
-	
-	double			x_unit; // how many world units it travels per grid X
-	double			y_unit; // how many world uniits it travels per grid Y
-	double			dx;
-	double			dy;
-}	t_ray;
+	uint8_t			side;
 
-// temp for debugging whether dda is finding vertical or horizontal intercept
-typedef enum e_dda_axis
-{
-	FIND_HORIZONTAL,
-	FIND_VERTICAL
-}	t_dda_axis;
-t_vector_double	dda(t_ray *ray, t_dda_axis find, t_vector_double ray_start_pos, t_map *map);
+	double			dx; // distance it travels when going from 1 X to the next
+	double			dy; // distance it travels when going from 1 Y to the next
+	double			x_axis_distance; // distance to the first initial X
+	double			y_axis_distance; // distance to the first initial Y
+	double			distance_travelled; // total distance travelled until a wall is hit
+}	t_ray;
 
 typedef struct s_raycaster
 {

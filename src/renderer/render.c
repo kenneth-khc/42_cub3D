@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:31:10 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/14 18:11:57 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/02 10:27:20 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,43 @@
 #include "Vector.h"
 #include <assert.h>
 
+void	init_world_3d(t_game *game)
+{
+	int	y;
+	int	x;
+
+	// TODO: fix image initializations
+	create_image(game->mlx, &game->world_3d, game->screen_width, game->screen_height);
+	y = 0;
+	while (y < game->screen_height / 2)
+	{
+		x = 0;
+		while (x < game->screen_width)
+		{
+			draw_pixel(&game->world_3d, x, y, game->colours.purple);
+			x++;
+		}
+		y++;
+	}
+	while (y < game->screen_height)
+	{
+		x = 0;
+		while (x < game->screen_width)
+		{
+			draw_pixel(&game->world_3d, x, y, game->colours.grey);
+			x++;
+		}
+		y++;
+	}
+}
+
 void	render(t_game *game, t_raycaster *raycaster)
 {
-	t_ray	*ray;
-	double	line_height;
+	t_ray		*ray;
+	double		line_height;
+	t_colour	shaded;
 
+	shaded.value = game->colours.white.value >> 1 & 0x7F7F7F7F;
 	// TODO: debugging, if world3d doesn't exist we don't render it
 	if (game->world_3d.instance)
 	{
@@ -29,8 +61,16 @@ void	render(t_game *game, t_raycaster *raycaster)
 		for (int x = 0; x < game->screen_width; x++)
 		{
 			ray = &raycaster->rays[x];
-			line_height = (int)game->screen_height * 2 / (ray->distance_travelled * 50);
-			draw_wall(&game->world_3d, x, line_height, game);
+			// TODO: find the right proportions
+			line_height = (int)game->screen_height * 2 / (ray->distance_travelled * 10);
+			if (ray->side == HIT_VERTICAL)
+			{
+				draw_wall(&game->world_3d, x, line_height, game, shaded);
+			}
+			else
+			{
+				draw_wall(&game->world_3d, x, line_height, game, game->colours.white);
+			}
 		}
 		put_image(game, &game->world_3d, &(t_vector_int){0, 0});
 	}
@@ -62,26 +102,15 @@ void	clear_walls(t_game *game)
 		x = 0;
 		while (x < game->screen_width)
 		{
-			draw_pixel(&game->world_3d, x, y, game->colours.grey);
+			draw_pixel(&game->world_3d, x, y, game->colours.cyan);
 			x++;
 		}
 		y++;
 	}
 }
 
-void	draw_wall(t_image *world, int screen_x, double wall_height, t_game *game)
+void	draw_wall(t_image *world, int screen_x, double wall_height, t_game *game, t_colour colour)
 {
-	/*int				y;*/
-	/*const int		half_screen_y = game->screen_height / 2;*/
-	/*const double	half_wall_height = wall_height / 2;*/
-	/**/
-	/*y = half_screen_y;*/
-	/*t_vector_int	center_point = {.x = screen_x, .y = half_screen_y};*/
-	/*t_vector_int	upper_end = {.x = screen_x, .y = y - half_wall_height};*/
-	/*t_vector_int	lower_end = {.x = screen_x, .y = y + half_wall_height};*/
-	/*draw_vertical(world, center_point, upper_end, game->colours.white);*/
-	/*draw_vertical(world, center_point, lower_end, game->colours.white);*/
-
 	t_vector_int	draw_start;
 	draw_start.y = (int)-wall_height / 2 + game->screen_height / 2;
 	draw_start.x = screen_x;
@@ -96,36 +125,6 @@ void	draw_wall(t_image *world, int screen_x, double wall_height, t_game *game)
 	{
 		draw_end.y = game->screen_height - 1;
 	}
-	 draw_vertical(world, draw_start, draw_end, game->colours.white);
-}
-
-void	init_world_3d(t_game *game)
-{
-	int			y;
-	int			x;
-
-	// TODO: fix image initializations
-	create_image(game->mlx, &game->world_3d, game->screen_width, game->screen_height);
-	y = 0;
-	while (y < game->screen_height / 2)
-	{
-		x = 0;
-		while (x < game->screen_width)
-		{
-			draw_pixel(&game->world_3d, x, y, game->colours.purple);
-			x++;
-		}
-		y++;
-	}
-	while (y < game->screen_height)
-	{
-		x = 0;
-		while (x < game->screen_width)
-		{
-			draw_pixel(&game->world_3d, x, y, game->colours.grey);
-			x++;
-		}
-		y++;
-	}
+	draw_vertical(world, draw_start, draw_end, colour);
 }
 

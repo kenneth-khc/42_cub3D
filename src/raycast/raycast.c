@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:38:09 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/12 01:58:31 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/02 10:38:00 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 #include <string.h>
 #include "Game.h"
 #include "Raycaster.h"
-#include "Utils.h"
 #include "Vector.h"
-#include <stdio.h>
 #include <assert.h>
-#include <stdlib.h>
 
 extern char	g_layout[10][10];
+
+static void	init_dda(t_ray *ray);
+static void	get_distance(t_ray *ray, t_player *player);
 
 void	raycast(t_raycaster *raycaster, t_player *player, t_game *game)
 {
@@ -32,7 +32,6 @@ void	raycast(t_raycaster *raycaster, t_player *player, t_game *game)
 	{
 		ray = &raycaster->rays[x];
 		cast(ray, player, &game->map, game);
-		/*get_shortest_distance(ray, player, raycaster);*/
 	}
 }
 
@@ -50,16 +49,14 @@ void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 	raycaster->angle_increment = player->field_of_view / raycaster->number_of_rays;
 	// TODO: are these angles correct?
 	raycaster->leftmost_ray_angle = player->angle_in_radians + (player->field_of_view / 2);
-	/*raycaster->rightmost_ray_angle = player->angle_in_radians - (player->field_of_view / 2);*/
-
-	/*raycaster->projection_plane.x = 0;*/
-	/*raycaster->projection_plane.y = 1; // the projection plane stretches out 1 y left and 1 y right of the player*/
+	raycaster->projection_plane.x = 0;
+	raycaster->projection_plane.y = 1; // the projection plane stretches out 1 y left and 1 y right of the player
 	i = 0;
 	// TODO: is this even necessary
 	while (i < raycaster->number_of_rays)
 	{
 		// coordinate within the "projection plane", 0 being the left to 1 being the right
-		/*double	camera_x = 2 * i / (double)raycaster->number_of_rays - 1;*/
+		double	camera_x = 2 * i / (double)raycaster->number_of_rays - 1;
 		ray = &raycaster->rays[i];
 		memset(ray, 0, sizeof(t_ray));
 		ray->id = i;
@@ -70,14 +67,10 @@ void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 		ray->frac_map_pos.y = player->world_pos.y / TILE_HEIGHT;
 		ray->angle_in_radians
 			= raycaster->leftmost_ray_angle - (ray->id * raycaster->angle_increment);
-		/*ray->dir.x = player->direction.x + raycaster->projection_plane.x * camera_x;*/
-		/*ray->dir.y = player->direction.y + raycaster->projection_plane.y * camera_x;*/
-		/*double	dir_x = cos(player->angle_in_radians); (void)dir_x;*/
-		/*double	dir_y = -sin(player->angle_in_radians); (void)dir_y;*/
+		ray->dir.x = player->direction.x + raycaster->projection_plane.x * camera_x;
+		ray->dir.y = player->direction.y + raycaster->projection_plane.y * camera_x;
 		ray->dir.x = cos(ray->angle_in_radians);
 		ray->dir.y = -sin(ray->angle_in_radians);
-		ray->x_unit = game->tile_width;
-		ray->y_unit = game->tile_height;
 		i++;
 	}
 }
@@ -110,64 +103,76 @@ void	update_raycaster(t_raycaster *raycaster, t_player *player)
 
 /* Send forth a ray until it hits a wall. Behold, my wizard casting powers */
 void	cast(t_ray *ray, t_player *player, t_map *map, t_game *game)
-{(void)ray, (void)player, (void)game, (void)map;
-
-	// INFO: The following are equivalent. Why? I dunno bruh
-	/*ray->dx = sqrt(1 + (ray->dir.y * ray->dir.y) / (ray->dir.x * ray->dir.x));*/
-	/*ray->dy = sqrt(1 + (ray->dir.x * ray->dir.x) / (ray->dir.y * ray->dir.y));*/
-	ray->dx = fabs(1 / ray->dir.x);
-	ray->dy = fabs(1 / ray->dir.y);
-
-	double	sideDistX, sideDistY;
-	if (ray->dir.x < 0)
-	{
-		ray->x_step = -1;
-		sideDistX = (ray->frac_map_pos.x - ray->map_pos.x) * ray->dx;
-	}
-	else
-	{
-		ray->x_step = +1;
-		sideDistX = (ray->map_pos.x + 1 - ray->frac_map_pos.x) * ray->dx;
-	}
-	if (ray->dir.y < 0)
-	{
-		ray->y_step = -1;
-		sideDistY = (ray->frac_map_pos.y - ray->map_pos.y) * ray->dy;
-	}
-	else
-	{
-		ray->y_step = +1;
-		sideDistY = (ray->map_pos.y + 1 - ray->frac_map_pos.y) * ray->dy;
-	}
-
-	ray->hit = false;
+{ (void)game; (void)player;
+	init_dda(ray);
 	while (!ray->hit)
 	{
-		ray->hit_vertical = false;
-		ray->hit_horizontal = false;
-		if (sideDistX < sideDistY)
+		ray->side = NO_HIT;
+		if (ray->x_axis_distance < ray->y_axis_distance)
 		{
-			sideDistX += ray->dx;
 			ray->map_pos.x += ray->x_step;
-			ray->hit_vertical = true;
+			ray->side = HIT_VERTICAL;
+			ray->x_axis_distance += ray->dx;
 		}
 		else
 		{
-			sideDistY += ray->dy;
 			ray->map_pos.y += ray->y_step;
-			ray->hit_horizontal = true;
+			ray->side = HIT_HORIZONTAL;
+			ray->y_axis_distance += ray->dy;
 		}
 		if (is_wall(map, ray->map_pos.x, ray->map_pos.y))
 		{
 			ray->hit = true;
 		}
 	}
-	if (ray->hit_vertical)
+	get_distance(ray, player);
+}
+
+static void	init_dda(t_ray *ray)
+{
+	ray->hit = false;
+	// INFO: The following are equivalent.
+	// Do a bunch of derivations to find out why they're equivalent.
+	/*ray->dx = sqrt(1 + (ray->dir.y * ray->dir.y) / (ray->dir.x * ray->dir.x));*/
+	/*ray->dy = sqrt(1 + (ray->dir.x * ray->dir.x) / (ray->dir.y * ray->dir.y));*/
+	ray->dx = fabs(1 / ray->dir.x);
+	ray->dy = fabs(1 / ray->dir.y);
+
+	if (ray->dir.x < 0)
 	{
-		ray->distance_travelled = sideDistX - ray->dx;
+		ray->x_step = -1;
+		ray->x_axis_distance = (ray->frac_map_pos.x - ray->map_pos.x) * ray->dx;
 	}
 	else
 	{
-		ray->distance_travelled = sideDistY - ray->dy;
+		ray->x_step = +1;
+		ray->x_axis_distance = (ray->map_pos.x + 1 - ray->frac_map_pos.x) * ray->dx;
 	}
+	if (ray->dir.y < 0)
+	{
+		ray->y_step = -1;
+		ray->y_axis_distance = (ray->frac_map_pos.y - ray->map_pos.y) * ray->dy;
+	}
+	else
+	{
+		ray->y_step = +1;
+		ray->y_axis_distance = (ray->map_pos.y + 1 - ray->frac_map_pos.y) * ray->dy;
+	}
+}
+
+static void	get_distance(t_ray *ray, t_player *player)
+{
+	if (ray->side == HIT_VERTICAL)
+	{
+		ray->distance_travelled = ray->x_axis_distance - ray->dx;
+	}
+	else
+	{
+		ray->distance_travelled = ray->y_axis_distance - ray->dy;
+	}
+	// HACK: fisheye correction. implement a proper projection plane so this
+	// isn't necessary
+	ray->distance_travelled
+		= ray->distance_travelled
+			* cos(player->angle_in_radians - ray->angle_in_radians);
 }
