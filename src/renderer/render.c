@@ -10,14 +10,11 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
 #include <mlx.h>
-#include <stdio.h>
 #include "Game.h"
 #include "Image.h"
 #include "Renderer.h"
 #include "Vector.h"
-#include "Map.h"
 #include <assert.h>
 
 void	render(t_game *game, t_raycaster *raycaster)
@@ -32,7 +29,7 @@ void	render(t_game *game, t_raycaster *raycaster)
 		for (int x = 0; x < game->screen_width; x++)
 		{
 			ray = &raycaster->rays[x];
-			line_height = game->screen_height / ray->distance_travelled;
+			line_height = (int)game->screen_height * 2 / (ray->distance_travelled * 50);
 			draw_wall(&game->world_3d, x, line_height, game);
 		}
 		put_image(game, &game->world_3d, &(t_vector_int){0, 0});
@@ -95,11 +92,11 @@ void	draw_wall(t_image *world, int screen_x, double wall_height, t_game *game)
 	t_vector_int	draw_end;
 	draw_end.y = (int)wall_height / 2 + game->screen_height / 2;
 	draw_end.x = screen_x;
-	if (draw_end.y > 0)
+	if (draw_end.y > game->screen_height)
 	{
 		draw_end.y = game->screen_height - 1;
 	}
-	draw_vertical(world, draw_start, draw_end, game->colours.white);
+	 draw_vertical(world, draw_start, draw_end, game->colours.white);
 }
 
 void	init_world_3d(t_game *game)

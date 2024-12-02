@@ -35,7 +35,7 @@ void	init_player(t_player *player)
 		player->angle_in_radians = degrees_to_radians(270);
 	}
 	// FIX: testing hardcoded angles
-	player->angle_in_radians = degrees_to_radians(270);
+	player->angle_in_radians = degrees_to_radians(90);
 	player->direction.x = cos(player->angle_in_radians);
 	player->direction.y = -sin(player->angle_in_radians);
 	// FIX: hardcoded

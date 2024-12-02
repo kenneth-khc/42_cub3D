@@ -43,8 +43,6 @@ typedef struct s_ray
 	bool			hit_horizontal;
 	bool			hit_vertical;
 	bool			hit;
-	double			distance_to_h_wall;
-	double			distance_to_v_wall;
 	double			distance_travelled; // total distance travelled until a wall is hit
 	
 	double			x_unit; // how many world units it travels per grid X
@@ -69,6 +67,8 @@ typedef struct s_raycaster
 	double		angle_increment;
 	double		leftmost_ray_angle;
 	double		rightmost_ray_angle;
+
+	t_vector_double	projection_plane;
 }	t_raycaster;
 
 typedef struct s_game	t_game;
@@ -85,6 +85,5 @@ void			get_shortest_distance(t_ray *ray, t_player *player, t_raycaster*);
 
 double			degrees_to_radians(double degrees);
 double			radians_to_degrees(double radians);
-t_vector_int	world_to_map_pos(t_vector_double *world_pos);
 
 #endif

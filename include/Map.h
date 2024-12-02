@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:14:59 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/01 15:33:58 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/02 07:09:25 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,6 @@ void	set_floors(t_map *map, t_player *player);
 void	print_map(char layout[10][10]);
 bool	collide(t_map *map, t_vector_double *world_pos, t_game *game);
 bool	within_world_bounds(t_vector_double *pos, t_map *map, t_game *game);
+bool	is_wall(t_map *map, int	x, int y);
 
 #endif

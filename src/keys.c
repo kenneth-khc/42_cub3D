@@ -54,8 +54,8 @@ bool	is_rotate_camera_key(int keycode)
  * */
 void	rotate_camera(t_player *player, int keycode)
 {
-	printf("Player ori direction: %f\n", radians_to_degrees(player->angle_in_radians));
-	printf("Dir vector: %f %f\n", player->direction.x, player->direction.y);
+	/*printf("Player ori direction: %f\n", radians_to_degrees(player->angle_in_radians));*/
+	/*printf("Dir vector: %f %f\n", player->direction.x, player->direction.y);*/
 	if (keycode == KEY_LEFT) // turn left
 	{
 		player->angle_in_radians += 0.1;
@@ -76,8 +76,8 @@ void	rotate_camera(t_player *player, int keycode)
 		player->direction.x = cos(player->angle_in_radians);
 		player->direction.y = -sin(player->angle_in_radians);
 	}
-	printf("Player new direction: %f\n", radians_to_degrees(player->angle_in_radians));
-	printf("Dir vector: %f %f\n\n", player->direction.x, player->direction.y);
+	/*printf("Player new direction: %f\n", radians_to_degrees(player->angle_in_radians));*/
+	/*printf("Dir vector: %f %f\n\n", player->direction.x, player->direction.y);*/
 }
 
 void	move_player(t_player *player, int keycode, t_game *game, t_map *map)
@@ -85,7 +85,8 @@ void	move_player(t_player *player, int keycode, t_game *game, t_map *map)
 	t_vector_double	test;
 	// TODO: move properly, ideally implement diagonals too
 	// TODO: refactor this garbage
-	printf("Player ori pos: %f %f\n", player->world_pos.x, player->world_pos.y);
+	
+	/*printf("Player ori pos: %f %f\n", player->world_pos.x, player->world_pos.y);*/
 	if (keycode == KEY_W) // move up
 	{
 		test.x = player->world_pos.x + player->direction.x * player->speed;
@@ -150,8 +151,8 @@ void	move_player(t_player *player, int keycode, t_game *game, t_map *map)
 			update_minimap(&game->minimap, game);
 		}
 	}
-	printf("Player new pos: %f %f\n\n", player->world_pos.x, player->world_pos.y);
-	print_map(map->layout);
+	/*printf("Player new pos: %f %f\n\n", player->world_pos.x, player->world_pos.y);*/
+	/*print_map(map->layout);*/
 }
 
 // TODO: use parsed map instead of global map
