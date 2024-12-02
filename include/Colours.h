@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 18:15:54 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/14 18:25:09 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/02 10:03:04 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ typedef struct s_colours
 	t_colour	purple;
 	t_colour	grey;
 	t_colour	yellow;
+	t_colour	violet;
 }	t_colours;
 
 t_colour	create_colour(uint8_t alpha, uint8_t red, uint8_t green,
