@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:14:59 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/02 09:22:17 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/02 11:05:59 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ typedef struct t_map
 struct	s_game;
 
 void	init_map(t_map *map, struct s_game *game);
-void	clear_minimap(t_map *map);
 void	set_floors(t_map *map, t_player *player);
 void	print_map(char layout[10][10]);
 bool	collide(t_map *map, t_vector_double *world_pos, t_game *game);
