@@ -6,13 +6,12 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2024/11/14 18:06:12 by kecheong         ###   ########.fr        #
+#    Updated: 2024/12/04 23:28:31 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := cub3D
 UNAME := $(shell uname)
-$(info $$(UNAME) = $(UNAME))
 
 CC := cc
 CFLAGS := -Wall -Werror -Wextra
@@ -51,13 +50,16 @@ obj_dir := obj
 objs := $(srcs:$(src_dir)/%.c=$(obj_dir)/%.o)
 
 .PHONY: all
-all: $(MLX) $(NAME)
+all: $(MLX) $(LIBFT) $(NAME)
+
+$(LIBFT):
+	make -C $(LIBFT_DIR)
 
 $(MLX):
 	make -C $(MLX_dir)
 
-$(NAME): $(objs)
-	$(CC) $(CFLAGS) $(objs) $(includes) $(LDFLAGS) $(LDLIBS) $(framework)  -o $(NAME)
+$(NAME): $(LIBFT) $(objs)
+	$(CC) $(CFLAGS) $(objs) $(includes) $(LDFLAGS) $(LDLIBS) $(framework) -o $(NAME)
 
 $(obj_dir):
 	mkdir -p $(obj_dir)
@@ -73,6 +75,14 @@ clean:
 .PHONY: fclean
 fclean: clean
 	$(RM) $(NAME)
+
+.PHONY: libclean
+libclean:
+	make clean -C $(LIBFT_DIR)
+
+.PHONY: libfclean
+libfclean:
+	make fclean -C $(LIBFT_DIR)
 
 .PHONY: re
 re: fclean all
