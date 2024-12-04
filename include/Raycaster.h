@@ -67,17 +67,12 @@ typedef struct s_raycaster
 
 typedef struct s_game	t_game;
 
-void			init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game);
-void			update_raycaster(t_raycaster *raycaster, t_player *player);
-void			raycast(t_raycaster *raycaster, t_player *player, t_game *game);
-void			cast(t_ray *ray, t_player *player, t_map *map, t_game *game);
-t_vector_double	find_first_h_intersect(t_game *game, t_ray *ray);
-t_vector_double	find_first_v_intersect(t_game *game, t_ray *ray);
-void			check_horizontal(t_ray *ray, t_map *map, t_vector_double step, t_player *player, t_game *game);
-void			check_vertical(t_ray *ray, t_map *map, t_vector_double step, t_player *player, t_game *game);
-void			get_shortest_distance(t_ray *ray, t_player *player, t_raycaster*);
+void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game);
+void	update_raycaster(t_raycaster *raycaster, t_player *player, t_game *game);
+void	raycast(t_raycaster *raycaster, t_player *player, t_game *game);
+void	cast(t_ray *ray, t_player *player, t_map *map, t_game *game);
 
-double			degrees_to_radians(double degrees);
-double			radians_to_degrees(double radians);
+double	degrees_to_radians(double degrees);
+double	radians_to_degrees(double radians);
 
 #endif
