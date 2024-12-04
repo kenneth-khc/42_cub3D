@@ -34,6 +34,10 @@ typedef struct s_player
 	t_vector_double	world_pos; // position in the game world, not the screen
 }	t_player;
 
+typedef struct s_game	t_game;
+
 void	init_player(t_player *player);
+void	update_player_position(t_player *player, t_vector_double new_pos,
+			t_game *game);
 
 #endif

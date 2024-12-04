@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:38:09 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/02 11:00:05 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/02 12:28:33 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void	raycast(t_raycaster *raycaster, t_player *player, t_game *game)
 {
 	t_ray	*ray;
 
-	update_raycaster(raycaster, &game->player);
+	update_raycaster(raycaster, &game->player, game);
 	for (int x = 0; x < game->screen_width; x++)
 	{
 		ray = &raycaster->rays[x];
@@ -61,10 +61,10 @@ void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 		memset(ray, 0, sizeof(t_ray));
 		ray->id = i;
 		ray->world_pos = player->world_pos;
-		ray->map_pos.x = player->world_pos.x / TILE_WIDTH;
-		ray->map_pos.y = player->world_pos.y / TILE_HEIGHT;
-		ray->frac_map_pos.x = player->world_pos.x / TILE_WIDTH;
-		ray->frac_map_pos.y = player->world_pos.y / TILE_HEIGHT;
+		ray->map_pos.x = player->world_pos.x / game->tile_width;
+		ray->map_pos.y = player->world_pos.y / game->tile_height;
+		ray->frac_map_pos.x = player->world_pos.x / game->tile_width;
+		ray->frac_map_pos.y = player->world_pos.y / game->tile_height;
 		ray->angle_in_radians
 			= raycaster->leftmost_ray_angle - (ray->id * raycaster->angle_increment);
 		ray->dir.x = player->direction.x + raycaster->projection_plane.x * camera_x;
@@ -77,7 +77,7 @@ void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 
 /* Update the raycaster's angles and positions based on the new player
  * angles and positions */
-void	update_raycaster(t_raycaster *raycaster, t_player *player)
+void	update_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 {
 	int		i;
 	t_ray	*ray;
@@ -89,10 +89,10 @@ void	update_raycaster(t_raycaster *raycaster, t_player *player)
 	{
 		ray = &raycaster->rays[i];
 		ray->world_pos = player->world_pos;
-		ray->map_pos.x = player->world_pos.x / TILE_WIDTH;
-		ray->map_pos.y = player->world_pos.y / TILE_HEIGHT;
-		ray->frac_map_pos.x = player->world_pos.x / TILE_WIDTH;
-		ray->frac_map_pos.y = player->world_pos.y / TILE_HEIGHT;
+		ray->map_pos.x = player->world_pos.x / game->tile_width;
+		ray->map_pos.y = player->world_pos.y / game->tile_height;
+		ray->frac_map_pos.x = player->world_pos.x / game->tile_width;
+		ray->frac_map_pos.y = player->world_pos.y / game->tile_height;
 		ray->angle_in_radians =
 			raycaster->leftmost_ray_angle - (ray->id * raycaster->angle_increment);
 		ray->dir.x = cos(ray->angle_in_radians);
@@ -101,7 +101,7 @@ void	update_raycaster(t_raycaster *raycaster, t_player *player)
 	}
 }
 
-/* Send forth a ray until it hits a wall. Behold, my wizard casting powers */
+/* Send forth a ray until it hits a wall. Behold, wizardry. */
 void	cast(t_ray *ray, t_player *player, t_map *map, t_game *game)
 { (void)game; (void)player;
 	init_dda(ray);
@@ -128,13 +128,21 @@ void	cast(t_ray *ray, t_player *player, t_map *map, t_game *game)
 	get_distance(ray, player);
 }
 
+/* Initialize parameters for DDA (digital differential analyzer)
+ * Depending on the direction of the ray, we step through x and y positive or
+ * negatively
+ * dx dy are the distances travelled when moving from one unit to the next
+ * the distance to the first intersection is calculated by taking the difference
+ * between the truncated map position and the fractional map position, giving
+ * us a portion within the cell, then multiplied by the dx or dy to scale it
+ * down */
 static void	init_dda(t_ray *ray)
 {
 	ray->hit = false;
 	// INFO: The following are equivalent.
 	// Do a bunch of derivations to find out why they're equivalent.
-	/*ray->dx = sqrt(1 + (ray->dir.y * ray->dir.y) / (ray->dir.x * ray->dir.x));*/
-	/*ray->dy = sqrt(1 + (ray->dir.x * ray->dir.x) / (ray->dir.y * ray->dir.y));*/
+	/* ray->dx = sqrt(1 + (ray->dir.y * ray->dir.y) / (ray->dir.x * ray->dir.x));*/
+	/* ray->dy = sqrt(1 + (ray->dir.x * ray->dir.x) / (ray->dir.y * ray->dir.y));*/
 	ray->dx = fabs(1 / ray->dir.x);
 	ray->dy = fabs(1 / ray->dir.y);
 

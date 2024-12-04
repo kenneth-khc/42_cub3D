@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:40:30 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/15 22:59:41 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/02 17:44:22 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include "Map.h"
 # include "Minimap.h"
 # include "Raycaster.h"
+# include "Keys.h"
 
 # include <stdio.h>
 
@@ -46,6 +47,8 @@ typedef struct s_game
 	t_image		world_3d; // image of the game to be displayed
 	t_player	player;
 	t_raycaster	raycaster;
+
+	t_keys		keys;
 }	t_game;
 
 void	init_game(t_game *game);

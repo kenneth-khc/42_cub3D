@@ -13,7 +13,15 @@
 #include <math.h>
 #include "Player.h"
 #include "Utils.h"
+#include "Game.h"
 #include "Map.h"
+
+#ifndef TILE_DIMENSIONS
+# define TILE_DIMENSIONS
+# define TILE_WIDTH 50
+# define TILE_HEIGHT 50
+#endif
+
 
 void	init_player(t_player *player)
 {
@@ -44,7 +52,16 @@ void	init_player(t_player *player)
 	player->map_pos.x = 1;
 	// pos in the world, player should spawn in the center of a square so we
 	// add half of the tile size
-	player->world_pos.x = 1 * TILE_WIDTH + (TILE_WIDTH / 2);
-	player->world_pos.y = 1 * TILE_HEIGHT + (TILE_HEIGHT / 2);
+	player->world_pos.x = 1 * TILE_WIDTH + ((float)TILE_WIDTH / 2);
+	player->world_pos.y = 1 * TILE_HEIGHT + ((float)TILE_HEIGHT / 2);
 	player->speed = 2.0;
+}
+
+void	update_player_position(t_player *player, t_vector_double new_pos,
+		t_game *game)
+{
+	player->world_pos.x = new_pos.x;
+	player->world_pos.y = new_pos.y;
+	player->map_pos.x = new_pos.x / game->tile_width;
+	player->map_pos.y = new_pos.y / game->tile_height;
 }

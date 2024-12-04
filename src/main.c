@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/17 01:54:59 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/04 22:02:15 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,18 +23,20 @@
 
 int	main(void)
 {
-	t_game		game;
+	t_game	game;
 
 	game = (t_game){0}; // maybe not necessary if we initialize everything properly before reading
 	set_colour_table(&game.colours); // probably remove later
 	init_game(&game);
+	init_keybindings(&game.keys);
 	init_player(&game.player);
-	init_map(&game.map, &game);
+	init_map(&game.map, &game, &game.player);
 	init_raycaster(&game.raycaster, &game.player, &game);
 	init_minimap(&game, &game.map, &game.minimap);
 	init_world_3d(&game);
-	mlx_hook(game.window, KEYPRESS_EVENT, KEYPRESS_MASK, process_key, &game);
+	mlx_hook(game.window, KEYPRESS_EVENT, KEYPRESS_MASK, press_key, &game);
 	mlx_hook(game.window, MOUSEMOVE_EVENT, POINTER_MOTION_MASK, process_mouse, &game);
+	mlx_hook(game.window, KEYRELEASE_EVENT, KEYRELEASE_EVENT, release_key, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);
 }
@@ -52,6 +54,7 @@ void	init_game(t_game *game)
 
 int	game_loop(t_game *game)
 {
+	process_keys(&game->keys, game);
 	mlx_clear_window(game->mlx, game->window);
 	raycast(&game->raycaster, &game->player, game);
 	render(game, &game->raycaster);

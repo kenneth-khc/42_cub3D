@@ -42,7 +42,8 @@ dirs := $(src_dir) \
 		$(src_dir)/mlx_utils \
 		$(src_dir)/raycast \
 		$(src_dir)/renderer \
-		$(src_dir)/minimap
+		$(src_dir)/minimap \
+		$(src_dir)/keys
 
 srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c))
 
