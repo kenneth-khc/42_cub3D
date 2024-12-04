@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:04:34 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/04 22:03:29 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/04 22:57:02 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ void	close_game(void *ptr)
 
 // TODO: this acts kinda weird probably because of how fast pressing/releasing
 // is processed
-// fix it so that it toggles properly
+// fix it so that it toggles properly maybe, low priority tho
+// perhaps I only toggle when an M key is released
 void	toggle_minimap(void *ptr)
 {
 	t_game *const		game = (t_game *)ptr;

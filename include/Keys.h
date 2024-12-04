@@ -94,8 +94,7 @@ typedef struct s_game	t_game;
 typedef struct s_player	t_player;
 
 void	init_keybindings(t_keys *keys);
-int		press_key(int keycode, t_game *game);
-int		release_key(int keycode, t_game *game);
+int		press_release_key(int mlx_keycode, t_keys *keys);
 void	process_keys(t_keys *keys, t_game *game);
 
 void	move_forward(void *ptr);

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 21:46:37 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/04 22:01:50 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/04 22:58:11 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,8 @@
  * that we can work with
  * Reason: X11 keysyms go up to 5 digits, and we require an interface to store
  * and handle multiple keypresses at the same time, creating an array of size
- * 60k is a waste of space, so we only store what we care about */
+ * 60k is a waste of space, so we only store keys that we actually use
+ * Return -1 if it's not a key we care about */
 int	translate_keycode(t_keys *keys, int mlx_keycode)
 {
 	int	keycode;
@@ -35,9 +36,13 @@ int	translate_keycode(t_keys *keys, int mlx_keycode)
 	return (-1);
 }
 
-int	press_key(int mlx_keycode, t_game *game)
+/* When a key is pressed or released, we flip the state in our keys array
+ * If it is not pressed, we now press it
+ * If it is already pressed, we now release it */
+int	press_release_key(int mlx_keycode, t_keys *keys)
 {
-	const int	keycode = translate_keycode(&game->keys, mlx_keycode);
+	const int	keycode = translate_keycode(keys, mlx_keycode);
+	bool		pressed;
 
 	if (keycode == -1)
 	{
@@ -45,28 +50,16 @@ int	press_key(int mlx_keycode, t_game *game)
 	}
 	else
 	{
-		game->keys.keys[keycode].pressed = true;
-		return (0);
-	}
-}
-
-int	release_key(int mlx_keycode, t_game *game)
-{
-	const int	keycode = translate_keycode(&game->keys, mlx_keycode);
-
-	if (keycode == -1)
-	{
-		return (-1);
-	}
-	else
-	{
-		game->keys.keys[keycode].pressed = false;
+		pressed = keys->keys[keycode].pressed;
+		keys->keys[keycode].pressed = !pressed;
 		return (0);
 	}
 }
 
 /* Go through the keys array, looking for keys that are pressed down, 
  * and call its associated function */
+// TODO: is special handling required for diagonal movements? such as
+// normalizing the movement vectors
 void	process_keys(t_keys *keys, t_game *game)
 {
 	int	i;
