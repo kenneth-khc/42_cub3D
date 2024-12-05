@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 01:53:56 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/12 01:58:26 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/05 23:12:37 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ bool	collide(t_map *map, t_vector_double *world_pos, t_game *game)
 	pos.y = world_pos->y / game->tile_height;
 	if (map->layout[pos.y][pos.x] == '1')
 	{
-		printf("colliding! stop!\n");
 		return (true);
 	}
 	else

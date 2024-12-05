@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:43:29 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/15 23:19:13 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/05 14:11:56 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	create_image(void *mlx, t_image *img, int width, int height)
 			&img->bits_per_pixel, &img->size_line, &img->endian);
 	img->bytes_per_pixel = img->bits_per_pixel / 8;
 	img->bytes = img->pixels * img->bytes_per_pixel;
+	img->pos.x = 0;
+	img->pos.y = 0;
 }
 
 /* Index into the pixel array of the image to grab the exact pixel
@@ -52,6 +54,17 @@ uint32_t	*get_pixel_addr(t_image *img, int x, int y)
 	}
 }
 
+/* Converts an address of a pixel into a Colour object */
+t_colour	pixel_to_colour(uint32_t *pixel)
+{
+	t_colour	ret;
+
+	ret.value = *pixel;
+	return (ret);
+}
+
+/* Draw on an Image's XY by accessing it and changing the pixel value
+ * Return true if successful and false otherwise (eg if XY is out of bounds) */
 bool	draw_pixel(t_image *img, int x, int y, t_colour colour)
 {
 	uint32_t	*pixel;
@@ -100,4 +113,16 @@ void	fill_image(t_image *img, const t_colour colour)
 		}
 		y++;
 	}
+}
+
+/* Load an XPM file into an Image object */
+void	load_image(t_game *game, t_image *img, char *filename)
+{
+	img->instance
+		= mlx_xpm_file_to_image(game->mlx, filename, &img->width, &img->height);
+	img->pixels = img->width * img->height;
+	img->addr = mlx_get_data_addr(img->instance,
+				&img->bits_per_pixel, &img->size_line, &img->endian);
+	img->bytes_per_pixel = img->bits_per_pixel / 8;
+	img->bytes = img->pixels * img->bytes_per_pixel;
 }
