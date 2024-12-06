@@ -44,18 +44,18 @@ void	clear_walls(t_image *world, t_dimensions screen,
 void	draw_wall(t_image *world, int screen_x, double wall_height, t_game *game, t_colour colour)
 {
 	t_vector_int	draw_start;
-	draw_start.y = (int)-wall_height / 2 + game->screen_height / 2;
+	draw_start.y = (int)-wall_height / 2 + game->screen.height / 2;
 	draw_start.x = screen_x;
 	if (draw_start.y < 0)
 	{
 		draw_start.y = 0;
 	}
 	t_vector_int	draw_end;
-	draw_end.y = (int)wall_height / 2 + game->screen_height / 2;
+	draw_end.y = (int)wall_height / 2 + game->screen.height / 2;
 	draw_end.x = screen_x;
-	if (draw_end.y > game->screen_height)
+	if (draw_end.y > game->screen.height)
 	{
-		draw_end.y = game->screen_height - 1;
+		draw_end.y = game->screen.height - 1;
 	}
 	draw_vertical(world, draw_start, draw_end, colour);
 }
@@ -66,14 +66,14 @@ void	calculate_draw_pos(t_renderer *r)
 	r->draw_start.x = r->current_x;
 	r->draw_start.y
 		= (int)-r->line_height / 2 + r->screen.height / 2;
-	if (r->draw_start.y < 0)
-	{
-		r->draw_start.y = 0;
-	}
+	/*if (r->draw_start.y < 0)*/
+	/*{*/
+	/*	r->draw_start.y = 0;*/
+	/*}*/
 	r->draw_end.x = r->current_x;
 	r->draw_end.y = (int)r->line_height / 2 + r->screen.height / 2;
-	if (r->draw_end.y > r->screen.height)
-	{
-		r->draw_end.y = r->screen.height - 1;
-	}
+	/*if (r->draw_end.y > r->screen.height)*/
+	/*{*/
+	/*	r->draw_end.y = r->screen.height - 1;*/
+	/*}*/
 }

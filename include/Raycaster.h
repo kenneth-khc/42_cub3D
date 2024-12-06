@@ -18,18 +18,22 @@
 # include "Vector.h"
 # include "Map.h"
 
-#ifndef SCREEN_WIDTH
-# define SCREEN_WIDTH 1000
-#endif
-#ifndef SCREEN_HEIGHT
-# define SCREEN_HEIGHT 1000
-#endif
+# ifndef SCREEN_WIDTH
+#  define SCREEN_WIDTH 1000
+# endif
+# ifndef SCREEN_HEIGHT
+#  define SCREEN_HEIGHT 1000
+# endif
 
 typedef enum e_hit_side
 {
 	NO_HIT = 0,
 	HIT_HORIZONTAL,
-	HIT_VERTICAL
+	HIT_VERTICAL,
+	HIT_NORTH,
+	HIT_SOUTH,
+	HIT_WEST,
+	HIT_EAST
 }	t_hit_side;
 
 /* A single ray being casted */
@@ -50,7 +54,7 @@ typedef struct s_ray
 	double			dy; // distance it travels when going from 1 Y to the next
 	double			x_axis_distance; // distance to the first initial X
 	double			y_axis_distance; // distance to the first initial Y
-	double			distance_travelled; // total distance travelled until a wall is hit
+	double			distance_travelled; // total dist travelled till a wall hit
 }	t_ray;
 
 typedef struct s_raycaster
@@ -62,13 +66,15 @@ typedef struct s_raycaster
 	double		leftmost_ray_angle;
 	double		rightmost_ray_angle;
 
+	// TODO: implement projection plane maybe
 	t_vector_double	projection_plane;
 }	t_raycaster;
 
 typedef struct s_game	t_game;
 
 void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game);
-void	update_raycaster(t_raycaster *raycaster, t_player *player, t_game *game);
+void	update_raycaster(t_raycaster *raycaster, t_player *player,
+			t_game *game);
 void	raycast(t_raycaster *raycaster, t_player *player, t_game *game);
 void	cast(t_ray *ray, t_player *player, t_map *map, t_game *game);
 

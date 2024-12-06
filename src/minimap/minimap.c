@@ -23,11 +23,11 @@ void	init_minimap(t_game *game, t_map *map, t_minimap *minimap)
 { (void)map;
 
 	minimap->display = true;
-	minimap->width = game->screen_width * MINIMAP_SCALE;
-	minimap->height = game->screen_height * MINIMAP_SCALE;
+	minimap->width = game->screen.width * MINIMAP_SCALE;
+	minimap->height = game->screen.height * MINIMAP_SCALE;
+	create_image(game->mlx, &minimap->img, minimap->width, minimap->height);
 	minimap->img.pos.x = 10;
 	minimap->img.pos.y = 10;
-	create_image(game->mlx, &minimap->img, minimap->width, minimap->height);
 	update_minimap(minimap, game);
 }
 

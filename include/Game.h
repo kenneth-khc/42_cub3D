@@ -32,26 +32,23 @@
 typedef struct s_game
 {
 	// debugging purposes
-	FILE		*logfile;
-	t_colours	colours;
+	FILE			*logfile;
+	t_colours		colours;
 	// end
-
-	void		*mlx;
-	void		*window;
+	void			*mlx;
+	void			*window;
 
 	t_dimensions	screen;
-	int			screen_width; // width of the screen of the game
-	int			screen_height; // height of the screen of the game
-	t_map		map;
-	double		tile_width; // width of 1 in-game tile
-	double		tile_height; // height of 1 in-game tile
-	t_minimap	minimap;
+	t_map			map;
+	double			tile_width; // width of 1 in-game tile
+	double			tile_height; // height of 1 in-game tile
+	t_minimap		minimap;
 	/*t_image		world2D;*/
-	t_image		world_3d; // image of the game to be displayed
-	t_player	player;
-	t_raycaster	raycaster;
-	t_renderer	renderer;
-	t_keys		keys;
+	t_image			world_3d; // image of the game to be displayed
+	t_player		player;
+	t_raycaster		raycaster;
+	t_renderer		renderer;
+	t_keys			keys;
 }	t_game;
 
 void	init_game(t_game *game);

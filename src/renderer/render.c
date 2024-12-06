@@ -34,7 +34,7 @@ void	init_renderer(t_renderer *renderer,
 	load_image(game, &renderer->textures[SOUTH], "textures/bluestone.xpm");
 }
 
-void	update_renderer(t_renderer *renderer)
+void	reset_renderer(t_renderer *renderer)
 {
 	renderer->draw_start.x = 0;
 	renderer->draw_start.y = 0;
@@ -43,6 +43,9 @@ void	update_renderer(t_renderer *renderer)
 	renderer->line_height = 0;
 }
 
+/* Called each frame of the game to render the world onto the screen
+ * The renderer is responsible for scanning through the screen horizontally
+ * and drawing each column vertically line by line */
 void	render(t_renderer *renderer, t_game *game, t_raycaster *raycaster)
 {
 	t_ray	*ray;
@@ -52,11 +55,36 @@ void	render(t_renderer *renderer, t_game *game, t_raycaster *raycaster)
 	renderer->current_x = 0;
 	while (renderer->current_x < game->screen.width)
 	{
-		update_renderer(renderer);
+		reset_renderer(renderer);
 		ray = &raycaster->rays[renderer->current_x];
-		renderer->current_texture = &renderer->textures[EAST];
+		// TODO: decide which texture the renderer is currently using for the current wall
+		
+		if (ray->side == HIT_VERTICAL)
+		{
+			renderer->current_texture = &renderer->textures[SOUTH];
+		}
+		else 
+		{
+			renderer->current_texture = &renderer->textures[NORTH];
+		}
+		/*else if (ray->side == HIT_NORTH)*/
+		/*{*/
+		/*	renderer->current_texture = &renderer->textures[NORTH];*/
+		/*}*/
+		/*else if (ray->side == HIT_SOUTH)*/
+		/*{*/
+		/*	renderer->current_texture = &renderer->textures[SOUTH];*/
+		/*}*/
+		/*else if (ray->side == HIT_EAST)*/
+		/*{*/
+		/*	renderer->current_texture = &renderer->textures[EAST];*/
+		/*}*/
+		/*else*/
+		/*{*/
+		/*	renderer->current_texture = &renderer->textures[WEST];*/
+		/*}*/
 		renderer->line_height
-			= (int)game->screen_height * 2 / ray->distance_travelled * 0.5;
+			= ((int)game->screen.height * 2 / ray->distance_travelled) * 0.5;
 		render_wall_slice(renderer, game, ray);
 		renderer->current_x++;
 	}
@@ -97,6 +125,15 @@ int	calculate_texture_column(t_image *texture, double wall_hit_x, t_ray *ray)
 	int	texture_x;
 
 	texture_x = wall_hit_x * texture->width;
+	(void)ray;
+	/*if ((ray->side == HIT_HORIZONTAL || ray->side == HIT_NORTH || ray->side == HIT_SOUTH) && ray->dir.x < 0)*/
+	/*{*/
+	/*	texture_x = texture->width - texture_x - 1;*/
+	/*}*/
+	/*if ((ray->side == HIT_VERTICAL || ray->side == HIT_WEST || ray->side == HIT_EAST) && ray->dir.y > 0)*/
+	/*{*/
+	/*	texture_x = texture->width - texture_x - 1;*/
+	/*}*/
 	if (ray->side == HIT_HORIZONTAL && ray->dir.x < 0)
 	{
 		texture_x = texture->width - texture_x - 1;
@@ -114,11 +151,11 @@ double	calculate_wall_hitpoint(t_ray *ray)
 
 	if (ray->side == HIT_HORIZONTAL)
 	{
-		wall_x = ray->frac_map_pos.y + ray->distance_travelled * ray->dir.y;
+		wall_x = ray->frac_map_pos.x + ray->distance_travelled * ray->dir.x;
 	}
 	else
 	{
-		wall_x = ray->frac_map_pos.x + ray->distance_travelled * ray->dir.x;
+		wall_x = ray->frac_map_pos.y + ray->distance_travelled * ray->dir.y;
 	}
-	return (wall_x -= floor(wall_x));
+	return (wall_x - floor(wall_x));
 }

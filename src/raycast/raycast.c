@@ -28,7 +28,7 @@ void	raycast(t_raycaster *raycaster, t_player *player, t_game *game)
 	t_ray	*ray;
 
 	update_raycaster(raycaster, &game->player, game);
-	for (int x = 0; x < game->screen_width; x++)
+	for (int x = 0; x < game->screen.width; x++)
 	{
 		ray = &raycaster->rays[x];
 		cast(ray, player, &game->map, game);
@@ -45,7 +45,7 @@ void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 	t_ray	*ray;
 	int		i;
 
-	raycaster->number_of_rays = game->screen_width;
+	raycaster->number_of_rays = game->screen.width;
 	raycaster->angle_increment = player->field_of_view / raycaster->number_of_rays;
 	// TODO: are these angles correct?
 	raycaster->leftmost_ray_angle = player->angle_in_radians + (player->field_of_view / 2);
@@ -123,6 +123,20 @@ void	cast(t_ray *ray, t_player *player, t_map *map, t_game *game)
 		if (is_wall(map, ray->map_pos.x, ray->map_pos.y))
 		{
 			ray->hit = true;
+			/*if (ray->side == HIT_HORIZONTAL)*/
+			/*{*/
+			/*	if (ray->dir.y > 0)*/
+			/*		ray->side = HIT_SOUTH;*/
+			/*	else*/
+			/*		ray->side = HIT_NORTH;*/
+			/*}*/
+			/*else if (ray->side == HIT_VERTICAL)*/
+			/*{*/
+			/*	if (ray->dir.x > 0)*/
+			/*		ray->side = HIT_EAST;*/
+			/*	else*/
+			/*		ray->side = HIT_WEST;*/
+			/*}*/
 		}
 	}
 	get_distance(ray, player);

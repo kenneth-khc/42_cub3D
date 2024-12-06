@@ -36,7 +36,7 @@ int	main(void)
 	init_map(&game.map, &game, &game.player);
 	init_raycaster(&game.raycaster, &game.player, &game);
 	init_minimap(&game, &game.map, &game.minimap);
-	create_image(game.mlx, &game.world_3d, game.screen_width, game.screen_height);
+	create_image(game.mlx, &game.world_3d, game.screen.width, game.screen.height);
 	init_renderer(&game.renderer, &game, &game.world_3d, game.screen);
 	mlx_hook(game.window,
 		KEYPRESS_EVENT, KEYPRESS_MASK, press_release_key, &game.keys);
@@ -51,12 +51,10 @@ int	main(void)
 void	init_game(t_game *game)
 {
 	game->mlx = mlx_init();
-	game->screen_width = SCREEN_WIDTH;
-	game->screen_height = SCREEN_HEIGHT;
 	game->screen.width = SCREEN_WIDTH;
 	game->screen.height = SCREEN_HEIGHT;
-	game->window = mlx_new_window(game->mlx, game->screen_width,
-			game->screen_height, "cute3D");
+	game->window = mlx_new_window(game->mlx, game->screen.width,
+			game->screen.height, "cute3D");
 	game->tile_width = 50;
 	game->tile_height = 50;
 }

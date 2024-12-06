@@ -77,7 +77,7 @@ enum e_keycodes
 typedef void			(*t_action)(void*);
 
 /* A single key */
-typedef struct	s_key
+typedef struct s_key
 {
 	int			mlx_keycode; // translate this into an idx into our keys array
 	t_action	action; // a function that does something when a key is pressed
