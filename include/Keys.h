@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:00:51 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/04 20:04:46 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/29 10:38:41 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ enum e_events
 	ENTER_EVENT = 7 // event for when mouse enters the window
 };
 
+/* Event masks according to the MLX documentation */
 enum e_event_masks
 {
 	KEYPRESS_MASK = 1L << 0,

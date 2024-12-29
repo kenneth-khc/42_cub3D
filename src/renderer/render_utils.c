@@ -61,19 +61,15 @@ void	draw_wall(t_image *world, int screen_x, double wall_height, t_game *game, t
 }
 
 /* Calculate where on the screen to draw the line based on its height */
-void	calculate_draw_pos(t_renderer *r)
+void	calculate_draw_pos(t_renderer *renderer)
 {
-	r->draw_start.x = r->current_x;
-	r->draw_start.y
-		= (int)-r->line_height / 2 + r->screen.height / 2;
-	/*if (r->draw_start.y < 0)*/
-	/*{*/
-	/*	r->draw_start.y = 0;*/
-	/*}*/
-	r->draw_end.x = r->current_x;
-	r->draw_end.y = (int)r->line_height / 2 + r->screen.height / 2;
-	/*if (r->draw_end.y > r->screen.height)*/
-	/*{*/
-	/*	r->draw_end.y = r->screen.height - 1;*/
-	/*}*/
+	renderer->draw_start.x = renderer->current_x;
+	renderer->draw_start.y
+		= (int)-renderer->line_height / 2 + renderer->screen.height / 2;
+	renderer->draw_end.x = renderer->current_x;
+	renderer->draw_end.y = (int)renderer->line_height / 2 + renderer->screen.height / 2;
+	if (renderer->draw_end.y > renderer->screen.height)
+	{
+		renderer->draw_end.y = renderer->screen.height;
+	}
 }

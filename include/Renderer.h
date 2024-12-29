@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:31:28 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/02 10:01:40 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/29 11:53:03 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct s_renderer
 	double			line_height; // the height of the current line to draw
 	t_image			*img; // the image to render onto
 	t_image			textures[4]; // array of wall textures to use
+	t_image			debug_texture;
 	t_image			*current_texture;
 }	t_renderer;
 

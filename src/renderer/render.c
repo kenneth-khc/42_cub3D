@@ -23,6 +23,8 @@
 # define TEXTURES_DIR "../../textures"
 #endif
 
+#include <string.h>
+/* Load up the textures needed by the renderer */
 void	init_renderer(t_renderer *renderer,
 	t_game *game, t_image *world, t_dimensions screen)
 {
@@ -32,6 +34,7 @@ void	init_renderer(t_renderer *renderer,
 	load_image(game, &renderer->textures[NORTH], "textures/eagle.xpm");
 	load_image(game, &renderer->textures[WEST], "textures/colorstone.xpm");
 	load_image(game, &renderer->textures[SOUTH], "textures/bluestone.xpm");
+	load_image(game, &renderer->debug_texture, "textures/test.xpm");
 }
 
 void	reset_renderer(t_renderer *renderer)
@@ -67,22 +70,7 @@ void	render(t_renderer *renderer, t_game *game, t_raycaster *raycaster)
 		{
 			renderer->current_texture = &renderer->textures[NORTH];
 		}
-		/*else if (ray->side == HIT_NORTH)*/
-		/*{*/
-		/*	renderer->current_texture = &renderer->textures[NORTH];*/
-		/*}*/
-		/*else if (ray->side == HIT_SOUTH)*/
-		/*{*/
-		/*	renderer->current_texture = &renderer->textures[SOUTH];*/
-		/*}*/
-		/*else if (ray->side == HIT_EAST)*/
-		/*{*/
-		/*	renderer->current_texture = &renderer->textures[EAST];*/
-		/*}*/
-		/*else*/
-		/*{*/
-		/*	renderer->current_texture = &renderer->textures[WEST];*/
-		/*}*/
+		/*renderer->current_texture= &renderer->debug_texture;*/
 		renderer->line_height
 			= ((int)game->screen.height * 2 / ray->distance_travelled) * 0.5;
 		render_wall_slice(renderer, game, ray);
@@ -95,20 +83,27 @@ void	render(t_renderer *renderer, t_game *game, t_raycaster *raycaster)
 	}
 }
 
+#include <stdlib.h>
 void	render_wall_slice(t_renderer *renderer, t_game *game, t_ray *ray)
 {
-	double	wall_x; // where exactly the wall was hit
-	t_image	*t = renderer->current_texture;
-	int		texture_x;
-	double	step = t->height / renderer->line_height;
-	double	texture_y = 0;
-	int		texture_y_index;
+	double		wall_x; // where exactly the wall was hit
+	t_image		*t = renderer->current_texture;
+	int			texture_x;
+	double		step = t->height / renderer->line_height;
+	double		texture_y = 0;
+	int			texture_y_index;
 	t_colour	colour;
 
 	(void)game;
 	calculate_draw_pos(renderer);
 	wall_x = calculate_wall_hitpoint(ray);
 	texture_x = calculate_texture_column(t, wall_x, ray);
+	if (renderer->draw_start.y < 0) // we don't draw outside the screen,
+	// just clamp it to the start of the screen and step through the texture y by that much
+	{
+		texture_y = (step * -renderer->draw_start.y);
+		renderer->draw_start.y = 0;
+	}
 	while (renderer->draw_start.y < renderer->draw_end.y)
 	{
 		texture_y_index = (int)texture_y;
@@ -125,15 +120,6 @@ int	calculate_texture_column(t_image *texture, double wall_hit_x, t_ray *ray)
 	int	texture_x;
 
 	texture_x = wall_hit_x * texture->width;
-	(void)ray;
-	/*if ((ray->side == HIT_HORIZONTAL || ray->side == HIT_NORTH || ray->side == HIT_SOUTH) && ray->dir.x < 0)*/
-	/*{*/
-	/*	texture_x = texture->width - texture_x - 1;*/
-	/*}*/
-	/*if ((ray->side == HIT_VERTICAL || ray->side == HIT_WEST || ray->side == HIT_EAST) && ray->dir.y > 0)*/
-	/*{*/
-	/*	texture_x = texture->width - texture_x - 1;*/
-	/*}*/
 	if (ray->side == HIT_HORIZONTAL && ray->dir.x < 0)
 	{
 		texture_x = texture->width - texture_x - 1;
@@ -157,5 +143,6 @@ double	calculate_wall_hitpoint(t_ray *ray)
 	{
 		wall_x = ray->frac_map_pos.y + ray->distance_travelled * ray->dir.y;
 	}
+	printf("%f - %f = %f\n", wall_x, floor(wall_x), wall_x - floor(wall_x));
 	return (wall_x - floor(wall_x));
 }

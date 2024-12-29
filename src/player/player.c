@@ -23,6 +23,7 @@
 #endif
 
 
+// TODO: Initialize the player here depending on the config file
 void	init_player(t_player *player)
 {
 	player->start_direction = EAST;

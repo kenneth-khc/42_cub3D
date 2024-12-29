@@ -15,6 +15,7 @@
 #include "Game.h"
 #include "Keys.h"
 #include "Minimap.h"
+#include "mlx.h"
 
 //TODO: generalize and refactor movement/rotation functions if possible
 
@@ -71,12 +72,6 @@ void	rotate_right(void *ptr)
 	update_minimap(&game->minimap, game);
 }
 
-void	close_game(void *ptr)
-{
-	(void)ptr;
-	exit(0);
-}
-
 // TODO: this acts kinda weird probably because of how fast pressing/releasing
 // is processed
 // fix it so that it toggles properly maybe, low priority tho
@@ -88,3 +83,19 @@ void	toggle_minimap(void *ptr)
 
 	minimap->display = !minimap->display;
 }
+
+void	close_game(void *ptr)
+{
+	t_game *game = (t_game*)ptr;
+	mlx_destroy_image(game->mlx, game->minimap.img.instance);
+	mlx_destroy_image(game->mlx, game->world_3d.instance);
+	mlx_destroy_image(game->mlx, game->renderer.textures[0].instance);
+	mlx_destroy_image(game->mlx, game->renderer.textures[1].instance);
+	mlx_destroy_image(game->mlx, game->renderer.textures[2].instance);
+	mlx_destroy_image(game->mlx, game->renderer.textures[3].instance);
+	mlx_destroy_window(game->mlx, game->window);
+	mlx_destroy_display(game->mlx);
+	free(game->mlx);
+	exit(0);
+}
+
