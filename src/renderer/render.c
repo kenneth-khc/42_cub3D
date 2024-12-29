@@ -117,20 +117,14 @@ void	render_wall_slice(t_renderer *renderer, t_game *game, t_ray *ray)
 
 int	calculate_texture_column(t_image *texture, double wall_hit_x, t_ray *ray)
 {
+	(void)ray;
 	int	texture_x;
 
 	texture_x = wall_hit_x * texture->width;
-	if (ray->side == HIT_HORIZONTAL && ray->dir.x < 0)
-	{
-		texture_x = texture->width - texture_x - 1;
-	}
-	if (ray->side == HIT_VERTICAL && ray->dir.y > 0)
-	{
-		texture_x = texture->width - texture_x - 1;
-	}
+	// if (ray->side == HIT_HORIZONTAL && ray->dir.x < 0) // { // 	texture_x = texture->width - texture_x - 1; // } // if (ray->side == HIT_VERTICAL && ray->dir.y > 0) // { // 	texture_x = texture->width - texture_x - 1; // }
 	return (texture_x);
 }
-
+//TODO: understand this
 double	calculate_wall_hitpoint(t_ray *ray)
 {
 	double	wall_x;
@@ -143,6 +137,6 @@ double	calculate_wall_hitpoint(t_ray *ray)
 	{
 		wall_x = ray->frac_map_pos.y + ray->distance_travelled * ray->dir.y;
 	}
-	printf("%f - %f = %f\n", wall_x, floor(wall_x), wall_x - floor(wall_x));
+	/*printf("%f - %f = %f\n", wall_x, floor(wall_x), wall_x - floor(wall_x));*/
 	return (wall_x - floor(wall_x));
 }
