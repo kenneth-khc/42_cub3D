@@ -41,7 +41,9 @@ enum e_mlx_keycodes
 	MLX_KEY_S = 115,
 	MLX_KEY_D = 100,
 	MLX_KEY_LEFT = 65361,
+	MLX_KEY_UP = 65362,
 	MLX_KEY_RIGHT = 65363,
+	MLX_KEY_DOWN = 65364,
 	MLX_KEY_ESC = 65307,
 	MLX_KEY_M = 109
 };
@@ -70,10 +72,12 @@ enum e_keycodes
 	KEY_LEFT = 4,
 	KEY_RIGHT = 5,
 	KEY_ESC = 6,
-	KEY_M = 7
+	KEY_M = 7,
+	KEY_UP = 8,
+	KEY_DOWN = 9
 };
 
-# define N_KEYS 8 // number of keys that we care about
+# define N_KEYS 10 // number of keys that we care about
 
 typedef void			(*t_action)(void*);
 

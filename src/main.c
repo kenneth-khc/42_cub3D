@@ -64,6 +64,6 @@ int	game_loop(t_game *game)
 	process_keys(&game->keys, game);
 	mlx_clear_window(game->mlx, game->window);
 	raycast(&game->raycaster, &game->player, game);
-	render(&game->renderer, game, &game->raycaster);
+	render(game, &game->renderer, &game->raycaster);
 	return (0);
 }

@@ -31,7 +31,7 @@ void	raycast(t_raycaster *raycaster, t_player *player, t_game *game)
 	for (int x = 0; x < game->screen.width; x++)
 	{
 		ray = &raycaster->rays[x];
-		cast(ray, player, &game->map, game);
+		cast(ray, player, &game->map);
 	}
 }
 
@@ -61,10 +61,10 @@ void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 		memset(ray, 0, sizeof(t_ray));
 		ray->id = i;
 		ray->world_pos = player->world_pos;
-		ray->map_pos.x = player->world_pos.x / game->tile_width;
-		ray->map_pos.y = player->world_pos.y / game->tile_height;
-		ray->frac_map_pos.x = player->world_pos.x / game->tile_width;
-		ray->frac_map_pos.y = player->world_pos.y / game->tile_height;
+		ray->tile_index.x = player->world_pos.x / game->tile_width;
+		ray->tile_index.y = player->world_pos.y / game->tile_height;
+		ray->tile_offset.x = player->world_pos.x / game->tile_width;
+		ray->tile_offset.y = player->world_pos.y / game->tile_height;
 		ray->angle_in_radians
 			= raycaster->leftmost_ray_angle - (ray->id * raycaster->angle_increment);
 		ray->dir.x = player->direction.x + raycaster->projection_plane.x * camera_x;
@@ -89,10 +89,10 @@ void	update_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 	{
 		ray = &raycaster->rays[i];
 		ray->world_pos = player->world_pos;
-		ray->map_pos.x = player->world_pos.x / game->tile_width;
-		ray->map_pos.y = player->world_pos.y / game->tile_height;
-		ray->frac_map_pos.x = player->world_pos.x / game->tile_width;
-		ray->frac_map_pos.y = player->world_pos.y / game->tile_height;
+		ray->tile_index.x = player->world_pos.x / game->tile_width;
+		ray->tile_index.y = player->world_pos.y / game->tile_height;
+		ray->tile_offset.x = player->world_pos.x / game->tile_width;
+		ray->tile_offset.y = player->world_pos.y / game->tile_height;
 		ray->angle_in_radians =
 			raycaster->leftmost_ray_angle - (ray->id * raycaster->angle_increment);
 		ray->dir.x = cos(ray->angle_in_radians);
@@ -102,25 +102,51 @@ void	update_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 }
 
 /* Send forth a ray until it hits a wall. Behold, wizardry. */
-void	cast(t_ray *ray, t_player *player, t_map *map, t_game *game)
-{ (void)game; (void)player;
+void	cast(t_ray *ray, t_player *player, t_map *map)
+{
 	init_dda(ray);
 	while (!ray->hit)
 	{
 		ray->side = NO_HIT;
 		if (ray->x_axis_distance < ray->y_axis_distance)
 		{
-			ray->map_pos.x += ray->x_step;
+			ray->tile_index.x += ray->x_step;
 			ray->side = HIT_VERTICAL;
+			/*if (ray->angle_in_radians >= 0*/
+			/*	&& ray->angle_in_radians <= M_PI)*/
+			/*{*/
+			/*	ray->side = HIT_SOUTH;*/
+			/*}*/
+			/*else*/
+			/*{*/
+			/*	ray->side = HIT_NORTH;*/
+			/*}*/
+			/*if (ray->dir.x > 0)*/
+			/*	ray->side = HIT_EAST;*/
+			/*else*/
+			/*	ray->side = HIT_WEST;*/
 			ray->x_axis_distance += ray->dx;
 		}
 		else
 		{
-			ray->map_pos.y += ray->y_step;
+			ray->tile_index.y += ray->y_step;
 			ray->side = HIT_HORIZONTAL;
+			/*if (ray->angle_in_radians >= degrees_to_radians(90)*/
+			/*	&& ray->angle_in_radians <= degrees_to_radians(270))*/
+			/*{*/
+			/*	ray->side = HIT_WEST;*/
+			/*}*/
+			/*else*/
+			/*{*/
+			/*	ray->side = HIT_EAST;*/
+			/*}*/
+			/*if (ray->dir.y > 0)*/
+			/*	ray->side = HIT_SOUTH;*/
+			/*else*/
+			/*	ray->side = HIT_NORTH;*/
 			ray->y_axis_distance += ray->dy;
 		}
-		if (is_wall(map, ray->map_pos.x, ray->map_pos.y))
+		if (is_wall(map, ray->tile_index.x, ray->tile_index.y))
 		{
 			ray->hit = true;
 			/*if (ray->side == HIT_HORIZONTAL)*/
@@ -163,22 +189,22 @@ static void	init_dda(t_ray *ray)
 	if (ray->dir.x < 0)
 	{
 		ray->x_step = -1;
-		ray->x_axis_distance = (ray->frac_map_pos.x - ray->map_pos.x) * ray->dx;
+		ray->x_axis_distance = (ray->tile_offset.x - ray->tile_index.x) * ray->dx;
 	}
 	else
 	{
 		ray->x_step = +1;
-		ray->x_axis_distance = (ray->map_pos.x + 1 - ray->frac_map_pos.x) * ray->dx;
+		ray->x_axis_distance = (ray->tile_index.x + 1 - ray->tile_offset.x) * ray->dx;
 	}
 	if (ray->dir.y < 0)
 	{
 		ray->y_step = -1;
-		ray->y_axis_distance = (ray->frac_map_pos.y - ray->map_pos.y) * ray->dy;
+		ray->y_axis_distance = (ray->tile_offset.y - ray->tile_index.y) * ray->dy;
 	}
 	else
 	{
 		ray->y_step = +1;
-		ray->y_axis_distance = (ray->map_pos.y + 1 - ray->frac_map_pos.y) * ray->dy;
+		ray->y_axis_distance = (ray->tile_index.y + 1 - ray->tile_offset.y) * ray->dy;
 	}
 }
 

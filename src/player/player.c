@@ -49,8 +49,8 @@ void	init_player(t_player *player)
 	player->direction.y = -sin(player->angle_in_radians);
 	// FIX: hardcoded
 	player->field_of_view = degrees_to_radians(60);
-	player->map_pos.y = 1;
-	player->map_pos.x = 1;
+	player->tile_index.y = 1;
+	player->tile_index.x = 1;
 	// pos in the world, player should spawn in the center of a square so we
 	// add half of the tile size
 	player->world_pos.x = 1 * TILE_WIDTH + ((float)TILE_WIDTH / 2);
@@ -63,6 +63,6 @@ void	update_player_position(t_player *player, t_vector_double new_pos,
 {
 	player->world_pos.x = new_pos.x;
 	player->world_pos.y = new_pos.y;
-	player->map_pos.x = new_pos.x / game->tile_width;
-	player->map_pos.y = new_pos.y / game->tile_height;
+	player->tile_index.x = new_pos.x / game->tile_width;
+	player->tile_index.y = new_pos.y / game->tile_height;
 }

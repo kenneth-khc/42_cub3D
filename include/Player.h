@@ -30,7 +30,7 @@ typedef struct s_player
 	double			field_of_view;
 	double			speed;
 	t_vector_double	direction; // a normalized direction vector
-	t_vector_int	map_pos; // position in the map/2D array
+	t_vector_int	tile_index; // position in the map/2D array
 	t_vector_double	world_pos; // position in the game world, not the screen
 }	t_player;
 

@@ -40,8 +40,8 @@ typedef enum e_hit_side
 typedef struct s_ray
 {
 	int				id; // the index of the current ray within the array
-	t_vector_int	map_pos;
-	t_vector_double	frac_map_pos;
+	t_vector_int	tile_index;
+	t_vector_double	tile_offset;
 	t_vector_double	world_pos;
 	double			angle_in_radians;
 	t_vector_double	dir; // normalized direction by cos/sine'ing angles
@@ -76,7 +76,7 @@ void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game);
 void	update_raycaster(t_raycaster *raycaster, t_player *player,
 			t_game *game);
 void	raycast(t_raycaster *raycaster, t_player *player, t_game *game);
-void	cast(t_ray *ray, t_player *player, t_map *map, t_game *game);
+void	cast(t_ray *ray, t_player *player, t_map *map);
 
 double	degrees_to_radians(double degrees);
 double	radians_to_degrees(double radians);
