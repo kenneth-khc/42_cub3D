@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:40:30 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/05 13:03:00 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/01/03 16:42:01 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ typedef struct s_game
 	t_player		player;
 	t_raycaster		raycaster;
 	t_renderer		renderer;
-	t_keys			keys;
+	t_keystates		keystates;
 }	t_game;
 
 void	init_game(t_game *game);

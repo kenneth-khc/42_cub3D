@@ -90,7 +90,7 @@ bool	draw_pixel(t_image *img, int x, int y, t_colour colour)
 
 /* Wrapper for mlx_put_image, taking in an Image object and the point
  * on the screen to display it at */
-void	put_image(t_game *game, t_image *img, t_vector_int *screen)
+void	put_image(t_game *game, t_image *img, t_vec2i *screen)
 {
 	mlx_put_image_to_window(game->mlx, game->window, img->instance,
 		screen->x, screen->y);

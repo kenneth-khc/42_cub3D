@@ -19,13 +19,13 @@ typedef struct s_vector_double
 {
 	double	x;
 	double	y;
-}	t_vector_double;
+}	t_vec2d;
 
 typedef struct s_vector_int
 {
 	int	x;
 	int	y;
-}	t_vector_int;
+}	t_vec2i;
 
 typedef struct s_dimensions
 {
@@ -33,9 +33,9 @@ typedef struct s_dimensions
 	int	height;
 }	t_dimensions;
 
-t_vector_double	copy_vector_double(t_vector_double *src);
-t_vector_int	copy_vector_int(t_vector_int *src);
-t_vector_int	v2d_to_v2i(t_vector_double d);
-bool			compare_vectors(t_vector_int *v1, t_vector_int *v2);
+t_vec2d	copy_vector_double(t_vec2d *src);
+t_vec2i	copy_vector_int(t_vec2i *src);
+t_vec2i	v2d_to_v2i(t_vec2d d);
+bool			compare_vectors(t_vec2i *v1, t_vec2i *v2);
 
 #endif

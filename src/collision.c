@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 01:53:56 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/05 23:12:37 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/01/03 16:39:58 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,9 @@
 
 extern char	g_layout[10][10];
 
-bool	collide(t_map *map, t_vector_double *world_pos, t_game *game)
+bool	collide(t_map *map, t_vec2d *world_pos, t_game *game)
 {
-	t_vector_int	pos;
+	t_vec2i	pos;
 
 	pos.x = world_pos->x / game->tile_width;
 	pos.y = world_pos->y / game->tile_height;
@@ -32,11 +32,11 @@ bool	collide(t_map *map, t_vector_double *world_pos, t_game *game)
 	}
 }
 
-bool	within_world_bounds(t_vector_double *world_pos, t_map *map, t_game *game)
+bool	within_world_bounds(t_vec2d *world_pos, t_map *map, t_game *game)
 {
-	t_vector_int	m;
-	bool			within_x_axis;
-	bool			within_y_axis;
+	t_vec2i	m;
+	bool	within_x_axis;
+	bool	within_y_axis;
 
 	if (world_pos->x < 0 || world_pos->y < 0)
 	{

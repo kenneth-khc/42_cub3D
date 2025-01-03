@@ -30,7 +30,7 @@ typedef struct s_image
 	uint64_t		bytes; // the number of bytes used for this image
 	int				size_line; // how many pixels in 1 line horizontally across
 	int				endian;
-	t_vector_int	pos; // where this image should be placed on the screen
+	t_vec2i	pos; // where this image should be placed on the screen
 }	t_image;
 
 typedef struct s_game	t_game;
@@ -39,11 +39,11 @@ void		create_image(void *mlx, t_image *img, int width, int height);
 void		load_image(t_game *game, t_image *img, char *filename);
 uint32_t	*get_pixel_addr(t_image *img, int x, int y);
 bool		draw_pixel(t_image *img, int x, int y, t_colour colour);
-void		draw_line_in_image(t_image *img, t_vector_int start,
-				t_vector_int end, t_colour colour);
-void		put_image(t_game *game, t_image *img, t_vector_int *point);
+void		draw_line_in_image(t_image *img, t_vec2i start,
+				t_vec2i end, t_colour colour);
+void		put_image(t_game *game, t_image *img, t_vec2i *point);
 void		fill_image(t_image *img, const t_colour color);
-void		draw_box(t_image *img, const t_vector_int centre,
+void		draw_box(t_image *img, const t_vec2i centre,
 				const int half_dimension, const t_colour colour);
 void		draw_border(t_image *img, const int thiccness,
 				const t_colour colour);

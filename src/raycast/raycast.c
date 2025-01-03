@@ -17,6 +17,7 @@
 #include "Raycaster.h"
 #include "Vector.h"
 #include <assert.h>
+#include "libft.h"
 
 extern char	g_layout[10][10];
 
@@ -58,7 +59,7 @@ void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 		// coordinate within the "projection plane", 0 being the left to 1 being the right
 		double	camera_x = 2 * i / (double)raycaster->number_of_rays - 1;
 		ray = &raycaster->rays[i];
-		memset(ray, 0, sizeof(t_ray));
+		ft_memset(ray, 0, sizeof(*ray));
 		ray->id = i;
 		ray->world_pos = player->world_pos;
 		ray->tile_index.x = player->world_pos.x / game->tile_width;
@@ -69,6 +70,7 @@ void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 			= raycaster->leftmost_ray_angle - (ray->id * raycaster->angle_increment);
 		ray->dir.x = player->direction.x + raycaster->projection_plane.x * camera_x;
 		ray->dir.y = player->direction.y + raycaster->projection_plane.y * camera_x;
+		// TODO: decide on projection plane or trig
 		ray->dir.x = cos(ray->angle_in_radians);
 		ray->dir.y = -sin(ray->angle_in_radians);
 		i++;
@@ -101,68 +103,46 @@ void	update_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 	}
 }
 
+void	check_wall_side_hit(t_ray *ray)
+{
+	if (ray->hit_side == HIT_HORIZONTAL)
+	{
+		if (ray->dir.y > 0)
+			ray->hit_side = HIT_SOUTH;
+		else
+			ray->hit_side = HIT_NORTH;
+	}
+	else if (ray->hit_side == HIT_VERTICAL)
+	{
+		if (ray->dir.x > 0)
+			ray->hit_side = HIT_EAST;
+		else
+			ray->hit_side = HIT_WEST;
+	}
+}
+
 /* Send forth a ray until it hits a wall. Behold, wizardry. */
 void	cast(t_ray *ray, t_player *player, t_map *map)
 {
 	init_dda(ray);
 	while (!ray->hit)
 	{
-		ray->side = NO_HIT;
 		if (ray->x_axis_distance < ray->y_axis_distance)
 		{
 			ray->tile_index.x += ray->x_step;
-			ray->side = HIT_VERTICAL;
-			/*if (ray->angle_in_radians >= 0*/
-			/*	&& ray->angle_in_radians <= M_PI)*/
-			/*{*/
-			/*	ray->side = HIT_SOUTH;*/
-			/*}*/
-			/*else*/
-			/*{*/
-			/*	ray->side = HIT_NORTH;*/
-			/*}*/
-			/*if (ray->dir.x > 0)*/
-			/*	ray->side = HIT_EAST;*/
-			/*else*/
-			/*	ray->side = HIT_WEST;*/
+			ray->hit_side = HIT_VERTICAL;
 			ray->x_axis_distance += ray->dx;
 		}
 		else
 		{
 			ray->tile_index.y += ray->y_step;
-			ray->side = HIT_HORIZONTAL;
-			/*if (ray->angle_in_radians >= degrees_to_radians(90)*/
-			/*	&& ray->angle_in_radians <= degrees_to_radians(270))*/
-			/*{*/
-			/*	ray->side = HIT_WEST;*/
-			/*}*/
-			/*else*/
-			/*{*/
-			/*	ray->side = HIT_EAST;*/
-			/*}*/
-			/*if (ray->dir.y > 0)*/
-			/*	ray->side = HIT_SOUTH;*/
-			/*else*/
-			/*	ray->side = HIT_NORTH;*/
+			ray->hit_side = HIT_HORIZONTAL;
 			ray->y_axis_distance += ray->dy;
 		}
 		if (is_wall(map, ray->tile_index.x, ray->tile_index.y))
 		{
 			ray->hit = true;
-			/*if (ray->side == HIT_HORIZONTAL)*/
-			/*{*/
-			/*	if (ray->dir.y > 0)*/
-			/*		ray->side = HIT_SOUTH;*/
-			/*	else*/
-			/*		ray->side = HIT_NORTH;*/
-			/*}*/
-			/*else if (ray->side == HIT_VERTICAL)*/
-			/*{*/
-			/*	if (ray->dir.x > 0)*/
-			/*		ray->side = HIT_EAST;*/
-			/*	else*/
-			/*		ray->side = HIT_WEST;*/
-			/*}*/
+			check_wall_side_hit(ray);
 		}
 	}
 	get_distance(ray, player);
@@ -210,17 +190,19 @@ static void	init_dda(t_ray *ray)
 
 static void	get_distance(t_ray *ray, t_player *player)
 {
-	if (ray->side == HIT_VERTICAL)
+	if (ray->hit_side == HIT_EAST || ray->hit_side == HIT_WEST)
 	{
-		ray->distance_travelled = ray->x_axis_distance - ray->dx;
+		ray->distance_from_player = ray->x_axis_distance - ray->dx;
 	}
-	else
+	else if (ray->hit_side == HIT_NORTH || ray->hit_side == HIT_SOUTH)
 	{
-		ray->distance_travelled = ray->y_axis_distance - ray->dy;
+		ray->distance_from_player = ray->y_axis_distance - ray->dy;
 	}
 	// HACK: fisheye correction. implement a proper projection plane so this
 	// isn't necessary
-	ray->distance_travelled
-		= ray->distance_travelled
+	/*ray->distance_travelled*/
+	/*	= ray->distance_travelled*/
+	/*		* cos(player->angle_in_radians - ray->angle_in_radians);*/
+	ray->distance_from_camera = ray->distance_from_player
 			* cos(player->angle_in_radians - ray->angle_in_radians);
 }

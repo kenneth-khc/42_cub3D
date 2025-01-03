@@ -27,7 +27,6 @@
 
 typedef enum e_hit_side
 {
-	NO_HIT = 0,
 	HIT_HORIZONTAL,
 	HIT_VERTICAL,
 	HIT_NORTH,
@@ -39,35 +38,36 @@ typedef enum e_hit_side
 /* A single ray being casted */
 typedef struct s_ray
 {
-	int				id; // the index of the current ray within the array
-	t_vector_int	tile_index;
-	t_vector_double	tile_offset;
-	t_vector_double	world_pos;
-	double			angle_in_radians;
-	t_vector_double	dir; // normalized direction by cos/sine'ing angles
-	double			x_step; // how much worldX to step by when it goes 1 mapY
-	double			y_step; // how much worldY to step by when it goes 1 mapX
-	bool			hit;
-	uint8_t			side;
+	int		id; // the index of the current ray within the array
+	t_vec2i	tile_index;
+	t_vec2d	tile_offset;
+	t_vec2d	world_pos;
+	double	angle_in_radians;
+	t_vec2d	dir; // normalized direction by cos/sine'ing angles
+	double	x_step; // how much worldX to step by when it goes 1 mapY
+	double	y_step; // how much worldY to step by when it goes 1 mapX
+	bool	hit;
+	uint8_t	hit_side;
 
-	double			dx; // distance it travels when going from 1 X to the next
-	double			dy; // distance it travels when going from 1 Y to the next
-	double			x_axis_distance; // distance to the first initial X
-	double			y_axis_distance; // distance to the first initial Y
-	double			distance_travelled; // total dist travelled till a wall hit
+	double	dx; // distance it travels when going from 1 X to the next
+	double	dy; // distance it travels when going from 1 Y to the next
+	double	x_axis_distance; // distance to the first initial X
+	double	y_axis_distance; // distance to the first initial Y
+	double	distance_from_player; // total dist travelled till a hit
+	double	distance_from_camera; // corrected distance for rendering
 }	t_ray;
 
 typedef struct s_raycaster
 {
-	bool		init;
-	int			number_of_rays;
-	t_ray		rays[SCREEN_WIDTH];
-	double		angle_increment;
-	double		leftmost_ray_angle;
-	double		rightmost_ray_angle;
+	bool	init;
+	int		number_of_rays;
+	t_ray	rays[SCREEN_WIDTH];
+	double	angle_increment;
+	double	leftmost_ray_angle;
+	double	rightmost_ray_angle;
 
 	// TODO: implement projection plane maybe
-	t_vector_double	projection_plane;
+	t_vec2d	projection_plane;
 }	t_raycaster;
 
 typedef struct s_game	t_game;

@@ -28,7 +28,7 @@ void	move_forward(void *ptr)
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
 	t_map *const	map = &game->map;
-	t_vector_double	test;
+	t_vec2d	test;
 	bool			collision;
 
 	test.x = player->world_pos.x + player->direction.x * player->speed;
@@ -48,7 +48,7 @@ void	move_backward(void *ptr)
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
 	t_map *const	map = &game->map;
-	t_vector_double	test;
+	t_vec2d	test;
 	bool			collision;
 
 	test.x = player->world_pos.x + -player->direction.x * player->speed;
@@ -68,7 +68,7 @@ void	strafe_left(void *ptr)
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
 	t_map *const	map = &game->map;
-	t_vector_double	test;
+	t_vec2d	test;
 	bool			collision;
 
 	test.x = player->world_pos.x
@@ -90,7 +90,7 @@ void	strafe_right(void *ptr)
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
 	t_map *const	map = &game->map;
-	t_vector_double	test;
+	t_vec2d	test;
 	bool			collision;
 
 	test.x = player->world_pos.x

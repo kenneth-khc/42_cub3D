@@ -13,34 +13,34 @@
 #include <stdbool.h>
 #include "Vector.h"
 
-t_vector_double	copy_vector_double(t_vector_double *src)
+t_vec2d	copy_vector_double(t_vec2d *src)
 {
-	t_vector_double	dst;
+	t_vec2d	dst;
 
 	dst.x = src->x;
 	dst.y = src->y;
 	return (dst);
 }
 
-t_vector_int	copy_vector_int(t_vector_int *src)
+t_vec2i	copy_vector_int(t_vec2i *src)
 {
-	t_vector_int	dst;
+	t_vec2i	dst;
 
 	dst.x = src->x;
 	dst.y = src->y;
 	return (dst);
 }
 
-t_vector_int	v2d_to_v2i(t_vector_double d)
+t_vec2i	v2d_to_v2i(t_vec2d d)
 {
-	t_vector_int	i;
+	t_vec2i	i;
 
 	i.x = d.x;
 	i.y = d.y;
 	return (i);
 }
 
-bool	compare_vectors(t_vector_int *v1, t_vector_int *v2)
+bool	compare_vectors(t_vec2i *v1, t_vec2i *v2)
 {
 	return (v1->x == v2->x && v1->y == v2->y);
 }

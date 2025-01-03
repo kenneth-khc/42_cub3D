@@ -14,7 +14,7 @@
 #include "Image.h"
 
 /* Draws a line of pixels vertically onto an Image */
-void	draw_vertical(t_image *img, t_vector_int start, t_vector_int end,
+void	draw_vertical(t_image *img, t_vec2i start, t_vec2i end,
 				t_colour colour)
 {
 	const int	x = start.x;

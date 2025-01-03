@@ -90,17 +90,17 @@ typedef struct s_key
 }	t_key;
 
 /* Storing the state of all the keys we care about */
-typedef struct s_keys
+typedef struct s_keystates
 {
 	t_key	keys[N_KEYS];
-}	t_keys;
+}	t_keystates;
 
 typedef struct s_game	t_game;
 typedef struct s_player	t_player;
 
-void	init_keybindings(t_keys *keys);
-int		press_release_key(int mlx_keycode, t_keys *keys);
-void	process_keys(t_keys *keys, t_game *game);
+void	init_keybindings(t_keystates *keys);
+int		press_release_key(int mlx_keycode, t_keystates *keys);
+void	process_keys(t_keystates *keys, t_game *game);
 
 void	move_forward(void *ptr);
 void	move_backward(void *ptr);

@@ -58,7 +58,7 @@ void	init_player(t_player *player)
 	player->speed = 2.0;
 }
 
-void	update_player_position(t_player *player, t_vector_double new_pos,
+void	update_player_position(t_player *player, t_vec2d new_pos,
 		t_game *game)
 {
 	player->world_pos.x = new_pos.x;
