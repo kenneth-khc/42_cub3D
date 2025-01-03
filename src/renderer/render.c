@@ -6,125 +6,121 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:31:10 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/02 12:28:47 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/05 23:17:59 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <math.h>
 #include <mlx.h>
+#include "Colours.h"
 #include "Game.h"
 #include "Image.h"
+#include "Raycaster.h"
 #include "Renderer.h"
 #include "Vector.h"
 #include <assert.h>
 
-void	init_world_3d(t_game *game)
-{
-	int	y;
-	int	x;
+#ifndef TEXTURES_DIR
+# define TEXTURES_DIR "../../textures"
+#endif
 
-	// TODO: fix image initializations
-	create_image(game->mlx, &game->world_3d, game->screen_width, game->screen_height);
-	y = 0;
-	while (y < game->screen_height / 2)
-	{
-		x = 0;
-		while (x < game->screen_width)
-		{
-			draw_pixel(&game->world_3d, x, y, game->colours.purple);
-			x++;
-		}
-		y++;
-	}
-	while (y < game->screen_height)
-	{
-		x = 0;
-		while (x < game->screen_width)
-		{
-			draw_pixel(&game->world_3d, x, y, game->colours.grey);
-			x++;
-		}
-		y++;
-	}
+/* Load up the textures needed by the renderer */
+void	init_renderer(t_renderer *renderer,
+	t_game *game, t_image *world, t_dimensions screen)
+{
+	renderer->img = world;
+	renderer->screen = screen;
+	renderer->midpoint = game->screen.height / 2;
+	load_image(game, &renderer->textures[EAST], "textures/greystone.xpm");
+	load_image(game, &renderer->textures[NORTH], "textures/eagle.xpm");
+	load_image(game, &renderer->textures[WEST], "textures/colorstone.xpm");
+	load_image(game, &renderer->textures[SOUTH], "textures/bluestone.xpm");
+	load_image(game, &renderer->debug_texture, "textures/test.xpm");
 }
 
-void	render(t_game *game, t_raycaster *raycaster)
+/* Called each frame of the game to render the world onto the screen
+ * The renderer is responsible for scanning through the screen horizontally
+ * and drawing each column vertically line by line */
+void	render(t_game *game, t_renderer *renderer, t_raycaster *raycaster)
 {
-	t_ray		*ray;
-	double		line_height;
-	t_colour	shaded;
+	t_ray	*ray;
 
-	shaded.value = game->colours.white.value >> 1 & 0x7F7F7F7F;
-	// TODO: debugging, if world3d doesn't exist we don't render it
-	if (game->world_3d.instance)
+	clear_walls(renderer, renderer->img, renderer->screen, game->colours.purple,
+		game->colours.cyan);
+	renderer->current_x = 0;
+	while (renderer->current_x < game->screen.width)
 	{
-		clear_walls(game);
-		for (int x = 0; x < game->screen_width; x++)
-		{
-			ray = &raycaster->rays[x];
-			// TODO: find the right proportions
-			line_height = (int)game->screen_height * 2 / (ray->distance_travelled * 10);
-			if (ray->side == HIT_VERTICAL)
-			{
-				draw_wall(&game->world_3d, x, line_height, game, shaded);
-			}
-			else
-			{
-				draw_wall(&game->world_3d, x, line_height, game, game->colours.white);
-			}
-		}
-		put_image(game, &game->world_3d, &(t_vector_int){0, 0});
+		reset_draw_line(renderer);
+		ray = &raycaster->rays[renderer->current_x];
+		// TODO: decide which texture the renderer is currently using for
+		// the current wall
+		decide_current_texture(renderer, ray);
+		renderer->line_height = ((int)game->screen.height * 2
+				/ ray->distance_from_camera) * 0.5;
+		render_wall_slice(renderer, ray);
+		renderer->current_x++;
 	}
+	put_image(game, renderer->img, &renderer->img->pos);
 	if (game->minimap.img.instance && game->minimap.display)
 	{
-		put_image(game, &game->minimap.img, &(t_vector_int){10, 10});
+		put_image(game, &game->minimap.img, &game->minimap.img.pos);
 	}
 }
 
-/* Clear away walls on the screen by redrawing the ceiling and floor */
-void	clear_walls(t_game *game)
+void	render_wall_slice(t_renderer *renderer, t_ray *ray)
 {
-	int	y;
-	int	x;
+	const double	wall_x = calculate_wall_hitpoint(ray); // where exactly the wall was hit
+	double			step;
+	int				text_y_index;
+	t_colour		colour;
+	uint32_t		*pixel;
 
-	y = 0;
-	while (y < game->screen_height / 2)
+	calculate_draw_pos(renderer);
+	/*wall_x = calculate_wall_hitpoint(ray);*/
+	step = renderer->curr_texture->height / renderer->line_height;
+	renderer->texture_pos.x = wall_x * renderer->curr_texture->width;
+	renderer->texture_pos.y = 0;
+	if (renderer->draw_start.y < 0) // we don't draw outside the screen,
+	// just clamp it to the start of the screen and step through the texture y by that much
 	{
-		x = 0;
-		while (x < game->screen_width)
-		{
-			draw_pixel(&game->world_3d, x, y, game->colours.purple);
-			x++;
-		}
-		y++;
+		renderer->texture_pos.y = (step * -renderer->draw_start.y);
+		renderer->draw_start.y = 0;
 	}
-	while (y < game->screen_height)
+	while (renderer->draw_start.y < renderer->draw_end.y)
 	{
-		x = 0;
-		while (x < game->screen_width)
-		{
-			draw_pixel(&game->world_3d, x, y, game->colours.cyan);
-			x++;
-		}
-		y++;
+		text_y_index = (int)renderer->texture_pos.y;
+		pixel = get_pixel_addr(renderer->curr_texture,
+			renderer->texture_pos.x, text_y_index);
+		colour = pixel_to_colour(pixel);
+		draw_pixel(renderer->img,
+			renderer->draw_start.x, renderer->draw_start.y, colour);
+		renderer->draw_start.y++;
+		renderer->texture_pos.y += step;
 	}
 }
 
-void	draw_wall(t_image *world, int screen_x, double wall_height, t_game *game, t_colour colour)
+double	calculate_wall_hitpoint(t_ray *ray)
 {
-	t_vector_int	draw_start;
-	draw_start.y = (int)-wall_height / 2 + game->screen_height / 2;
-	draw_start.x = screen_x;
-	if (draw_start.y < 0)
+	double	wall_x;
+
+	wall_x = 1;
+	if (ray->hit_side == HIT_NORTH || ray->hit_side == HIT_SOUTH)
 	{
-		draw_start.y = 0;
+		wall_x = ray->tile_offset.x + ray->distance_from_player * ray->dir.x;
 	}
-	t_vector_int	draw_end;
-	draw_end.y = (int)wall_height / 2 + game->screen_height / 2;
-	draw_end.x = screen_x;
-	if (draw_end.y > game->screen_height)
+	else if (ray->hit_side == HIT_EAST || ray->hit_side == HIT_WEST)
 	{
-		draw_end.y = game->screen_height - 1;
+		wall_x = ray->tile_offset.y + ray->distance_from_player * ray->dir.y;
 	}
-	draw_vertical(world, draw_start, draw_end, colour);
+	return (wall_x - floor(wall_x));
 }
 
+/*int	calculate_texture_column(t_image *texture, double wall_hit_x, t_ray *ray)*/
+/*{*/
+/*	(void)ray;*/
+/*	int	texture_x;*/
+/**/
+/*	texture_x = wall_hit_x * texture->width;*/
+/*	// if (ray->hit_side == HIT_HORIZONTAL && ray->dir.x < 0) // { // 	texture_x = texture->width - texture_x - 1; // } // if (ray->hit_side == HIT_VERTICAL && ray->dir.y > 0) // { // 	texture_x = texture->width - texture_x - 1; // }*/
+/*	return (texture_x);*/
+/*}*/

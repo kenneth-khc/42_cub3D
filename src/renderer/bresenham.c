@@ -16,8 +16,8 @@
 #include "Image.h"
 #include "Vector.h"
 
-static void	draw_low(t_image *img, t_vector_int start,
-					 t_vector_int end, t_colour colour)
+static void	draw_low(t_image *img, t_vec2i start,
+					 t_vec2i end, t_colour colour)
 {
 	int	dx;
 	int	dy;
@@ -49,8 +49,8 @@ static void	draw_low(t_image *img, t_vector_int start,
 	}
 }
 
-static void	draw_high(t_image *img, t_vector_int start,
-					 t_vector_int end, t_colour colour)
+static void	draw_high(t_image *img, t_vec2i start,
+					 t_vec2i end, t_colour colour)
 {
 	int	dx;
 	int	dy;
@@ -81,8 +81,8 @@ static void	draw_high(t_image *img, t_vector_int start,
 		start.y++;
 	}
 }
-void	draw_line_in_image(t_image *img, t_vector_int start,
-							t_vector_int end, t_colour colour)
+void	draw_line_in_image(t_image *img, t_vec2i start,
+							t_vec2i end, t_colour colour)
 {
 	const int	x0 = start.x;
 	const int	y0 = start.y;

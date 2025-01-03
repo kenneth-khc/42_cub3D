@@ -43,7 +43,7 @@ void	init_map(t_map *map, t_game *game, t_player *player)
 	memcpy(&map->layout, g_layout, sizeof(g_layout));
 	map->width = MAP_WIDTH;
 	map->height = MAP_HEIGHT;
-	map->player_pos = player->map_pos;
+	map->player_pos = player->tile_index;
 }
 
 void	print_map(char layout[10][10])
@@ -60,10 +60,10 @@ void	print_map(char layout[10][10])
 
 void	update_map(t_map *map, t_player *player)
 {
-	const t_vector_int	old_pos = map->player_pos;
-	const t_vector_int	new_pos = player->map_pos;
+	const t_vec2i	old_pos = map->player_pos;
+	const t_vec2i	new_pos = player->tile_index;
 	
 	map->layout[old_pos.y][old_pos.x] = '0';
 	map->layout[new_pos.y][new_pos.x] = 'P';
-	map->player_pos = player->map_pos;
+	map->player_pos = player->tile_index;
 }

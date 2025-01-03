@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:00:51 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/04 20:04:46 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/29 10:38:41 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ enum e_events
 	ENTER_EVENT = 7 // event for when mouse enters the window
 };
 
+/* Event masks according to the MLX documentation */
 enum e_event_masks
 {
 	KEYPRESS_MASK = 1L << 0,
@@ -40,7 +41,9 @@ enum e_mlx_keycodes
 	MLX_KEY_S = 115,
 	MLX_KEY_D = 100,
 	MLX_KEY_LEFT = 65361,
+	MLX_KEY_UP = 65362,
 	MLX_KEY_RIGHT = 65363,
+	MLX_KEY_DOWN = 65364,
 	MLX_KEY_ESC = 65307,
 	MLX_KEY_M = 109
 };
@@ -69,15 +72,17 @@ enum e_keycodes
 	KEY_LEFT = 4,
 	KEY_RIGHT = 5,
 	KEY_ESC = 6,
-	KEY_M = 7
+	KEY_M = 7,
+	KEY_UP = 8,
+	KEY_DOWN = 9
 };
 
-# define N_KEYS 8 // number of keys that we care about
+# define N_KEYS 10 // number of keys that we care about
 
 typedef void			(*t_action)(void*);
 
 /* A single key */
-typedef struct	s_key
+typedef struct s_key
 {
 	int			mlx_keycode; // translate this into an idx into our keys array
 	t_action	action; // a function that does something when a key is pressed
@@ -85,17 +90,17 @@ typedef struct	s_key
 }	t_key;
 
 /* Storing the state of all the keys we care about */
-typedef struct s_keys
+typedef struct s_keystates
 {
 	t_key	keys[N_KEYS];
-}	t_keys;
+}	t_keystates;
 
 typedef struct s_game	t_game;
 typedef struct s_player	t_player;
 
-void	init_keybindings(t_keys *keys);
-int		press_release_key(int mlx_keycode, t_keys *keys);
-void	process_keys(t_keys *keys, t_game *game);
+void	init_keybindings(t_keystates *keys);
+int		press_release_key(int mlx_keycode, t_keystates *keys);
+void	process_keys(t_keystates *keys, t_game *game);
 
 void	move_forward(void *ptr);
 void	move_backward(void *ptr);

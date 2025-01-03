@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:04:34 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/04 22:57:02 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/01/03 16:44:12 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,40 @@
 #include "Game.h"
 #include "Keys.h"
 #include "Minimap.h"
+#include "mlx.h"
 
 //TODO: generalize and refactor movement/rotation functions if possible
 
-void	init_keybindings(t_keys *keys)
+void	look_up(void *ptr)
 {
-	keys->keys[KEY_W] = (t_key){MLX_KEY_W, move_forward, false};
-	keys->keys[KEY_A] = (t_key){MLX_KEY_A, strafe_left, false};
-	keys->keys[KEY_S] = (t_key){MLX_KEY_S, move_backward, false};
-	keys->keys[KEY_D] = (t_key){MLX_KEY_D, strafe_right, false};
-	keys->keys[KEY_LEFT] = (t_key){MLX_KEY_LEFT, rotate_left, false};
-	keys->keys[KEY_RIGHT] = (t_key){MLX_KEY_RIGHT, rotate_right, false};
-	keys->keys[KEY_ESC] = (t_key){MLX_KEY_ESC, close_game, false};
-	keys->keys[KEY_M] = (t_key){MLX_KEY_M, toggle_minimap, false};
+	t_game *const	game = (t_game *)ptr;
+	const int		upper_bound = game->screen.height - game->screen.height / 4;
+
+	if (game->renderer.midpoint < upper_bound)
+		game->renderer.midpoint += 5;
+}
+
+void	look_down(void *ptr)
+{
+	t_game *const	game = (t_game *)ptr;
+	const int		lower_bound = game->screen.height / 4;
+
+	if (game->renderer.midpoint > lower_bound)
+		game->renderer.midpoint -= 5;
+}
+
+void	init_keybindings(t_keystates *keystates)
+{
+	keystates->keys[KEY_W] = (t_key){MLX_KEY_W, move_forward, false};
+	keystates->keys[KEY_A] = (t_key){MLX_KEY_A, strafe_left, false};
+	keystates->keys[KEY_S] = (t_key){MLX_KEY_S, move_backward, false};
+	keystates->keys[KEY_D] = (t_key){MLX_KEY_D, strafe_right, false};
+	keystates->keys[KEY_LEFT] = (t_key){MLX_KEY_LEFT, rotate_left, false};
+	keystates->keys[KEY_RIGHT] = (t_key){MLX_KEY_RIGHT, rotate_right, false};
+	keystates->keys[KEY_ESC] = (t_key){MLX_KEY_ESC, close_game, false};
+	keystates->keys[KEY_M] = (t_key){MLX_KEY_M, toggle_minimap, false};
+	keystates->keys[KEY_UP] = (t_key){MLX_KEY_UP, look_up, false};
+	keystates->keys[KEY_DOWN] = (t_key){MLX_KEY_DOWN, look_down, false};
 }
 
 /* The player starts at a certain angle based on the input of the map.
@@ -71,12 +92,6 @@ void	rotate_right(void *ptr)
 	update_minimap(&game->minimap, game);
 }
 
-void	close_game(void *ptr)
-{
-	(void)ptr;
-	exit(0);
-}
-
 // TODO: this acts kinda weird probably because of how fast pressing/releasing
 // is processed
 // fix it so that it toggles properly maybe, low priority tho
@@ -87,4 +102,20 @@ void	toggle_minimap(void *ptr)
 	t_minimap *const	minimap = &game->minimap;
 
 	minimap->display = !minimap->display;
+}
+
+void	close_game(void *ptr)
+{
+	t_game *const	game = (t_game*)ptr;
+
+	mlx_destroy_image(game->mlx, game->minimap.img.instance);
+	mlx_destroy_image(game->mlx, game->world_3d.instance);
+	mlx_destroy_image(game->mlx, game->renderer.textures[0].instance);
+	mlx_destroy_image(game->mlx, game->renderer.textures[1].instance);
+	mlx_destroy_image(game->mlx, game->renderer.textures[2].instance);
+	mlx_destroy_image(game->mlx, game->renderer.textures[3].instance);
+	mlx_destroy_window(game->mlx, game->window);
+	mlx_destroy_display(game->mlx);
+	free(game->mlx);
+	exit(0);
 }

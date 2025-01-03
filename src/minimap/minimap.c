@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:43:39 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/02 11:20:53 by kecheong         ###   ########.fr       */
+/*   Updated: 2024/12/05 00:03:43 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@ void	init_minimap(t_game *game, t_map *map, t_minimap *minimap)
 { (void)map;
 
 	minimap->display = true;
-	minimap->width = game->screen_width * MINIMAP_SCALE;
-	minimap->height = game->screen_height * MINIMAP_SCALE;
+	minimap->width = game->screen.width * MINIMAP_SCALE;
+	minimap->height = game->screen.height * MINIMAP_SCALE;
 	create_image(game->mlx, &minimap->img, minimap->width, minimap->height);
+	minimap->img.pos.x = 10;
+	minimap->img.pos.y = 10;
 	update_minimap(minimap, game);
 }
 
@@ -37,11 +39,11 @@ void	update_minimap(t_minimap *minimap, t_game *game)
 
 void	update_camera(t_camera *camera, t_minimap *minimap, t_player *player)
 {
-	const t_vector_double	p = player->world_pos;
+	const t_vec2d	p = player->world_pos;
 
 	camera->centred_at = p;
 	camera->half_dimension = (double)minimap->width / 2;
-	camera->centre = (t_vector_double){camera->half_dimension, camera->half_dimension};
+	camera->centre = (t_vec2d){camera->half_dimension, camera->half_dimension};
 	camera->top_left.x = p.x - camera->half_dimension;
 	camera->top_left.y = p.y - camera->half_dimension;
 	camera->bot_right.x = p.x + camera->half_dimension;
@@ -53,8 +55,8 @@ void	fill_minimap(t_image *img, t_camera camera, t_map *map, t_game *game, t_pla
 	int				x = camera.top_left.x;
 	int				map_x;
 	int				map_y;
-	t_vector_double	pos;
-	t_vector_int	cam;
+	t_vec2d	pos;
+	t_vec2i	cam;
 
 	pos.x = camera.top_left.x;
 	pos.y = camera.top_left.y;
@@ -90,8 +92,8 @@ void	fill_minimap(t_image *img, t_camera camera, t_map *map, t_game *game, t_pla
 /* TODO: fix drawing rays to stop upon hitting a wall */
 void	draw_fov(t_image *img, t_minimap *minimap, t_player *player, t_game *game)
 {
-	t_vector_int	start;
-	t_vector_int	end;
+	t_vec2i	start;
+	t_vec2i	end;
 	const double	angle_increment 
 		= player->field_of_view / game->raycaster.number_of_rays;
 	const double	leftmost_ray_angle
