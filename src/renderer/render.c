@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:31:10 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/05 23:17:59 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/01/03 17:21:07 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "Raycaster.h"
 #include "Renderer.h"
 #include "Vector.h"
+#include "Animation.h"
 #include <assert.h>
 
 #ifndef TEXTURES_DIR
@@ -33,6 +34,7 @@ void	init_renderer(t_renderer *renderer,
 	renderer->midpoint = game->screen.height / 2;
 	load_image(game, &renderer->textures[EAST], "textures/greystone.xpm");
 	load_image(game, &renderer->textures[NORTH], "textures/eagle.xpm");
+	game->renderer.north_anim = animation(game, "textures/eagle.xpm", "textures/eagle_darker.xpm");
 	load_image(game, &renderer->textures[WEST], "textures/colorstone.xpm");
 	load_image(game, &renderer->textures[SOUTH], "textures/bluestone.xpm");
 	load_image(game, &renderer->debug_texture, "textures/test.xpm");
@@ -48,6 +50,8 @@ void	render(t_game *game, t_renderer *renderer, t_raycaster *raycaster)
 	clear_walls(renderer, renderer->img, renderer->screen, game->colours.purple,
 		game->colours.cyan);
 	renderer->current_x = 0;
+	// set current texture here
+	renderer->textures[NORTH] = *get_current_frame(&renderer->north_anim);
 	while (renderer->current_x < game->screen.width)
 	{
 		reset_draw_line(renderer);

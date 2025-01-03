@@ -1,36 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   draw.c                                             :+:      :+:    :+:   */
+/*   Animation.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 13:37:20 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/12 13:54:07 by kecheong         ###   ########.fr       */
+/*   Created: 2025/01/03 16:57:35 by kecheong          #+#    #+#             */
+/*   Updated: 2025/01/03 17:13:58 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <Vector.h>
-#include "Image.h"
+#ifndef ANIMATION_H
+# define ANIMATION_H
 
-/* Draws a line of pixels vertically onto an Image */
-void	draw_vertical(t_image *img, t_vec2i start, t_vec2i end,
-				t_colour colour)
+# include "Image.h"
+
+typedef struct s_animation
 {
-	const int	x = start.x;
-	int			step;
+	t_image	frames[2];
+	int		frame_count;
+	int		frame_index;
+	int		ticks;
+	int		ticks_to_advance;
+}	t_animation;
 
-	if (start.y > end.y)
-	{
-		step = -1;
-	}
-	else
-	{
-		step = +1;
-	}
-	while (start.y != end.y)
-	{
-		draw_pixel(img, x, start.y, colour);
-		start.y += step;
-	}
-}
+t_animation	animation(t_game *game,
+		const char *img1_filename, const char *img2_filename);
+t_image	*get_current_frame(t_animation *animation);
+
+#endif

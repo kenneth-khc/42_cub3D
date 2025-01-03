@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:25:39 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/05 13:01:54 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/01/03 17:04:32 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,23 +20,23 @@
 /* A wrapper for an mlx image */
 typedef struct s_image
 {
-	void			*instance; // the image instance used by mlx
-	int				width;
-	int				height;
-	char			*addr; // the start of the address where the image is stored
-	uint64_t		pixels; // the number of pixels in this image
-	int				bits_per_pixel; // how many bits is used to store a pixel
-	uint8_t			bytes_per_pixel;
-	uint64_t		bytes; // the number of bytes used for this image
-	int				size_line; // how many pixels in 1 line horizontally across
-	int				endian;
-	t_vec2i	pos; // where this image should be placed on the screen
+	void		*instance; // the image instance used by mlx
+	int			width;
+	int			height;
+	char		*addr; // the start of the address where the image is stored
+	uint64_t	pixels; // the number of pixels in this image
+	int			bits_per_pixel; // how many bits is used to store a pixel
+	uint8_t		bytes_per_pixel;
+	uint64_t	bytes; // the number of bytes used for this image
+	int			size_line; // how many pixels in 1 line horizontally across
+	int			endian;
+	t_vec2i		pos; // where this image should be placed on the screen
 }	t_image;
 
 typedef struct s_game	t_game;
 
 void		create_image(void *mlx, t_image *img, int width, int height);
-void		load_image(t_game *game, t_image *img, char *filename);
+void		load_image(t_game *game, t_image *img, const char *filename);
 uint32_t	*get_pixel_addr(t_image *img, int x, int y);
 bool		draw_pixel(t_image *img, int x, int y, t_colour colour);
 void		draw_line_in_image(t_image *img, t_vec2i start,
