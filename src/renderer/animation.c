@@ -10,20 +10,45 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <fcntl.h>
+#include <stdlib.h>
+#include "libft.h"
 #include "Animation.h"
+#include "Renderer.h"
 
-t_animation	animation(t_game *game,
-		const char *img1_filename, const char *img2_filename)
+t_animation	animation(t_game *game, const char *img_name)
 {
 	t_animation	anim;
+	int			i;
 
-	load_image(game, &anim.frames[0], img1_filename);
-	load_image(game, &anim.frames[1], img2_filename);
-	anim.frame_count = 2;
+	i = 0;
+	char	*frame_filename = ft_strjoin_multiple(3, img_name, ft_itoa(i), ".xpm");
+	while (open(frame_filename, O_RDONLY) != -1)
+	{
+		++i;
+		frame_filename = ft_strjoin_multiple(3, img_name, ft_itoa(i), ".xpm");
+	}
+	anim.frame_count = i;
+	anim.frames = malloc(anim.frame_count * sizeof(t_image));
+	i--;
+	while (i >= 0)
+	{
+		char	*frame_filename = ft_strjoin_multiple(3, img_name, ft_itoa(i), ".xpm");
+		load_image(game, &anim.frames[i], frame_filename);
+		--i;
+	}
 	anim.frame_index = 0;
 	anim.ticks = 0;
-	anim.ticks_to_advance = 10;
+	anim.ticks_to_advance = 1;
 	return anim;
+}
+
+void	advance_animations(t_renderer *renderer, t_animation animations[4])
+{
+	renderer->textures[NORTH] = *get_current_frame(&animations[NORTH]);
+	renderer->textures[WEST] = *get_current_frame(&animations[WEST]);
+	renderer->textures[EAST] = *get_current_frame(&animations[EAST]);
+	renderer->textures[SOUTH] = *get_current_frame(&animations[SOUTH]);
 }
 
 t_image	*get_current_frame(t_animation *animation)

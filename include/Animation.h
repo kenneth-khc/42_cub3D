@@ -17,15 +17,17 @@
 
 typedef struct s_animation
 {
-	t_image	frames[2];
+	t_image	*frames;
 	int		frame_count;
 	int		frame_index;
 	int		ticks;
 	int		ticks_to_advance;
 }	t_animation;
 
-t_animation	animation(t_game *game,
-		const char *img1_filename, const char *img2_filename);
+typedef struct s_renderer	t_renderer;
+
+t_animation	animation(t_game *game, const char *img1_filename);
 t_image	*get_current_frame(t_animation *animation);
+void	advance_animations(t_renderer *renderer, t_animation animations[4]);
 
 #endif

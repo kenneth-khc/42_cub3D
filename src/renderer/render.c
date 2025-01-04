@@ -32,12 +32,10 @@ void	init_renderer(t_renderer *renderer,
 	renderer->img = world;
 	renderer->screen = screen;
 	renderer->midpoint = game->screen.height / 2;
-	load_image(game, &renderer->textures[EAST], "textures/greystone.xpm");
-	load_image(game, &renderer->textures[NORTH], "textures/eagle.xpm");
-	game->renderer.north_anim = animation(game, "textures/eagle.xpm", "textures/eagle_darker.xpm");
-	load_image(game, &renderer->textures[WEST], "textures/colorstone.xpm");
-	load_image(game, &renderer->textures[SOUTH], "textures/bluestone.xpm");
-	load_image(game, &renderer->debug_texture, "textures/test.xpm");
+	game->renderer.animations[EAST] = animation(game, "textures/fauna_snail/fauna_snail");
+	game->renderer.animations[NORTH] = animation(game, "textures/fauna_sweep/fauna_sweep");
+	game->renderer.animations[WEST] = animation(game, "textures/fauna_dance/fauna_dance");
+	game->renderer.animations[SOUTH] = animation(game, "textures/fauna_cat_ears/fauna_cat_ears");
 }
 
 /* Called each frame of the game to render the world onto the screen
@@ -51,7 +49,7 @@ void	render(t_game *game, t_renderer *renderer, t_raycaster *raycaster)
 		game->colours.cyan);
 	renderer->current_x = 0;
 	// set current texture here
-	renderer->textures[NORTH] = *get_current_frame(&renderer->north_anim);
+	advance_animations(renderer, renderer->animations);
 	while (renderer->current_x < game->screen.width)
 	{
 		reset_draw_line(renderer);
@@ -59,6 +57,8 @@ void	render(t_game *game, t_renderer *renderer, t_raycaster *raycaster)
 		// TODO: decide which texture the renderer is currently using for
 		// the current wall
 		decide_current_texture(renderer, ray);
+		// TODO: uhh why do I need to multiply by 0.5 to make it look good?
+		// where dis magic number come from
 		renderer->line_height = ((int)game->screen.height * 2
 				/ ray->distance_from_camera) * 0.5;
 		render_wall_slice(renderer, ray);

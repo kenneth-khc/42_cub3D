@@ -78,9 +78,7 @@ void	decide_current_texture(t_renderer *renderer, t_ray *ray)
 	}
 	else if (ray->hit_side == HIT_NORTH)
 	{
-		/*renderer->curr_texture = get_current_frame(&renderer->north_anim);*/
 		renderer->curr_texture = &renderer->textures[NORTH];
-		return ;
 	}
 	else if (ray->hit_side == HIT_EAST)
 	{
