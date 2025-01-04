@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:43:29 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/05 14:11:56 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/01/03 17:04:38 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,10 +116,10 @@ void	fill_image(t_image *img, const t_colour colour)
 }
 
 /* Load an XPM file into an Image object */
-void	load_image(t_game *game, t_image *img, char *filename)
+void	load_image(t_game *game, t_image *img, const char *filename)
 {
 	img->instance
-		= mlx_xpm_file_to_image(game->mlx, filename, &img->width, &img->height);
+		= mlx_xpm_file_to_image(game->mlx, (char*)filename, &img->width, &img->height);
 	img->pixels = img->width * img->height;
 	img->addr = mlx_get_data_addr(img->instance,
 				&img->bits_per_pixel, &img->size_line, &img->endian);

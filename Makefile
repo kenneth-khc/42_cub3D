@@ -12,6 +12,9 @@
 
 .DEFAULT_GOAL := debug
 
+GREEN := \e[0;32m
+C_RESET := \e[0;0m
+
 NAME := cub3D
 UNAME := $(shell uname)
 
@@ -56,6 +59,10 @@ objs := $(srcs:$(src_dir)/%.c=$(obj_dir)/%.o)
 all: $(MLX) $(LIBFT) $(NAME)
 
 $(LIBFT):
+	@if git submodule status | grep '^[+-]' ; then \
+		printf "$(GREEN)Initializing libft submodule...\n$(C_RESET)" ; \
+		git submodule update --init ; \
+	fi
 	make -C $(LIBFT_DIR)
 
 $(MLX):

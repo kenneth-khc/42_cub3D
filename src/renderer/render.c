@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:31:10 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/05 23:17:59 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/01/03 17:21:07 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 #include "Raycaster.h"
 #include "Renderer.h"
 #include "Vector.h"
+#include "Animation.h"
 #include <assert.h>
 
 #ifndef TEXTURES_DIR
@@ -31,11 +32,10 @@ void	init_renderer(t_renderer *renderer,
 	renderer->img = world;
 	renderer->screen = screen;
 	renderer->midpoint = game->screen.height / 2;
-	load_image(game, &renderer->textures[EAST], "textures/greystone.xpm");
-	load_image(game, &renderer->textures[NORTH], "textures/eagle.xpm");
-	load_image(game, &renderer->textures[WEST], "textures/colorstone.xpm");
-	load_image(game, &renderer->textures[SOUTH], "textures/bluestone.xpm");
-	load_image(game, &renderer->debug_texture, "textures/test.xpm");
+	game->renderer.animations[EAST] = animation(game, "textures/fauna_snail/fauna_snail");
+	game->renderer.animations[NORTH] = animation(game, "textures/fauna_sweep/fauna_sweep");
+	game->renderer.animations[WEST] = animation(game, "textures/fauna_dance/fauna_dance");
+	game->renderer.animations[SOUTH] = animation(game, "textures/fauna_cat_ears/fauna_cat_ears");
 }
 
 /* Called each frame of the game to render the world onto the screen
@@ -48,6 +48,8 @@ void	render(t_game *game, t_renderer *renderer, t_raycaster *raycaster)
 	clear_walls(renderer, renderer->img, renderer->screen, game->colours.purple,
 		game->colours.cyan);
 	renderer->current_x = 0;
+	// set current texture here
+	advance_animations(renderer, renderer->animations);
 	while (renderer->current_x < game->screen.width)
 	{
 		reset_draw_line(renderer);
@@ -55,6 +57,8 @@ void	render(t_game *game, t_renderer *renderer, t_raycaster *raycaster)
 		// TODO: decide which texture the renderer is currently using for
 		// the current wall
 		decide_current_texture(renderer, ray);
+		// TODO: uhh why do I need to multiply by 0.5 to make it look good?
+		// where dis magic number come from
 		renderer->line_height = ((int)game->screen.height * 2
 				/ ray->distance_from_camera) * 0.5;
 		render_wall_slice(renderer, ray);

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:31:28 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/30 07:01:53 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/01/03 17:15:25 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@
 # include "Vector.h"
 # include "Raycaster.h"
 # include "Map.h"
+# include "Image.h"
+# include "Animation.h"
 
 typedef struct s_renderer
 {
@@ -26,7 +28,12 @@ typedef struct s_renderer
 	t_vec2i			draw_end; // the position to end drawing at
 	double			line_height; // the height of the current line to draw
 	t_image			*img; // the image to render onto
-	t_image			textures[4]; // array of wall textures to use
+	t_animation		animations[4]; // wall textures that are animated
+	t_image			textures[4]; // which textures to use for the curr frame
+	t_animation		north_anim;
+	t_animation		south_anim;
+	t_animation		west_anim;
+	t_animation		east_anim;
 	t_image			debug_texture; // TODO: remove this
 	t_image			*curr_texture;
 	t_vec2d	texture_pos;
@@ -37,13 +44,9 @@ typedef struct s_game	t_game;
 void	render(t_game *game, t_renderer *renderer, t_raycaster *raycaster);
 void	init_world2D(t_game *game, t_map *map);
 void	init_world_3d(t_game *game);
-void	draw_vertical(t_image *img, t_vec2i start, t_vec2i end,
-			t_colour colour);
 void	clear_walls(t_renderer *renderer, t_image *world, t_dimensions screen,
 			t_colour ceiling, t_colour floor);
 void	render_wall_slice(t_renderer *renderer, t_ray *ray);
-void	draw_vertical(t_image *img, t_vec2i start, t_vec2i end,
-			t_colour colour);
 void	calculate_draw_pos(t_renderer *renderer);
 double	calculate_wall_hitpoint(t_ray *ray);
 int		calculate_texture_column(t_image *texture, double wall_hit_x,
