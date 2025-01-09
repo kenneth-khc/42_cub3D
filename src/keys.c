@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   keys.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 21:46:37 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/15 22:51:01 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/01/09 18:55:11 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,12 +80,13 @@ void	rotate_camera(t_player *player, int keycode)
 	/*printf("Dir vector: %f %f\n\n", player->direction.x, player->direction.y);*/
 }
 
+
 void	move_player(t_player *player, int keycode, t_game *game, t_map *map)
 {
 	t_vector_double	test;
 	// TODO: move properly, ideally implement diagonals too
 	// TODO: refactor this garbage
-	
+
 	/*printf("Player ori pos: %f %f\n", player->world_pos.x, player->world_pos.y);*/
 	if (keycode == KEY_W) // move up
 	{
