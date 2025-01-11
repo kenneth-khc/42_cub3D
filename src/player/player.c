@@ -13,8 +13,17 @@
 #include <math.h>
 #include "Player.h"
 #include "Utils.h"
+#include "Game.h"
 #include "Map.h"
 
+#ifndef TILE_DIMENSIONS
+# define TILE_DIMENSIONS
+# define TILE_WIDTH 50
+# define TILE_HEIGHT 50
+#endif
+
+
+// TODO: Initialize the player here depending on the config file
 void	init_player(t_player *player)
 {
 	player->start_direction = EAST;
@@ -40,11 +49,20 @@ void	init_player(t_player *player)
 	player->direction.y = -sin(player->angle_in_radians);
 	// FIX: hardcoded
 	player->field_of_view = degrees_to_radians(60);
-	player->map_pos.y = 1;
-	player->map_pos.x = 1;
+	player->tile_index.y = 1;
+	player->tile_index.x = 1;
 	// pos in the world, player should spawn in the center of a square so we
 	// add half of the tile size
-	player->world_pos.x = 1 * TILE_WIDTH + (TILE_WIDTH / 2);
-	player->world_pos.y = 1 * TILE_HEIGHT + (TILE_HEIGHT / 2);
+	player->world_pos.x = 1 * TILE_WIDTH + ((float)TILE_WIDTH / 2);
+	player->world_pos.y = 1 * TILE_HEIGHT + ((float)TILE_HEIGHT / 2);
 	player->speed = 2.0;
+}
+
+void	update_player_position(t_player *player, t_vec2d new_pos,
+		t_game *game)
+{
+	player->world_pos.x = new_pos.x;
+	player->world_pos.y = new_pos.y;
+	player->tile_index.x = new_pos.x / game->tile_width;
+	player->tile_index.y = new_pos.y / game->tile_height;
 }

@@ -14,13 +14,13 @@
 
 /* Draws a square with a length of 2*half_dimensions based on the centre point */
 void	draw_box(t_image *img,
-				const t_vector_int centre,
+				const t_vec2i centre,
 				const int half_dimension,
 				const t_colour colour)
 {
-	const t_vector_int	end
+	const t_vec2i	end
 		= {.x = centre.x + half_dimension, .y = centre.y + half_dimension};
-	t_vector_int		start;
+	t_vec2i		start;
 	int					x;
 
 	start.x = centre.x - half_dimension;

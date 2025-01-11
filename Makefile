@@ -6,13 +6,17 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2024/11/14 18:06:12 by kecheong         ###   ########.fr        #
+#    Updated: 2024/12/05 13:09:56 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+.DEFAULT_GOAL := debug
+
+GREEN := \e[0;32m
+C_RESET := \e[0;0m
+
 NAME := cub3D
 UNAME := $(shell uname)
-$(info $$(UNAME) = $(UNAME))
 
 CC := cc
 CFLAGS := -Wall -Werror -Wextra
@@ -42,7 +46,9 @@ dirs := $(src_dir) \
 		$(src_dir)/mlx_utils \
 		$(src_dir)/raycast \
 		$(src_dir)/renderer \
-		$(src_dir)/minimap
+		$(src_dir)/minimap \
+		$(src_dir)/keys \
+		$(src_dir)/textures
 
 srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c))
 
@@ -50,13 +56,20 @@ obj_dir := obj
 objs := $(srcs:$(src_dir)/%.c=$(obj_dir)/%.o)
 
 .PHONY: all
-all: $(MLX) $(NAME)
+all: $(MLX) $(LIBFT) $(NAME)
+
+$(LIBFT):
+	@if git submodule status | grep '^[+-]' ; then \
+		printf "$(GREEN)Initializing libft submodule...\n$(C_RESET)" ; \
+		git submodule update --init ; \
+	fi
+	make -C $(LIBFT_DIR)
 
 $(MLX):
 	make -C $(MLX_dir)
 
-$(NAME): $(objs)
-	$(CC) $(CFLAGS) $(objs) $(includes) $(LDFLAGS) $(LDLIBS) $(framework)  -o $(NAME)
+$(NAME): $(LIBFT) $(objs)
+	$(CC) $(CFLAGS) $(objs) $(includes) $(LDFLAGS) $(LDLIBS) $(framework) -o $(NAME)
 
 $(obj_dir):
 	mkdir -p $(obj_dir)
@@ -72,6 +85,14 @@ clean:
 .PHONY: fclean
 fclean: clean
 	$(RM) $(NAME)
+
+.PHONY: libclean
+libclean:
+	make clean -C $(LIBFT_DIR)
+
+.PHONY: libfclean
+libfclean:
+	make fclean -C $(LIBFT_DIR)
 
 .PHONY: re
 re: fclean all

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:38:12 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/12 13:43:38 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/01/03 17:01:13 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 #include "Image.h"
 #include "Vector.h"
 
-static void	draw_low(t_image *img, t_vector_int start,
-					 t_vector_int end, t_colour colour)
+static void	draw_low(t_image *img, t_vec2i start,
+					 t_vec2i end, t_colour colour)
 {
 	int	dx;
 	int	dy;
@@ -49,8 +49,8 @@ static void	draw_low(t_image *img, t_vector_int start,
 	}
 }
 
-static void	draw_high(t_image *img, t_vector_int start,
-					 t_vector_int end, t_colour colour)
+static void	draw_high(t_image *img, t_vec2i start,
+					 t_vec2i end, t_colour colour)
 {
 	int	dx;
 	int	dy;
@@ -81,8 +81,8 @@ static void	draw_high(t_image *img, t_vector_int start,
 		start.y++;
 	}
 }
-void	draw_line_in_image(t_image *img, t_vector_int start,
-							t_vector_int end, t_colour colour)
+void	draw_line_in_image(t_image *img, t_vec2i start,
+							t_vec2i end, t_colour colour)
 {
 	const int	x0 = start.x;
 	const int	y0 = start.y;

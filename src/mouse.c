@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 16:39:37 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/15 16:40:54 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/01/03 16:37:13 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 int	process_mouse(int x, int y, void *param)
 {
 	t_game *const	game = (t_game*)param;
-	t_player *const	player = &game->player; (void)player;
+	t_player *const	player = &game->player;
 	static int		previous_x = -1;
 	int				dx;
 
