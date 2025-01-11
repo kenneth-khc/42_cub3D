@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: kytan <kytan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:23:30 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/04 20:56:58 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/01/11 10:31:26 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,18 @@ void	init_map(t_map *map, t_game *game, t_player *player)
 	// TODO: copy map dynamically instead
 	(void)game;
 	memcpy(&map->layout, g_layout, sizeof(g_layout));
-	map->width = MAP_WIDTH;
-	map->height = MAP_HEIGHT;
+	map->width = find_map_width();
+	map->height = find_map_height();
+
+
 	map->player_pos = player->tile_index;
 }
 
-void	print_map(char layout[10][10])
+void	print_map(t_map *map, char **layout)
 {
-	for (int y = 0; y < MAP_HEIGHT; y++)
+	for (int y = 0; y < map->height; y++)
 	{
-		for (int x = 0; x < MAP_WIDTH; x++)
+		for (int x = 0; x < map->width; x++)
 		{
 			printf("%c ", layout[y][x]);
 		}

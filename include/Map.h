@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Map.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: kytan <kytan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:14:59 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/02 11:05:59 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/01/11 10:18:13 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 
 typedef struct t_map
 {
-	char			layout[10][10];
+	char			**layout;
 	t_vec2i	player_pos;
 	int				width;
 	int				height;
@@ -28,8 +28,7 @@ typedef struct t_map
 struct	s_game;
 
 void	init_map(t_map *map, struct s_game *game, t_player *player);
-void	set_floors(t_map *map, t_player *player);
-void	print_map(char layout[10][10]);
+void	print_map(t_map *map, char **layout);
 bool	collide(t_map *map, t_vec2d *world_pos, t_game *game);
 bool	within_world_bounds(t_vec2d *pos, t_map *map, t_game *game);
 bool	is_wall(t_map *map, int x, int y);

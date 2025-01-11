@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: kytan <kytan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2025/01/03 16:43:16 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/01/11 10:42:56 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@
 #include <fcntl.h> // del
 #include <unistd.h>
 #include <limits.h>
-int	main(void)
+
+int	main(int argc, char**argv)
 {
 	t_game	game;
 
@@ -32,6 +33,7 @@ int	main(void)
 	
 	init_game(&game);
 	init_keybindings(&game.keystates);
+	parse_input(game, argv, argc);
 	init_player(&game.player);
 	init_map(&game.map, &game, &game.player);
 	init_raycaster(&game.raycaster, &game.player, &game);
