@@ -6,7 +6,7 @@
 /*   By: kytan <kytan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2025/01/11 10:42:56 by kytan            ###   ########.fr       */
+/*   Updated: 2025/01/14 08:48:04 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int	main(int argc, char**argv)
 	
 	init_game(&game);
 	init_keybindings(&game.keystates);
-	parse_input(game, argv, argc);
+	parse_input(&game, argc, argv);
 	init_player(&game.player);
 	init_map(&game.map, &game, &game.player);
 	init_raycaster(&game.raycaster, &game.player, &game);
