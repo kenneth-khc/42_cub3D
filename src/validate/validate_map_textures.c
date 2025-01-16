@@ -6,7 +6,7 @@
 /*   By: kytan <kytan@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/14 16:30:55 by kytan             #+#    #+#             */
-/*   Updated: 2025/01/16 14:54:15 by kytan            ###   ########.fr       */
+/*   Updated: 2025/01/16 17:22:17 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,7 @@ int parse_map_textures(char **textures, char *line)
     
 }
 
-char    *parse_token(char *nline)
-{
-    char    *line;
 
-    if (!nline)
-        return (0);
-    line = ft_strtrim(nline, "\n ");
-    free(nline);
-    return (ft_strtok(line, " "));
-}
 
 int textures_filled(char **textures)
 {
@@ -68,7 +59,43 @@ int textures_filled(char **textures)
 //      SAME THUNG
 //      
 
+char    *parse_token(char *nline)
+{
+    char    *line;
 
+    if (!nline)
+        return (0);
+    line = ft_strtrim(nline, "\n ");
+    free(nline);
+    return (ft_strtok(line, " "));
+}
+
+char    *new_token(char *line)
+{
+    char    *ptr;
+
+    if (!line)
+        return (0);
+    ptr = line;
+    line = ft_strtrim(line, " \n");
+    free(ptr);
+    return (ft_strtok(line, " "));
+}
+
+/**
+ * @return the texture asset path represented as a string;
+ * @return NULL if there's no token after `id_token` OR
+ * @return if token is an invalid texture path
+ */
+char    *valid_texture(char *texture_token)
+{
+    if (!texture_token)
+        return (0);
+    if (valid_texture_path(texture_token))
+        return (texture_token);
+    free(texture_token);
+    return (0);
+}
 
 int validate_map_textures(char *file, int fd)
 {
@@ -77,35 +104,17 @@ int validate_map_textures(char *file, int fd)
     char    **textures;
 
     textures = ft_calloc(TOTAL_TEXTURE_ELEMENTS, sizeof(char *));
-    while (!textures_filled(textures))
+    while (!textures_filled(textures)) // COND 1: TEXTURES ARE NOT FULL
     {
-        line = get_next_line(fd);
-        if (!line)
-            return (std);
-        id_token = parse_token(line);
-    //     if (!id_token)
-    //         break ;
-    //     if (valid_id_token && )
-    //     if (ft_strcmp("NO", id_token))
-    //         if (parse_north_txt(textures, line))
-    //             return (clean_free() && stderr_msg());
-    //     else if (ft_strcmp("SO", id_token))
-    //         if (parse_south_txt(textures, line))
-    //             return (clean_free() && stderr_msg());
-    //     else if (ft_strcmp("WE", id_token))
-    //         if (parse_west_txt(textures, line))
-    //             return (clean_free() && stderr_msg());
-    //     else if (ft_strcmp("EA", id_token))
-    //         if (parse_west_txt(textures, line))
-    //             return (clean_free() && stderr_msg());
-    //     else if (ft_strcmp("F", id_token))
-    //         if (parse_floor_txt(textures, line))
-    //             return (clean_free() && stderr_msg());
-    //     else if (ft_strcmp("C", id_token))
-    //         if (parse_ceiling_txt(textures, line))
-    //             return (clean_free() && stderr_msg());
-    //     free(id_token);
+        line = get_next_line(fd); // COND 2: EOF NOT REACHED
+        if (!line) 
+            break ;
+        id_token = new_token(line); //tokenize line
+        if (valid_id(id_token) != -1) // valid_id() returns an index of 0 to 5 if its a valid index token if not it returns -1
+            textures[valid_id(id_token)] = valid_texture(new_token(line)); //valid_texture returns 0 if 1. theres no token after id_token 2. the token is not a valid path
+        free(line);
     }
-    // if ()
-    //     ;
+    if (!textures_filled(textures))
+        return (stderr_msg(E_TEXTURE_ELEMENT));
+    return (validate_texture_paths(textures));
 }
