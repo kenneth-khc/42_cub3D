@@ -6,7 +6,7 @@
 /*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 17:49:45 by kytan             #+#    #+#             */
-/*   Updated: 2025/03/07 05:14:46 by kytan            ###   ########.fr       */
+/*   Updated: 2025/03/07 18:22:07 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	validate_file_data(t_parse *parser, t_game *game)
 	if (check textures filled && check map filled)
 }
 
-int	validate_data_contents(char **file_data, t_data *cub)
+int	validate_file_data(char **file_data, t_game *game)
 {
 	int		i;
 	int		txtr_flags;
@@ -47,11 +47,11 @@ int	validate_data_contents(char **file_data, t_data *cub)
 			continue ;
 		token = ft_strtok(file_data[i], ' ');
 		if (!token)
-			exit_free(E_MEMORY_ALLOC, cub, 0);
+			exit_free("MEMORY-ALLOC", game, 0);
 		else if (valid_identifier(token))
 		{
 			if (txtr_flags & (1 << id_idx(token)))
-				exit_free(E_INVALID_MAP_ELEMENTS, cub, token);
+				exit_free("INVALID-ELEMENTS", game, token);
 			txtr_flags ^= 1 << id_idx(token);
 		}
 		else
