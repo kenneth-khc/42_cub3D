@@ -1,18 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_data_texture.c                               :+:      :+:    :+:   */
+/*   parse_data_elements.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 23:50:32 by kytan             #+#    #+#             */
-/*   Updated: 2025/03/11 18:50:36 by kytan            ###   ########.fr       */
+/*   Updated: 2025/03/12 01:02:00 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.h"
 #include "Validate.h"
 #include "Exit.h"
+
+void	parse_texture_data(char **data_file, t_game *game)
+{
+	;
+}
 
 void	parse_texture_data(char **data_file, t_game *game)
 {

@@ -6,26 +6,13 @@
 /*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/11 23:47:09 by kytan             #+#    #+#             */
-/*   Updated: 2025/03/12 00:53:58 by kytan            ###   ########.fr       */
+/*   Updated: 2025/03/12 01:23:00 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.h"
 #include "Exit.h"
 #include "libft.h"
-
-int	invalid_player(char *element)
-{
-	int		player_ct;
-
-	player_ct = 0;
-	if (*element != 'N'
-		&& *element != 'W'
-		&& *element != 'S'
-		&& *element != 'E')
-		player_ct++;
-	element++;
-}
 
 /**
  * @brief Checks for invalid map characters & if theres only 1 player
@@ -34,7 +21,7 @@ int	invalid_player(char *element)
  * Player characters consists of 'N', 'S', 'E', 'W'.
  * @return For invalid map characters, return `1`. Else, return `0`.
  */
-int	invalid_map_char(char **data)
+static int	invalid_map_char(char **data)
 {
 	int		i;
 	int		j;
@@ -57,7 +44,7 @@ int	invalid_map_char(char **data)
  *
  * @return For invalid .
  */
-int	invalid_player(char **data)
+static int	invalid_player(char **data)
 {
 	int		i;
 	int		j;
@@ -79,18 +66,20 @@ int	invalid_player(char **data)
 	return (0);
 }
 
-int	invalid_walls(char **data)
+static int	invalid_walls(char **data)
 {
 	wall_recursion(data, size, );
+	if (end of row OR end of col)
+		return ;
 	if (wall_char)
 	{
 		check_top_char if not first row
 			wall_side++
 		check_bottom_char if not last row
 			wall_side++
-		check_left_char if not first row
+		check_left_char if not first col
 			wall_side++
-		check_right_char if not last row
+		check_right_char if not last col
 			wall_side++
 		if wall_side != 2
 			exit_free();
@@ -98,6 +87,23 @@ int	invalid_walls(char **data)
 	}
 }
 
+static int	invalid_interior(char **data)
+{
+	;
+}
+
+void	validate_data_elements_map(char **file_data, t_game *game)
+{
+	file_data = file_data + game->parser.breakpoint_idx;
+	if (invalid_map_char(file_data) || invalid_player(file_data))
+		exit_free("INVALID-ELEMENTS", game, 0);
+	if (invalid_walls(file_data))
+		exit_free("INVALID-ELEMENTS", game, 0);
+	if (invalid_interior(file_data))
+		exit_free("INVALID-ELEMENTS", game, 0);
+}
+
+/*
 void f_fill(char **tab, t_point size, char target, int row, int col)
 {
 	if (row < 0 || col < 0 || row >= size.y || col >= size.x)
@@ -117,12 +123,4 @@ void  flood_fill(char **tab, t_point size, t_point begin)
 	char target = tab[begin.y][begin.x];
 	f_fill(tab, size, target, begin.y, begin.x);
 }
-
-void	validate_data_elements_map(char **file_data, t_game *game)
-{
-	file_data = file_data + game->parser.breakpoint_idx;
-	if (invalid_map_char(file_data) || invalid_player(file_data))
-		exit_free("INVALID-ELEMENTS", game, 0);
-	if (invalid_walls(file_data))
-		exit_free("INVALID-ELEMENTS", game, 0);
-}
+*/
