@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2025/01/03 16:43:16 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/03/05 16:10:36 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,26 @@
 #include "Renderer.h"
 #include "Raycaster.h"
 #include "Colours.h" // probably don't need all these colours, remove later
+#include "Parser.h"
 
 #include <fcntl.h> // del
 #include <unistd.h>
 #include <limits.h>
-int	main(void)
+int	main(int ac, char **av)
 {
 	t_game	game;
 
 	// maybe not necessary if we initialize everything properly before reading
 	game = (t_game){0};
+
+	welcome_msg();
+	init_parser(&game);
+	start_parser(&game, av[1]);
+	print_parser(&game);
+	free_parser(&game);
+	/*
 	set_colour_table(&game.colours); // probably remove later
-	
+
 	init_game(&game);
 	init_keybindings(&game.keystates);
 	init_player(&game.player);
@@ -46,6 +54,7 @@ int	main(void)
 		MOUSEMOVE_EVENT, POINTER_MOTION_MASK, process_mouse, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);
+	*/
 }
 
 void	init_game(t_game *game)

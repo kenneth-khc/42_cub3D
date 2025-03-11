@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Game.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:40:30 by kecheong          #+#    #+#             */
-/*   Updated: 2025/01/03 16:42:01 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/03/05 11:43:25 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include "Raycaster.h"
 # include "Keys.h"
 # include "Renderer.h"
+# include "Parser.h"
 
 # include <stdio.h>
 
@@ -49,6 +50,7 @@ typedef struct s_game
 	t_raycaster		raycaster;
 	t_renderer		renderer;
 	t_keystates		keystates;
+	t_parse				parser;
 }	t_game;
 
 void	init_game(t_game *game);
