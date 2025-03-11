@@ -6,17 +6,39 @@
 /*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 23:50:32 by kytan             #+#    #+#             */
-/*   Updated: 2025/03/12 01:02:00 by kytan            ###   ########.fr       */
+/*   Updated: 2025/03/12 02:02:57 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.h"
 #include "Validate.h"
 #include "Exit.h"
+#include "libft.h"
 
-void	parse_texture_data(char **data_file, t_game *game)
+void	parse_map_data(char **data_file, t_game *game)
 {
-	;
+	int		i;
+	int		j;
+	char	**map_data;
+
+	map_data = ft_calloc(game->parser.map_size + 1, sizeof(char *));
+	data_file = data_file + game->parser.breakpoint_idx;
+	j = 0;
+	i = -1;
+	if (!map_data)
+		exit_free("MEMORY-ALLOC", game, 0);
+	while (data_file[++i])
+		if (empty_line(data_file[i]))
+			continue ;
+	while (data_file[i])
+	{
+		if (empty_line(data_file[i]))
+			break ;
+		
+		i++;
+	}
+	if (game->parser.data_map)
+		exit_free("MEMORY-ALLOC", game, 0);
 }
 
 void	parse_texture_data(char **data_file, t_game *game)
@@ -28,7 +50,7 @@ void	parse_texture_data(char **data_file, t_game *game)
 	i = -1;
 	texture_paths = ft_calloc(TOTAL_TEXTURES + 1, sizeof(char *));
 	if (!texture_paths)
-		return (exit_free("MEMORY-ALLOC", game, 0));
+		exit_free("MEMORY-ALLOC", game, 0);
 	// print_texture_paths(texture_paths);
 	while (data_file[++i])
 	{

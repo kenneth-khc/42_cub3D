@@ -6,7 +6,7 @@
 /*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 13:07:58 by kytan             #+#    #+#             */
-/*   Updated: 2025/03/05 18:24:29 by kytan            ###   ########.fr       */
+/*   Updated: 2025/03/12 01:48:46 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static char	**retrieve_file_data(int fd, t_game *game)
 
 	raw_data = ft_calloc(1, sizeof(char));
 	if (!raw_data)
-		return (exit_free("MEMORY-ALLOC", game, 0));
+		exit_free("MEMORY-ALLOC", game, 0);
 	line = get_next_line(fd);
 	while (1)
 	{
@@ -29,7 +29,7 @@ static char	**retrieve_file_data(int fd, t_game *game)
 			break;
 		raw_data = ft_strfjoin(raw_data, line);
 		if (!raw_data)
-			return (exit_free("MEMORY-ALLOC", game, line));
+			exit_free("MEMORY-ALLOC", game, line);
 		free(line);
 		line = get_next_line(fd);
 	}
