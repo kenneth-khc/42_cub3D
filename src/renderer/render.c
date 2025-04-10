@@ -32,10 +32,10 @@ void	init_renderer(t_renderer *renderer,
 	renderer->img = world;
 	renderer->screen = screen;
 	renderer->midpoint = game->screen.height / 2;
-	game->renderer.animations[EAST] = animation(game, "textures/fauna_snail/fauna_snail");
-	game->renderer.animations[NORTH] = animation(game, "textures/fauna_sweep/fauna_sweep");
-	game->renderer.animations[WEST] = animation(game, "textures/fauna_dance/fauna_dance");
-	game->renderer.animations[SOUTH] = animation(game, "textures/fauna_cat_ears/fauna_cat_ears");
+	game->renderer.animations[EAST] = animation(game, "textures/cat_happy/cat_happy");
+	game->renderer.animations[NORTH] = animation(game, "textures/cat_angry/cat_angry");
+	game->renderer.animations[WEST] = animation(game, "textures/cat_omg/cat_omg");
+	game->renderer.animations[SOUTH] = animation(game, "textures/cat_playing/cat_playing");
 }
 
 /* Called each frame of the game to render the world onto the screen

@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 
-# check if we can use magick
-
 if [ $# -ne 1 ] 
 then
 	printf "Error. usage: ./script <file.gif>\n"
 	exit 1
 fi
 
+# check if we can use magick
 if ! command -v magick >/dev/null 2>&1
 then
 	printf "magick command not found. imagemagick is required to manipulate images\n"

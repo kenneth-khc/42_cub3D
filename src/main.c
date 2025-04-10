@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2025/01/03 16:43:16 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/10 17:17:13 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,8 @@ int	main(void)
 	init_map(&game.map, &game, &game.player);
 	init_raycaster(&game.raycaster, &game.player, &game);
 	init_minimap(&game, &game.map, &game.minimap);
-	create_image(game.mlx, &game.world_3d, game.screen.width, game.screen.height);
+	create_image(game.mlx, &game.world_3d, game.screen.width,
+		game.screen.height);
 	init_renderer(&game.renderer, &game, &game.world_3d, game.screen);
 	mlx_hook(game.window,
 		KEYPRESS_EVENT, KEYPRESS_MASK, press_release_key, &game.keystates);
