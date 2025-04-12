@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:40:30 by kecheong          #+#    #+#             */
-/*   Updated: 2025/01/03 16:42:01 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/12 16:33:35 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,21 @@
 # ifndef SCREEN_WIDTH
 #  define SCREEN_WIDTH 1000
 # endif
+
 # ifndef SCREEN_HEIGHT
 #  define SCREEN_HEIGHT 1000
+# endif
+
+# ifndef WINDOW_TITLE
+#  define WINDOW_TITLE "cute3D"
+# endif
+
+# ifndef TILE_WIDTH
+#  define TILE_WIDTH 50
+# endif
+
+# ifndef TILE_HEIGHT
+#  define TILE_HEIGHT 50
 # endif
 
 # include "Player.h"

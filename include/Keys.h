@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:00:51 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/29 10:38:41 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/13 02:02:51 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,23 @@ enum e_keycodes
 
 # define N_KEYS 10 // number of keys that we care about
 
-typedef void			(*t_action)(void*);
+typedef struct s_key	t_key;
+typedef void			(*t_action)(void*, t_key*);
+
+typedef enum e_key_state
+{
+	NONE = 0b00,
+	PRESS = 0b01,
+	RELEASE = 0b10
+}	t_key_state;
 
 /* A single key */
 typedef struct s_key
 {
 	int			mlx_keycode; // translate this into an idx into our keys array
 	t_action	action; // a function that does something when a key is pressed
-	bool		pressed; // whether the key is pressed or released
+	t_key_state	state; // whether the key is pressed or release
+	t_key_state	interested; // whether we are interested in PRESS and/or RELEASE
 }	t_key;
 
 /* Storing the state of all the keys we care about */
@@ -100,17 +109,19 @@ typedef struct s_player	t_player;
 
 void	init_keybindings(t_keystates *keys);
 int		press_release_key(int mlx_keycode, t_keystates *keys);
+int		press_key(int mlx_keycode, t_keystates *keys);
+int		release_key(int mlx_keycode, t_keystates *keys);
 void	process_keys(t_keystates *keys, t_game *game);
 
-void	move_forward(void *ptr);
-void	move_backward(void *ptr);
-void	strafe_left(void *ptr);
-void	strafe_right(void *ptr);
+void	move_forward(void *ptr, t_key *key);
+void	move_backward(void *ptr, t_key *key);
+void	strafe_left(void *ptr, t_key *key);
+void	strafe_right(void *ptr, t_key *key);
 
-void	rotate_left(void *ptr);
-void	rotate_right(void *ptr);
+void	rotate_left(void *ptr, t_key *key);
+void	rotate_right(void *ptr, t_key *key);
 
-void	toggle_minimap(void *ptr);
-void	close_game(void *ptr);
+void	toggle_minimap(void *ptr, t_key *key);
+void	close_game(void *ptr, t_key *key);
 
 #endif

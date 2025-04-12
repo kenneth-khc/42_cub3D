@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:11:39 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/04 21:46:47 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/13 02:02:42 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,9 @@
  * D - strafe player to the rihgt (move in -90 degrees)
  */
 
-void	move_forward(void *ptr)
+void	move_forward(void *ptr, t_key *key)
 {
+	(void)key;
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
 	t_map *const	map = &game->map;
@@ -43,8 +44,9 @@ void	move_forward(void *ptr)
 	}
 }
 
-void	move_backward(void *ptr)
+void	move_backward(void *ptr, t_key *key)
 {
+	(void)key;
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
 	t_map *const	map = &game->map;
@@ -63,8 +65,9 @@ void	move_backward(void *ptr)
 	}
 }
 
-void	strafe_left(void *ptr)
+void	strafe_left(void *ptr, t_key *key)
 {
+	(void)key;
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
 	t_map *const	map = &game->map;
@@ -85,8 +88,9 @@ void	strafe_left(void *ptr)
 	}
 }
 
-void	strafe_right(void *ptr)
+void	strafe_right(void *ptr, t_key *key)
 {
+	(void)key;
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
 	t_map *const	map = &game->map;

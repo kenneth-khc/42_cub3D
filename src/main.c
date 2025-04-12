@@ -22,6 +22,7 @@
 #include <fcntl.h> // del
 #include <unistd.h>
 #include <limits.h>
+
 int	main(void)
 {
 	t_game	game;
@@ -29,7 +30,6 @@ int	main(void)
 	// maybe not necessary if we initialize everything properly before reading
 	game = (t_game){0};
 	set_colour_table(&game.colours); // probably remove later
-	
 	init_game(&game);
 	init_keybindings(&game.keystates);
 	init_player(&game.player);
@@ -40,9 +40,9 @@ int	main(void)
 		game.screen.height);
 	init_renderer(&game.renderer, &game, &game.world_3d, game.screen);
 	mlx_hook(game.window,
-		KEYPRESS_EVENT, KEYPRESS_MASK, press_release_key, &game.keystates);
+		KEYPRESS_EVENT, KEYPRESS_MASK, press_key, &game.keystates);
 	mlx_hook(game.window,
-		KEYRELEASE_EVENT, KEYRELEASE_EVENT, press_release_key, &game.keystates);
+		KEYRELEASE_EVENT, KEYRELEASE_EVENT, release_key, &game.keystates);
 	mlx_hook(game.window,
 		MOUSEMOVE_EVENT, POINTER_MOTION_MASK, process_mouse, &game);
 	mlx_loop_hook(game.mlx, game_loop, &game);
@@ -55,9 +55,9 @@ void	init_game(t_game *game)
 	game->screen.width = SCREEN_WIDTH;
 	game->screen.height = SCREEN_HEIGHT;
 	game->window = mlx_new_window(game->mlx, game->screen.width,
-			game->screen.height, "cute3D");
-	game->tile_width = 50;
-	game->tile_height = 50;
+			game->screen.height, WINDOW_TITLE);
+	game->tile_width = TILE_WIDTH;
+	game->tile_height = TILE_HEIGHT;
 }
 
 int	game_loop(t_game *game)
