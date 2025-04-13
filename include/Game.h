@@ -33,6 +33,15 @@
 #  define TILE_HEIGHT 50
 # endif
 
+# ifndef TURN_SPEED_RADS
+//#  define TURN_SPEED_RADS 0.0174533 // 1 degrees
+#  define TURN_SPEED_RADS 0.0872665 // 5 degrees
+# endif
+
+# ifndef VERTICAL_CAMERA_SPEED
+#  define VERTICAL_CAMERA_SPEED 20
+# endif
+
 # include "Player.h"
 # include "Map.h"
 # include "Minimap.h"

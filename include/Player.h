@@ -25,10 +25,10 @@ enum e_cardinal_directions
 
 typedef struct s_player
 {
-	int				start_direction; // player initialized to NO/SO/EA/WE
-	double			angle_in_radians;
-	double			field_of_view;
-	double			speed;
+	int		start_direction; // player initialized to NO/SO/EA/WE
+	double	angle_in_radians;
+	double	field_of_view;
+	double	speed;
 	t_vec2d	direction; // a normalized direction vector
 	t_vec2i	tile_index; // position in the map/2D array
 	t_vec2d	world_pos; // position in the game world, not the screen

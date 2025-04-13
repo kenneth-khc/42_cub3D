@@ -6,17 +6,15 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:43:29 by kecheong          #+#    #+#             */
-/*   Updated: 2025/01/03 17:04:38 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/14 01:51:03 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <mlx.h>
 #include "Image.h"
 #include "Vector.h"
 #include "Game.h"
+#include <mlx.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <assert.h>
 
 /* Create an Image object wrapping an MLX image object, along with data
  * required to manipulate it 
@@ -54,40 +52,6 @@ uint32_t	*get_pixel_addr(t_image *img, int x, int y)
 	}
 }
 
-/* Converts an address of a pixel into a Colour object */
-t_colour	pixel_to_colour(uint32_t *pixel)
-{
-	t_colour	ret;
-
-	ret.value = *pixel;
-	return (ret);
-}
-
-/* Draw on an Image's XY by accessing it and changing the pixel value
- * Return true if successful and false otherwise (eg if XY is out of bounds) */
-bool	draw_pixel(t_image *img, int x, int y, t_colour colour)
-{
-	uint32_t	*pixel;
-
-	if (x < img->width && y < img->height)
-	{
-		pixel = get_pixel_addr(img, x, y);
-		if (pixel)
-		{
-			*pixel = colour.value;
-			return (true);
-		}
-		else
-		{
-			return (false);
-		}
-	}
-	else
-	{
-		return (false);
-	}
-}
-
 /* Wrapper for mlx_put_image, taking in an Image object and the point
  * on the screen to display it at */
 void	put_image(t_game *game, t_image *img, t_vec2i *screen)
@@ -118,11 +82,11 @@ void	fill_image(t_image *img, const t_colour colour)
 /* Load an XPM file into an Image object */
 void	load_image(t_game *game, t_image *img, const char *filename)
 {
-	img->instance
-		= mlx_xpm_file_to_image(game->mlx, (char*)filename, &img->width, &img->height);
+	img->instance = mlx_xpm_file_to_image(game->mlx, (char *)filename,
+			&img->width, &img->height);
 	img->pixels = img->width * img->height;
 	img->addr = mlx_get_data_addr(img->instance,
-				&img->bits_per_pixel, &img->size_line, &img->endian);
+			&img->bits_per_pixel, &img->size_line, &img->endian);
 	img->bytes_per_pixel = img->bits_per_pixel / 8;
 	img->bytes = img->pixels * img->bytes_per_pixel;
 }

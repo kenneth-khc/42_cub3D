@@ -1,19 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_utils.c                                        :+:      :+:    :+:   */
+/*   minimap_init.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/02 07:08:15 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/14 03:05:43 by kecheong         ###   ########.fr       */
+/*   Created: 2025/04/14 01:00:16 by kecheong          #+#    #+#             */
+/*   Updated: 2025/04/14 01:01:10 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdbool.h>
+#include "Game.h"
+#include "Minimap.h"
 #include "Map.h"
 
-bool	is_wall(t_map *map, int x, int y)
+void	init_minimap(t_game *game, t_map *map, t_minimap *minimap)
 {
-	return (map->layout[y][x] == '1');
+	(void)map;
+	minimap->display = true;
+	minimap->width = game->screen.width * MINIMAP_SCALE;
+	minimap->height = game->screen.height * MINIMAP_SCALE;
+	create_image(game->mlx, &minimap->img, minimap->width, minimap->height);
+	minimap->img.pos.x = 10;
+	minimap->img.pos.y = 10;
+	update_minimap(minimap, game);
 }

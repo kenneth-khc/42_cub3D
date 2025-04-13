@@ -80,7 +80,7 @@ enum e_keycodes
 # define N_KEYS 10 // number of keys that we care about
 
 typedef struct s_key	t_key;
-typedef void			(*t_action)(void*, t_key*);
+typedef void			(*t_action)(void*);
 
 typedef enum e_key_state
 {
@@ -95,7 +95,7 @@ typedef struct s_key
 	int			mlx_keycode; // translate this into an idx into our keys array
 	t_action	action; // a function that does something when a key is pressed
 	t_key_state	state; // whether the key is pressed or release
-	t_key_state	interested; // whether we are interested in PRESS and/or RELEASE
+	t_key_state	interest; // whether we are interested in PRESS and/or RELEASE
 }	t_key;
 
 /* Storing the state of all the keys we care about */
@@ -107,21 +107,24 @@ typedef struct s_keystates
 typedef struct s_game	t_game;
 typedef struct s_player	t_player;
 
+t_key	map_key(int interest, enum e_mlx_keycodes keycode, t_action action);
 void	init_keybindings(t_keystates *keys);
 int		press_release_key(int mlx_keycode, t_keystates *keys);
 int		press_key(int mlx_keycode, t_keystates *keys);
 int		release_key(int mlx_keycode, t_keystates *keys);
 void	process_keys(t_keystates *keys, t_game *game);
 
-void	move_forward(void *ptr, t_key *key);
-void	move_backward(void *ptr, t_key *key);
-void	strafe_left(void *ptr, t_key *key);
-void	strafe_right(void *ptr, t_key *key);
+void	look_up(void *game);
+void	look_down(void *game);
+void	move_forward(void *ptr);
+void	move_backward(void *ptr);
+void	strafe_left(void *ptr);
+void	strafe_right(void *ptr);
 
-void	rotate_left(void *ptr, t_key *key);
-void	rotate_right(void *ptr, t_key *key);
+void	rotate_left(void *ptr);
+void	rotate_right(void *ptr);
 
-void	toggle_minimap(void *ptr, t_key *key);
-void	close_game(void *ptr, t_key *key);
+void	toggle_minimap(void *ptr);
+void	close_game(void *ptr);
 
 #endif

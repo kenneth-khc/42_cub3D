@@ -18,11 +18,11 @@
 
 typedef struct t_map
 {
-	char			layout[10][10];
+	char	layout[10][10];
 	t_vec2i	player_pos;
-	int				width;
-	int				height;
-	t_image			img; // mlx image used to display the map onto the screen
+	int		width;
+	int		height;
+	t_image	img; // mlx image used to display the map onto the screen
 }	t_map;
 
 struct	s_game;

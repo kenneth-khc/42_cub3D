@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 16:39:37 by kecheong          #+#    #+#             */
-/*   Updated: 2025/01/03 16:37:13 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/14 03:05:45 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	process_mouse(int x, int y, void *param)
 	else
 	{
 		dx = x - previous_x;
-		if (dx < 0) // rotate right
+		if (dx < 0)
 		{
 			player->angle_in_radians += (0.01 * abs(dx));
 			if (radians_to_degrees(player->angle_in_radians) > 360)
