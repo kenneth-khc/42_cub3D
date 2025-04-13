@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/14 03:05:50 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/14 06:10:28 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ int	main(void)
 		KEYRELEASE_EVENT, KEYRELEASE_EVENT, release_key, &game.keystates);
 	mlx_hook(game.window,
 		MOUSEMOVE_EVENT, POINTER_MOTION_MASK, process_mouse, &game);
+	mlx_mouse_hide(game.mlx, game.window);
 	mlx_loop_hook(game.mlx, game_loop, &game);
 	mlx_loop(game.mlx);
 }

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:40:30 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/12 16:33:35 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/14 06:10:16 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,10 @@
 # ifndef TURN_SPEED_RADS
 //#  define TURN_SPEED_RADS 0.0174533 // 1 degrees
 #  define TURN_SPEED_RADS 0.0872665 // 5 degrees
+# endif
+
+# ifndef MOUSE_TURN_SPEED_RADS
+#  define MOUSE_TURN_SPEED_RADS 0.000872665 // 0.005 degrees
 # endif
 
 # ifndef VERTICAL_CAMERA_SPEED

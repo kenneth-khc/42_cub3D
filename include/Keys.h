@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:00:51 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/13 02:02:51 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/14 03:57:10 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ enum e_events
 	KEYPRESS_EVENT = 2,
 	KEYRELEASE_EVENT = 3,
 	MOUSEMOVE_EVENT = 6,
-	ENTER_EVENT = 7 // event for when mouse enters the window
+	ENTER_EVENT = 7, // event for when mouse enters the window
+	LEAVE_EVENT = 8
 };
 
 /* Event masks according to the MLX documentation */
@@ -29,6 +30,7 @@ enum e_event_masks
 	KEYPRESS_MASK = 1L << 0,
 	KEYRELEASE_MASK = 1L << 1,
 	ENTER_WINDOW_MASK = 1L << 4,
+	LEAVE_WINDOW_MASK = 1L << 5,
 	POINTER_MOTION_MASK = 1L << 6
 };
 
