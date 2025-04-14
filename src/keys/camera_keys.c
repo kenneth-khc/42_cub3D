@@ -29,13 +29,13 @@ void	rotate_left(void *ptr)
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
 
-	player->angle_in_radians += TURN_SPEED_RADS;
-	if (radians_to_degrees(player->angle_in_radians) > 360)
+	player->angle += TURN_SPEED_RADS;
+	if (radians_to_degrees(player->angle) > 360)
 	{
-		player->angle_in_radians -= degrees_to_radians(360);
+		player->angle -= degrees_to_radians(360);
 	}
-	player->direction.x = cos(player->angle_in_radians);
-	player->direction.y = -sin(player->angle_in_radians);
+	player->direction.x = cos(player->angle);
+	player->direction.y = -sin(player->angle);
 	update_minimap(&game->minimap, game);
 }
 
@@ -44,13 +44,13 @@ void	rotate_right(void *ptr)
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
 
-	player->angle_in_radians -= TURN_SPEED_RADS;
-	if (radians_to_degrees(player->angle_in_radians < 0))
+	player->angle -= TURN_SPEED_RADS;
+	if (radians_to_degrees(player->angle < 0))
 	{
-		player->angle_in_radians += degrees_to_radians(360);
+		player->angle += degrees_to_radians(360);
 	}
-	player->direction.x = cos(player->angle_in_radians);
-	player->direction.y = -sin(player->angle_in_radians);
+	player->direction.x = cos(player->angle);
+	player->direction.y = -sin(player->angle);
 	update_minimap(&game->minimap, game);
 }
 

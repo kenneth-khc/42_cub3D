@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/14 06:10:28 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:35:06 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 #include <fcntl.h> // del
 #include <unistd.h>
 #include <limits.h>
+#include <math.h>
 
 int	main(void)
 {
@@ -61,10 +62,31 @@ void	init_game(t_game *game)
 	game->tile_height = TILE_HEIGHT;
 }
 
+void	update(t_game *game, t_player *player)
+{
+	if (player->is_moving)
+	{
+		printf("%f %f", player->world_pos.x, player->world_pos.y);
+		printf(" => ");
+		player->world_pos.x += player->delta.x;
+		player->world_pos.y += player->delta.y;
+		printf("%f %f\n", player->world_pos.x, player->world_pos.y);
+		player->tile_index.x = player->world_pos.x / game->tile_width;
+		player->tile_index.y = player->world_pos.y / game->tile_height;
+		// TODO: fix this
+		/*update_map(&game->map, player);*/
+		update_minimap(&game->minimap, game);
+		player->is_moving = false;
+		player->delta.x = 0;
+		player->delta.y = 0;
+	}
+}
+
 int	game_loop(t_game *game)
 {
-	process_keys(&game->keystates, game);
 	mlx_clear_window(game->mlx, game->window);
+	process_keys(&game->keystates, game);
+	update(game, &game->player);
 	raycast(&game->raycaster, &game->player, game);
 	render(game, &game->renderer, &game->raycaster);
 	return (0);

@@ -6,21 +6,22 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 01:53:56 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/14 03:05:20 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:25:05 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.h"
 #include "Map.h"
 #include "Vector.h"
+#include <math.h>
 
 bool	collide(t_map *map, t_vec2d *world_pos, t_game *game)
 {
-	t_vec2i	pos;
+	t_vec2d	pos;
 
-	pos.x = world_pos->x / game->tile_width;
-	pos.y = world_pos->y / game->tile_height;
-	if (map->layout[pos.y][pos.x] == '1')
+	pos.x = floor(world_pos->x / game->tile_width);
+	pos.y = floor(world_pos->y / game->tile_height);
+	if (map->layout[(int)pos.y][(int)pos.x] == '1')
 	{
 		return (true);
 	}

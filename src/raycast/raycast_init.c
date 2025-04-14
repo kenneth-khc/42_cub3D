@@ -30,14 +30,14 @@ void	init_ray(t_ray *ray, t_raycaster *raycaster, int ray_count,
 	ray->tile_index.y = player->world_pos.y / game->tile_height;
 	ray->tile_offset.x = player->world_pos.x / game->tile_width;
 	ray->tile_offset.y = player->world_pos.y / game->tile_height;
-	ray->angle_in_radians = raycaster->leftmost_ray_angle
+	ray->angle = raycaster->leftmost_ray_angle
 		- (ray->id * raycaster->angle_increment);
 	ray->dir.x = player->direction.x
 		+ raycaster->projection_plane.x * camera_x;
 	ray->dir.y = player->direction.y
 		+ raycaster->projection_plane.y * camera_x;
-	ray->dir.x = cos(ray->angle_in_radians);
-	ray->dir.y = -sin(ray->angle_in_radians);
+	ray->dir.x = cos(ray->angle);
+	ray->dir.y = -sin(ray->angle);
 }
 
 /* Initialize the raycaster for the first time 
@@ -52,7 +52,7 @@ void	init_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 
 	raycaster->ray_count = game->screen.width;
 	raycaster->angle_increment = player->field_of_view / raycaster->ray_count;
-	raycaster->leftmost_ray_angle = player->angle_in_radians
+	raycaster->leftmost_ray_angle = player->angle
 		+ (player->field_of_view / 2);
 	raycaster->projection_plane.x = 0;
 	raycaster->projection_plane.y = 1;

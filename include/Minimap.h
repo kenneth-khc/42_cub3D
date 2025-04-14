@@ -22,6 +22,14 @@
 #  define MINIMAP_SCALE 0.3
 # endif
 
+# ifndef MINIMAP_X_OFFSET
+#  define MINIMAP_X_OFFSET 10
+# endif
+
+# ifndef MINIMAP_Y_OFFSET
+#  define MINIMAP_Y_OFFSET 10
+# endif
+
 /* A camera overlooking the 2D map */
 typedef struct s_camera
 {
@@ -36,14 +44,12 @@ typedef struct s_minimap
 {
 	bool			display; // should the minimap be displayed, default to true
 	t_image			img;
-	int				width;
-	int				height;
 	t_camera		camera;
 }	t_minimap;
 
 void	update_minimap(t_minimap *minimap, t_game *game);
 void	update_camera(t_camera *camera, t_minimap *minimap, t_player *player);
-void	fill_minimap(t_minimap *minimap, t_map *map,
+void	fill_minimap(t_minimap *minimap, t_camera *camera, t_map *map,
 			t_game *game);
 void	draw_fov(t_minimap *minimap, t_player *player, t_game *game);
 

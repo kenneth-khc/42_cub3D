@@ -10,8 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
-#include <mlx.h>
 #include "Colours.h"
 #include "Game.h"
 #include "Image.h"
@@ -19,7 +17,8 @@
 #include "Renderer.h"
 #include "Vector.h"
 #include "Animation.h"
-#include <assert.h>
+#include <mlx.h>
+#include <math.h>
 
 #ifndef TEXTURES_DIR
 # define TEXTURES_DIR "../../textures"
@@ -45,8 +44,6 @@ void	init_renderer(t_renderer *renderer,
 /* Called each frame of the game to render the world onto the screen
  * The renderer is responsible for scanning through the screen horizontally
  * and drawing each column vertically line by line */
-// TODO: uhh why do I need to multiply by 0.5 to make it look good?
-// where dis magic number come from
 void	render(t_game *game, t_renderer *renderer, t_raycaster *raycaster)
 {
 	t_ray	*ray;
@@ -60,8 +57,8 @@ void	render(t_game *game, t_renderer *renderer, t_raycaster *raycaster)
 		reset_draw_line(renderer);
 		ray = &raycaster->rays[renderer->current_x];
 		decide_current_texture(renderer, ray);
-		renderer->line_height = ((int)game->screen.height * 2
-				/ ray->distance_from_camera) * 0.5;
+		renderer->line_height = game->screen.height
+				/ ray->distance_from_camera;
 		render_wall_slice(renderer, ray);
 		renderer->current_x++;
 	}

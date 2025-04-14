@@ -42,7 +42,7 @@ typedef struct s_ray
 	t_vec2i	tile_index;
 	t_vec2d	tile_offset;
 	t_vec2d	world_pos;
-	double	angle_in_radians;
+	double	angle;
 	t_vec2d	dir; // normalized direction by cos/sine'ing angles
 	double	x_step; // how much worldX to step by when it goes 1 mapY
 	double	y_step; // how much worldY to step by when it goes 1 mapX

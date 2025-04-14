@@ -38,9 +38,9 @@ void	update_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 	int		i;
 	t_ray	*ray;
 
-	raycaster->leftmost_ray_angle = player->angle_in_radians
+	raycaster->leftmost_ray_angle = player->angle
 		+ (player->field_of_view / 2);
-	raycaster->rightmost_ray_angle = player->angle_in_radians
+	raycaster->rightmost_ray_angle = player->angle
 		- (player->field_of_view / 2);
 	i = 0;
 	while (i < raycaster->ray_count)
@@ -51,10 +51,10 @@ void	update_raycaster(t_raycaster *raycaster, t_player *player, t_game *game)
 		ray->tile_index.y = player->world_pos.y / game->tile_height;
 		ray->tile_offset.x = player->world_pos.x / game->tile_width;
 		ray->tile_offset.y = player->world_pos.y / game->tile_height;
-		ray->angle_in_radians = raycaster->leftmost_ray_angle
+		ray->angle = raycaster->leftmost_ray_angle
 			- (ray->id * raycaster->angle_increment);
-		ray->dir.x = cos(ray->angle_in_radians);
-		ray->dir.y = -sin(ray->angle_in_radians);
+		ray->dir.x = cos(ray->angle);
+		ray->dir.y = -sin(ray->angle);
 		i++;
 	}
 }

@@ -23,34 +23,59 @@ void	update_minimap(t_minimap *minimap, t_game *game)
 	t_camera *const	camera = &minimap->camera;
 
 	camera->centred_at = player;
-	camera->half_dimension = (double)minimap->width / 2;
+	camera->half_dimension = (double)minimap->img.width / 2;
 	camera->centre = (t_vec2d){camera->half_dimension, camera->half_dimension};
 	camera->top_left.x = player.x - camera->half_dimension;
 	camera->top_left.y = player.y - camera->half_dimension;
 	camera->bot_right.x = player.x + camera->half_dimension;
 	camera->bot_right.y = player.y + camera->half_dimension;
-	fill_minimap(minimap, &game->map, game);
+	fill_minimap(minimap, camera, &game->map, game);
 }
 
-void	fill_minimap(t_minimap *minimap, t_map *map, t_game *game)
+void	draw_triangle(t_image *img, t_vec2d centre, t_game *game)
 {
-	const t_camera	camera = minimap->camera;
-	const int		x = camera.top_left.x;
+	draw_pixel(img, centre.x, centre.y, game->colours.black);
+
+	double	dirX = game->player.direction.x * 20;
+	double	dirY = game->player.direction.y * 20;
+	/*printf("%f %f\n", dirX, dirY);*/
+	draw_pixel(img, centre.x + dirX, centre.y + dirY, game->colours.black);
+
+	t_vec2i	end = {.x = centre.x + dirX, .y = centre.y + dirY};
+	draw_line_in_image(img, v2d_to_v2i(centre), end, game->colours.black);
+
+	double	right_end = game->player.angle - degrees_to_radians(90);
+	double	right_x = cos(right_end);
+	double	right_y = -sin(right_end);
+
+	t_vec2i	end2 = {.x = centre.x + right_x * 10, .y = centre.y + right_y * 10};
+	draw_line_in_image(img, v2d_to_v2i(centre), end2, game->colours.black);
+
+	double	left_end = game->player.angle + degrees_to_radians(90);
+	double	left_x = cos(left_end);
+	double	left_y = -sin(left_end);
+	t_vec2i	end3 = {.x = centre.x + left_x * 10, .y = centre.y + left_y * 10};
+	draw_line_in_image(img, v2d_to_v2i(centre), end3, game->colours.black);
+}
+
+void	fill_minimap(t_minimap *minimap, t_camera *camera, t_map *map, t_game *game)
+{
+	const int		x = camera->top_left.x;
 	int				map_x;
 	int				map_y;
 	t_vec2d			pos;
 	t_vec2i			cam;
 
-	pos.x = camera.top_left.x;
-	pos.y = camera.top_left.y;
+	pos.x = camera->top_left.x;
+	pos.y = camera->top_left.y;
 	cam.x = 0;
 	cam.y = 0;
 	fill_image(&minimap->img, game->colours.cyan);
-	while (pos.y < camera.bot_right.y)
+	while (pos.y < camera->bot_right.y)
 	{
 		pos.x = x;
 		cam.x = 0;
-		while (pos.x < camera.bot_right.x)
+		while (pos.x < camera->bot_right.x)
 		{
 			if (within_world_bounds(&pos, map, game))
 			{
@@ -68,7 +93,8 @@ void	fill_minimap(t_minimap *minimap, t_map *map, t_game *game)
 		cam.y++;
 	}
 	draw_border(&minimap->img, 5, game->colours.black);
-	draw_box(&minimap->img, v2d_to_v2i(camera.centre), 5, game->colours.green);
+	draw_box(&minimap->img, v2d_to_v2i(camera->centre), 5, game->colours.green);
+	draw_triangle(&minimap->img, camera->centre, game);
 }
 
 static void	draw_minimap_ray(t_minimap *minimap, double angle, t_game *game)
@@ -95,7 +121,7 @@ void	draw_fov(t_minimap *minimap, t_player *player,
 	const double	angle_increment
 		= player->field_of_view / game->raycaster.ray_count;
 	const double	leftmost_ray_angle
-		= player->angle_in_radians + (player->field_of_view / 2);
+		= player->angle + (player->field_of_view / 2);
 	int				i;
 
 	i = 0;

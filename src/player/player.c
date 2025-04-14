@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:17:27 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/14 00:15:18 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/15 16:31:23 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,16 @@ static void	set_spawn_orientation(t_player *player);
 void	init_player(t_player *player)
 {
 	set_spawn_orientation(player);
-	player->direction.x = cos(player->angle_in_radians);
-	player->direction.y = -sin(player->angle_in_radians);
+	player->direction.x = cos(player->angle);
+	player->direction.y = -sin(player->angle);
 	player->field_of_view = degrees_to_radians(60);
 	player->tile_index.y = 1;
 	player->tile_index.x = 1;
 	player->world_pos.x = 1 * TILE_WIDTH + ((float)TILE_WIDTH / 2);
 	player->world_pos.y = 1 * TILE_HEIGHT + ((float)TILE_HEIGHT / 2);
 	player->speed = 2.0;
+	player->delta.x = 0;
+	player->delta.y = 0;
 }
 
 void	set_spawn_orientation(t_player *player)
@@ -42,19 +44,19 @@ void	set_spawn_orientation(t_player *player)
 	player->start_direction = EAST;
 	if (player->start_direction == EAST)
 	{
-		player->angle_in_radians = degrees_to_radians(0);
+		player->angle = degrees_to_radians(0);
 	}
 	else if (player->start_direction == NORTH)
 	{
-		player->angle_in_radians = degrees_to_radians(90);
+		player->angle = degrees_to_radians(90);
 	}
 	else if (player->start_direction == WEST)
 	{
-		player->angle_in_radians = degrees_to_radians(180);
+		player->angle = degrees_to_radians(180);
 	}
 	else
 	{
-		player->angle_in_radians = degrees_to_radians(270);
+		player->angle = degrees_to_radians(270);
 	}
 }
 

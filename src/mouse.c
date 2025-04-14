@@ -28,17 +28,17 @@ int	process_mouse(int x, int y, void *param)
 	{
 		return (1);
 	}
-	player->angle_in_radians += MOUSE_TURN_SPEED_RADS * delta.x;
-	if (radians_to_degrees(player->angle_in_radians) > 360)
+	player->angle += MOUSE_TURN_SPEED_RADS * delta.x;
+	if (radians_to_degrees(player->angle) > 360)
 	{
-		player->angle_in_radians -= degrees_to_radians(360);
+		player->angle -= degrees_to_radians(360);
 	}
-	else if (radians_to_degrees(player->angle_in_radians) < 0)
+	else if (radians_to_degrees(player->angle) < 0)
 	{
-		player->angle_in_radians += degrees_to_radians(360);
+		player->angle += degrees_to_radians(360);
 	}
-	player->direction.x = cos(player->angle_in_radians);
-	player->direction.y = -sin(player->angle_in_radians);
+	player->direction.x = cos(player->angle);
+	player->direction.y = -sin(player->angle);
 	mlx_mouse_move(game->mlx, game->window,
 		SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
 	update_minimap(&game->minimap, game);

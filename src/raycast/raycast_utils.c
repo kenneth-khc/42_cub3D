@@ -77,7 +77,7 @@ void	calculate_ray_y_step(t_ray *ray)
 // isn't necessary
 /*ray->distance_travelled*/
 /*	= ray->distance_travelled*/
-/*		* cos(player->angle_in_radians - ray->angle_in_radians);*/
+/*		* cos(player->angle - ray->angle);*/
 void	get_distance(t_ray *ray, t_player *player)
 {
 	if (ray->hit_side == HIT_EAST || ray->hit_side == HIT_WEST)
@@ -89,7 +89,7 @@ void	get_distance(t_ray *ray, t_player *player)
 		ray->distance_from_player = ray->y_axis_distance - ray->dy;
 	}
 	ray->distance_from_camera = ray->distance_from_player
-		* cos(player->angle_in_radians - ray->angle_in_radians);
+		* cos(player->angle - ray->angle);
 }
 
 void	check_wall_side_hit(t_ray *ray)

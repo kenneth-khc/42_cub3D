@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movement.c                                         :+:      :+:    :+:   */
+/*   movement_keys.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:11:39 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/13 21:09:02 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/15 17:20:06 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
 #include "Game.h"
 #include "Vector.h"
 #include "Player.h"
 #include "Map.h"
+#include <math.h>
 
 /* For player movement, WASD is used
  * W - move player forward
@@ -26,19 +26,23 @@ void	move_forward(void *ptr)
 {
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
-	t_map *const	map = &game->map;
-	t_vec2d			new_pos;
-	bool			collision;
+	const double	dx = player->direction.x * player->speed;
+	const double	dy = player->direction.y * player->speed;
+	t_vec2d			test;
 
-	new_pos.x = player->world_pos.x + player->direction.x * player->speed;
-	new_pos.y = player->world_pos.y + player->direction.y * player->speed;
-	collision = collide(map, &new_pos, game)
-		|| !within_world_bounds(&new_pos, map, game);
-	if (!collision)
+	test.x = player->world_pos.x + dx;
+	test.y = player->world_pos.y;
+	if (!collide(&game->map, &test, game))
 	{
-		update_player_position(player, new_pos, game);
-		update_map(map, player);
-		update_minimap(&game->minimap, game);
+		player->delta.x += dx;
+		player->is_moving = true;
+	}
+	test.x = player->world_pos.x;
+	test.y = player->world_pos.y + dy;
+	if (!collide(&game->map, &test, game))
+	{
+		player->delta.y += dy;
+		player->is_moving = true;
 	}
 }
 
@@ -46,19 +50,23 @@ void	move_backward(void *ptr)
 {
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
-	t_map *const	map = &game->map;
-	t_vec2d			new_pos;
-	bool			collision;
+	const double	dx = -player->direction.x * player->speed;
+	const double	dy = -player->direction.y * player->speed;
+	t_vec2d			test;
 
-	new_pos.x = player->world_pos.x + -player->direction.x * player->speed;
-	new_pos.y = player->world_pos.y + -player->direction.y * player->speed;
-	collision = collide(map, &new_pos, game)
-		|| !within_world_bounds(&new_pos, map, game);
-	if (!collision)
+	test.x = player->world_pos.x + dx;
+	test.y = player->world_pos.y;
+	if (!collide(&game->map, &test, game))
 	{
-		update_player_position(player, new_pos, game);
-		update_map(map, player);
-		update_minimap(&game->minimap, game);
+		player->delta.x += dx;
+		player->is_moving = true;
+	}
+	test.x = player->world_pos.x;
+	test.y = player->world_pos.y + dy;
+	if (!collide(&game->map, &test, game))
+	{
+		player->delta.y += dy;
+		player->is_moving = true;
 	}
 }
 
@@ -66,21 +74,23 @@ void	strafe_left(void *ptr)
 {
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
-	t_map *const	map = &game->map;
-	t_vec2d			new_pos;
-	bool			collision;
+	const double	dx = cos(player->angle + M_PI_2) * player->speed;
+	const double	dy = -sin(player->angle + M_PI_2) * player->speed;
+	t_vec2d			test;
 
-	new_pos.x = player->world_pos.x
-		+ cos(player->angle_in_radians + M_PI / 2) * player->speed;
-	new_pos.y = player->world_pos.y
-		+ -sin(player->angle_in_radians + M_PI / 2) * player->speed;
-	collision = collide(map, &new_pos, game)
-		|| !within_world_bounds(&new_pos, map, game);
-	if (!collision)
+	test.x = player->world_pos.x + dx;
+	test.y = player->world_pos.y;
+	if (!collide(&game->map, &test, game))
 	{
-		update_player_position(player, new_pos, game);
-		update_map(map, player);
-		update_minimap(&game->minimap, game);
+		player->delta.x += dx;
+		player->is_moving = true;
+	}
+	test.x = player->world_pos.x;
+	test.y = player->world_pos.y + dy;
+	if (!collide(&game->map, &test, game))
+	{
+		player->delta.y += dy;
+		player->is_moving = true;
 	}
 }
 
@@ -88,20 +98,22 @@ void	strafe_right(void *ptr)
 {
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
-	t_map *const	map = &game->map;
-	t_vec2d			new_pos;
-	bool			collision;
+	const double	dx = cos(player->angle - M_PI_2) * player->speed;
+	const double	dy = -sin(player->angle - M_PI_2) * player->speed;
+	t_vec2d			test;
 
-	new_pos.x = player->world_pos.x
-		+ cos(player->angle_in_radians - M_PI / 2) * player->speed;
-	new_pos.y = player->world_pos.y
-		+ -sin(player->angle_in_radians - M_PI / 2) * player->speed;
-	collision = collide(map, &new_pos, game)
-		|| !within_world_bounds(&new_pos, map, game);
-	if (!collision)
+	test.x = player->world_pos.x + dx;
+	test.y = player->world_pos.y;
+	if (!collide(&game->map, &test, game))
 	{
-		update_player_position(player, new_pos, game);
-		update_map(map, player);
-		update_minimap(&game->minimap, game);
+		player->delta.x += dx;
+		player->is_moving = true;
+	}
+	test.x = player->world_pos.x;
+	test.y = player->world_pos.y + dy;
+	if (!collide(&game->map, &test, game))
+	{
+		player->delta.y += dy;
+		player->is_moving = true;
 	}
 }
