@@ -6,14 +6,14 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 07:08:15 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/02 07:36:58 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/14 03:05:43 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdbool.h>
 #include "Map.h"
 
-bool	is_wall(t_map *map, int	x, int y)
+bool	is_wall(t_map *map, int x, int y)
 {
 	return (map->layout[y][x] == '1');
 }

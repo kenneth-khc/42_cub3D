@@ -1,6 +1,11 @@
 *.o
+*.d
+obj/
 *.a
 .cache
 compile_commands.json
 .DS_Store
 .vscode
+*.png
+*.gif
+cub3D

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:38:12 by kecheong          #+#    #+#             */
-/*   Updated: 2024/11/12 13:43:38 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/14 02:54:07 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,13 @@
 #include "Image.h"
 #include "Vector.h"
 
-static void	draw_low(t_image *img, t_vector_int start,
-					 t_vector_int end, t_colour colour)
+static void	draw_low(t_image *img, t_vec2i start,
+		t_vec2i end, t_colour colour)
 {
 	int	dx;
 	int	dy;
 	int	dir;
+	int	decision;
 
 	dx = end.x - start.x;
 	dy = end.y - start.y;
@@ -31,10 +32,9 @@ static void	draw_low(t_image *img, t_vector_int start,
 		dir = -1;
 		dy = -dy;
 	}
-	int	decision = (2 * dy) - dx;
+	decision = (2 * dy) - dx;
 	while (start.x < end.x)
 	{
-		/**get_pixel_addr(img, start.x, start.y) = colour.value;*/
 		draw_pixel(img, start.x, start.y, colour);
 		if (decision > 0)
 		{
@@ -49,12 +49,13 @@ static void	draw_low(t_image *img, t_vector_int start,
 	}
 }
 
-static void	draw_high(t_image *img, t_vector_int start,
-					 t_vector_int end, t_colour colour)
+static void	draw_high(t_image *img, t_vec2i start,
+		t_vec2i end, t_colour colour)
 {
 	int	dx;
 	int	dy;
 	int	dir;
+	int	decision;
 
 	dx = end.x - start.x;
 	dy = end.y - start.y;
@@ -64,10 +65,9 @@ static void	draw_high(t_image *img, t_vector_int start,
 		dir = -1;
 		dx = -dx;
 	}
-	int	decision = (2 * dx) - dy;
+	decision = (2 * dx) - dy;
 	while (start.y < end.y)
 	{
-		/**get_pixel_addr(img, start.x, start.y) = colour.value;*/
 		draw_pixel(img, start.x, start.y, colour);
 		if (decision > 0)
 		{
@@ -81,8 +81,9 @@ static void	draw_high(t_image *img, t_vector_int start,
 		start.y++;
 	}
 }
-void	draw_line_in_image(t_image *img, t_vector_int start,
-							t_vector_int end, t_colour colour)
+
+void	draw_line_in_image(t_image *img, t_vec2i start,
+							t_vec2i end, t_colour colour)
 {
 	const int	x0 = start.x;
 	const int	y0 = start.y;
@@ -93,12 +94,10 @@ void	draw_line_in_image(t_image *img, t_vector_int start,
 	{
 		if (x0 > x1)
 		{
-			// drawlow (1->0)
 			draw_low(img, end, start, colour);
 		}
 		else
 		{
-			// drawlow(0->1)
 			draw_low(img, start, end, colour);
 		}
 	}
@@ -106,12 +105,10 @@ void	draw_line_in_image(t_image *img, t_vector_int start,
 	{
 		if (y0 > y1)
 		{
-			// drawhigh (1->0)
 			draw_high(img, end, start, colour);
 		}
 		else
 		{
-			// drawhigh(0->1)
 			draw_high(img, start, end, colour);
 		}
 	}
