@@ -6,7 +6,7 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2025/04/14 06:09:22 by kecheong         ###   ########.fr        #
+#    Updated: 2025/04/17 04:58:02 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ LIBFT := $(LIBFT_DIR)/libft.a
 
 src_dir := src
 dirs := $(src_dir) \
+		$(src_dir)/parser \
 		$(src_dir)/map \
 		$(src_dir)/player \
 		$(src_dir)/mlx_utils \

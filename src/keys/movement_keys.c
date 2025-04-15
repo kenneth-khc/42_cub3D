@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:11:39 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/15 17:20:06 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:33:22 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,8 @@
 #include "Player.h"
 #include "Map.h"
 #include <math.h>
+
+// TODO: fix diagonal movement into walls
 
 /* For player movement, WASD is used
  * W - move player forward

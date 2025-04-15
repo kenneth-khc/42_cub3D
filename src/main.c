@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/15 17:35:06 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/15 20:38:12 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,26 @@
 #include "Renderer.h"
 #include "Raycaster.h"
 #include "Colours.h" // probably don't need all these colours, remove later
+#include "Parse.h"
 
 #include <fcntl.h> // del
 #include <unistd.h>
 #include <limits.h>
 #include <math.h>
+#include "ft_dprintf.h"
 
-int	main(void)
+int	main(int argc, char **argv)
 {
 	t_game	game;
 
 	// maybe not necessary if we initialize everything properly before reading
 	game = (t_game){0};
+	if (argc != 2)
+	{
+		ft_dprintf(STDERR_FILENO, "Error\nMissing .cub file\n");
+		return (1);
+	}
+	parse(*++argv);
 	set_colour_table(&game.colours); // probably remove later
 	init_game(&game);
 	init_keybindings(&game.keystates);
@@ -66,11 +74,11 @@ void	update(t_game *game, t_player *player)
 {
 	if (player->is_moving)
 	{
-		printf("%f %f", player->world_pos.x, player->world_pos.y);
-		printf(" => ");
+		/*printf("%f %f", player->world_pos.x, player->world_pos.y);*/
+		/*printf(" => ");*/
 		player->world_pos.x += player->delta.x;
 		player->world_pos.y += player->delta.y;
-		printf("%f %f\n", player->world_pos.x, player->world_pos.y);
+		/*printf("%f %f\n", player->world_pos.x, player->world_pos.y);*/
 		player->tile_index.x = player->world_pos.x / game->tile_width;
 		player->tile_index.y = player->world_pos.y / game->tile_height;
 		// TODO: fix this
