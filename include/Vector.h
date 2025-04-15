@@ -36,6 +36,6 @@ typedef struct s_dimensions
 t_vec2d	copy_vector_double(t_vec2d *src);
 t_vec2i	copy_vector_int(t_vec2i *src);
 t_vec2i	v2d_to_v2i(t_vec2d d);
-bool			compare_vectors(t_vec2i *v1, t_vec2i *v2);
+bool	compare_vectors(t_vec2i *v1, t_vec2i *v2);
 
 #endif

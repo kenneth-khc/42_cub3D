@@ -27,7 +27,7 @@ typedef struct s_animation
 typedef struct s_renderer	t_renderer;
 
 t_animation	animation(t_game *game, const char *img1_filename);
-t_image	*get_current_frame(t_animation *animation);
-void	advance_animations(t_renderer *renderer, t_animation animations[4]);
+t_image		*get_current_frame(t_animation *animation);
+void		advance_animations(t_renderer *renderer, t_animation animations[4]);
 
 #endif

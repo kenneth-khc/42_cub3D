@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 21:02:15 by kecheong          #+#    #+#             */
-/*   Updated: 2025/01/03 17:20:47 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/14 02:52:34 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include "Renderer.h"
 
 /* Clear away walls on the screen by redrawing the ceiling and floor */
-void	clear_walls(t_renderer* renderer, t_image *world, t_dimensions screen,
+void	clear_walls(t_renderer *renderer, t_image *world, t_dimensions screen,
 	t_colour ceiling, t_colour floor)
 {
 	int	y;
@@ -89,4 +89,3 @@ void	decide_current_texture(t_renderer *renderer, t_ray *ray)
 		renderer->curr_texture = &renderer->textures[WEST];
 	}
 }
-

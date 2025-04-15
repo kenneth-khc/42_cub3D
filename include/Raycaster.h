@@ -42,7 +42,7 @@ typedef struct s_ray
 	t_vec2i	tile_index;
 	t_vec2d	tile_offset;
 	t_vec2d	world_pos;
-	double	angle_in_radians;
+	double	angle;
 	t_vec2d	dir; // normalized direction by cos/sine'ing angles
 	double	x_step; // how much worldX to step by when it goes 1 mapY
 	double	y_step; // how much worldY to step by when it goes 1 mapX
@@ -60,7 +60,7 @@ typedef struct s_ray
 typedef struct s_raycaster
 {
 	bool	init;
-	int		number_of_rays;
+	int		ray_count;
 	t_ray	rays[SCREEN_WIDTH];
 	double	angle_increment;
 	double	leftmost_ray_angle;
@@ -77,6 +77,9 @@ void	update_raycaster(t_raycaster *raycaster, t_player *player,
 			t_game *game);
 void	raycast(t_raycaster *raycaster, t_player *player, t_game *game);
 void	cast(t_ray *ray, t_player *player, t_map *map);
+void	init_dda(t_ray *ray);
+void	get_distance(t_ray *ray, t_player *player);
+void	check_wall_side_hit(t_ray *ray);
 
 double	degrees_to_radians(double degrees);
 double	radians_to_degrees(double radians);

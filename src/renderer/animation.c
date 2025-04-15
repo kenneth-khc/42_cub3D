@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 17:01:21 by kecheong          #+#    #+#             */
-/*   Updated: 2025/01/03 17:32:04 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/14 02:51:35 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,15 @@
 
 t_animation	animation(t_game *game, const char *img_name)
 {
-	t_animation	anim;
 	int			i;
+	t_animation	anim;
+	char		*frame_filename;
 
 	i = 0;
-	char	*frame_filename = ft_strjoin_multiple(3, img_name, ft_itoa(i), ".xpm");
+	frame_filename = ft_strjoin_multiple(3, img_name, ft_itoa(i), ".xpm");
 	while (open(frame_filename, O_RDONLY) != -1)
 	{
-		++i;
+		i++;
 		frame_filename = ft_strjoin_multiple(3, img_name, ft_itoa(i), ".xpm");
 	}
 	anim.frame_count = i;
@@ -33,14 +34,14 @@ t_animation	animation(t_game *game, const char *img_name)
 	i--;
 	while (i >= 0)
 	{
-		char	*frame_filename = ft_strjoin_multiple(3, img_name, ft_itoa(i), ".xpm");
+		frame_filename = ft_strjoin_multiple(3, img_name, ft_itoa(i), ".xpm");
 		load_image(game, &anim.frames[i], frame_filename);
-		--i;
+		i--;
 	}
 	anim.frame_index = 0;
 	anim.ticks = 0;
 	anim.ticks_to_advance = 1;
-	return anim;
+	return (anim);
 }
 
 void	advance_animations(t_renderer *renderer, t_animation animations[4])
@@ -60,5 +61,5 @@ t_image	*get_current_frame(t_animation *animation)
 		animation->frame_index++;
 		animation->frame_index %= animation->frame_count;
 	}
-	return &animation->frames[animation->frame_index];
+	return (&animation->frames[animation->frame_index]);
 }

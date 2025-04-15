@@ -6,116 +6,39 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:04:34 by kecheong          #+#    #+#             */
-/*   Updated: 2025/01/03 17:01:14 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/13 23:58:01 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
-#include <stdlib.h>
-#include "Game.h"
 #include "Keys.h"
-#include "Minimap.h"
-#include "mlx.h"
 
-//TODO: generalize and refactor movement/rotation functions if possible
-
-void	look_up(void *ptr)
-{
-	t_game *const	game = (t_game *)ptr;
-	const int		upper_bound = game->screen.height - game->screen.height / 4;
-
-	if (game->renderer.midpoint < upper_bound)
-		game->renderer.midpoint += 5;
-}
-
-void	look_down(void *ptr)
-{
-	t_game *const	game = (t_game *)ptr;
-	const int		lower_bound = game->screen.height / 4;
-
-	if (game->renderer.midpoint > lower_bound)
-		game->renderer.midpoint -= 5;
-}
-
+/* Associate each MLX keycode to our own key, hooking it to a function to be
+ * called when the key is pressed and/or released */
 void	init_keybindings(t_keystates *keystates)
 {
-	keystates->keys[KEY_W] = (t_key){MLX_KEY_W, move_forward, false};
-	keystates->keys[KEY_A] = (t_key){MLX_KEY_A, strafe_left, false};
-	keystates->keys[KEY_S] = (t_key){MLX_KEY_S, move_backward, false};
-	keystates->keys[KEY_D] = (t_key){MLX_KEY_D, strafe_right, false};
-	keystates->keys[KEY_LEFT] = (t_key){MLX_KEY_LEFT, rotate_left, false};
-	keystates->keys[KEY_RIGHT] = (t_key){MLX_KEY_RIGHT, rotate_right, false};
-	keystates->keys[KEY_ESC] = (t_key){MLX_KEY_ESC, close_game, false};
-	keystates->keys[KEY_M] = (t_key){MLX_KEY_M, toggle_minimap, false};
-	keystates->keys[KEY_UP] = (t_key){MLX_KEY_UP, look_up, false};
-	keystates->keys[KEY_DOWN] = (t_key){MLX_KEY_DOWN, look_down, false};
+	t_key *const	keys = keystates->keys;
+
+	keys[KEY_W] = map_key(PRESS, MLX_KEY_W, move_forward);
+	keys[KEY_A] = map_key(PRESS, MLX_KEY_A, strafe_left);
+	keys[KEY_S] = map_key(PRESS, MLX_KEY_S, move_backward);
+	keys[KEY_D] = map_key(PRESS, MLX_KEY_D, strafe_right);
+	keys[KEY_LEFT] = map_key(PRESS, MLX_KEY_LEFT, rotate_left);
+	keys[KEY_RIGHT] = map_key(PRESS, MLX_KEY_RIGHT, rotate_right);
+	keys[KEY_ESC] = map_key(RELEASE, MLX_KEY_ESC, close_game);
+	keys[KEY_M] = map_key(PRESS | RELEASE, MLX_KEY_M, toggle_minimap);
+	keys[KEY_UP] = map_key(PRESS, MLX_KEY_UP, look_up);
+	keys[KEY_DOWN] = map_key(PRESS, MLX_KEY_DOWN, look_down);
 }
 
-/* The player starts at a certain angle based on the input of the map.
- * (E)ast - 0 degrees | 0 or 2PI radians
- * (N)orth - 90 degrees | PI/2 radians
- * (W)est - 180 degrees | PI radians
- * (S)outh - 270 degrees | 3PI/2 radians
- *
- * By pressing the left arrow key, increment the angle (going counterclockwise)
- * and the player's field of view moves to the left accordingly
- * By pressing the right arrow key, decrement the angle (going clockwise)
- * and the field of view moves to the right accordingly
- * */
-void	rotate_left(void *ptr)
+/* Create a new keybinding, with interest specifying the state of the key
+ * to call the function (PRESS or RELEASE) */
+t_key	map_key(int interest, enum e_mlx_keycodes mlx_keycode, t_action action)
 {
-	t_game *const	game = (t_game *)ptr;
-	t_player *const	player = &game->player;
+	t_key	new_keybinding;
 
-	player->angle_in_radians += 0.1;
-	if (radians_to_degrees(player->angle_in_radians) > 360)
-	{
-		player->angle_in_radians -= degrees_to_radians(360);
-	}
-	player->direction.x = cos(player->angle_in_radians);
-	player->direction.y = -sin(player->angle_in_radians);
-	update_minimap(&game->minimap, game);
-}
-
-void	rotate_right(void *ptr)
-{
-	t_game *const	game = (t_game *)ptr;
-	t_player *const	player = &game->player;
-
-	player->angle_in_radians -= 0.1;
-	if (radians_to_degrees(player->angle_in_radians < 0))
-	{
-		player->angle_in_radians += degrees_to_radians(360);
-	}
-	player->direction.x = cos(player->angle_in_radians);
-	player->direction.y = -sin(player->angle_in_radians);
-	update_minimap(&game->minimap, game);
-}
-
-// TODO: this acts kinda weird probably because of how fast pressing/releasing
-// is processed
-// fix it so that it toggles properly maybe, low priority tho
-// perhaps I only toggle when an M key is released
-void	toggle_minimap(void *ptr)
-{
-	t_game *const		game = (t_game *)ptr;
-	t_minimap *const	minimap = &game->minimap;
-
-	minimap->display = !minimap->display;
-}
-
-void	close_game(void *ptr)
-{
-	t_game *const	game = (t_game*)ptr;
-
-	mlx_destroy_image(game->mlx, game->minimap.img.instance);
-	mlx_destroy_image(game->mlx, game->world_3d.instance);
-	mlx_destroy_image(game->mlx, game->renderer.textures[0].instance);
-	mlx_destroy_image(game->mlx, game->renderer.textures[1].instance);
-	mlx_destroy_image(game->mlx, game->renderer.textures[2].instance);
-	mlx_destroy_image(game->mlx, game->renderer.textures[3].instance);
-	mlx_destroy_window(game->mlx, game->window);
-	mlx_destroy_display(game->mlx);
-	free(game->mlx);
-	exit(0);
+	new_keybinding.mlx_keycode = mlx_keycode;
+	new_keybinding.action = action;
+	new_keybinding.state = NONE;
+	new_keybinding.interest = interest;
+	return (new_keybinding);
 }

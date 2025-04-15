@@ -6,7 +6,7 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2024/12/05 13:09:56 by kecheong         ###   ########.fr        #
+#    Updated: 2025/04/14 06:09:22 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,21 +19,21 @@ NAME := cub3D
 UNAME := $(shell uname)
 
 CC := cc
-CFLAGS := -Wall -Werror -Wextra
+CFLAGS := -Wall -Werror -Wextra -MMD
 
 ifeq ($(UNAME), Darwin)
 	MLX_dir := mlx_mac
 	MLX := $(MLX_dir)/libmlx.a
-	LDFLAGS := -Lmlx_mac -Llibft
-	LDLIBS := -lmlx -lft
-	includes := -Imlx_mac -Iinclude -Ilibft/includes
-	framework := -framework OpenGL -framework AppKit
+	LDFLAGS := $(addprefix -L, mlx_mac libft)
+	LDLIBS := $(addprefix -l, mlx ft)
+	includes := $(addprefix -I, mlx_mac include libft/includes)
+	framework := $(addprefix -framework, OpenGL AppKit)
 else
 	MLX_dir := mlx_linux
 	MLX := $(MLX_dir)/libmlx_Linux.a
-	LDFLAGS := -Lmlx_linux -Llibft
-	LDLIBS := -lmlx_Linux -lft -lXext -lX11 -lm -lz
-	includes := -Imlx_linux -Iinclude -Ilibft/includes
+	LDFLAGS := $(addprefix -L, mlx_linux libft)
+	LDLIBS := $(addprefix -l, mlx_Linux ft Xext X11 m z)
+	includes := $(addprefix -I, mlx_linux include libft/includes)
 endif
 
 LIBFT_DIR := libft
@@ -54,6 +54,7 @@ srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c))
 
 obj_dir := obj
 objs := $(srcs:$(src_dir)/%.c=$(obj_dir)/%.o)
+dependencies := $(objs:%.o=%.d)
 
 .PHONY: all
 all: $(MLX) $(LIBFT) $(NAME)
@@ -97,9 +98,9 @@ libfclean:
 .PHONY: re
 re: fclean all
 
-.PHONY: optimized
-optimized: CFLAGS += -O3
-optimized: all
+.PHONY: release
+release: CFLAGS += -O3
+release: all
 
 .PHONY: debug
 debug: CFLAGS += -g3
@@ -112,3 +113,5 @@ fsan: all
 .PHONY: norminette
 norminette:
 	norminette $(src_dir) include/
+
+-include $(dependencies)

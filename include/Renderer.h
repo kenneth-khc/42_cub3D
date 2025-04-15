@@ -22,8 +22,10 @@
 typedef struct s_renderer
 {
 	t_dimensions	screen;
-	int				midpoint; // the center line where the ceiling and floor collides
-	int				current_x; // which column of the screen it is now rendering
+	// the center line where the ceiling and floor collides
+	int				midpoint;
+	// which column of the screen it is now rendering
+	int				current_x;
 	t_vec2i			draw_start; // the position to start drawing at
 	t_vec2i			draw_end; // the position to end drawing at
 	double			line_height; // the height of the current line to draw
@@ -36,7 +38,7 @@ typedef struct s_renderer
 	t_animation		east_anim;
 	t_image			debug_texture; // TODO: remove this
 	t_image			*curr_texture;
-	t_vec2d	texture_pos;
+	t_vec2d			texture_pos;
 }	t_renderer;
 
 typedef struct s_game	t_game;
