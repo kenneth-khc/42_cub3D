@@ -6,7 +6,7 @@
 /*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/16 16:14:29 by kytan            ###   ########.fr       */
+/*   Updated: 2025/04/17 23:22:42 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,13 @@ int	main(int ac, char **av)
 
 	game = (t_game){0};
 
-	if (ac != 2)
-		exit_free();
-	welcome_msg();
-	init_parser(&game);
-	start_parser(&game, av[1]);
-	print_parser(&game);
-	free_parser(&game);
-
-
+	// if (ac != 2)
+	// 	exit_free();
+	// welcome_msg();
+	// init_parser(&game);
+	// start_parser(&game, av[1]);
+	// print_parser(&game);
+	// free_parser(&game);
 
 	set_colour_table(&game.colours);
 	init_game(&game);
