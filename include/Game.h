@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:40:30 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/15 20:33:34 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/18 05:47:50 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@
 # include "Raycaster.h"
 # include "Keys.h"
 # include "Renderer.h"
+# include "Parse.h"
 
 # include <stdio.h>
 
@@ -77,7 +78,7 @@ typedef struct s_game
 	t_keystates		keystates;
 }	t_game;
 
-void	init_game(t_game *game);
+void	init_game(t_game *game, t_config *config);
 void	init_minimap(t_game *game, t_map *map, t_minimap *minimap);
 void	init_renderer(t_renderer *renderer, t_game *game,
 			t_image *world, t_dimensions screen);

@@ -35,7 +35,9 @@ int	open_file(char *filename)
 	return (fd);
 }
 
-char	*get_next_line_trim_whitespaces(int fd)
+/* Calls get_next_line(), trims away leading and trailing white spaces,
+ * and discard empty lines */
+char	*gnl_trim_whitespaces_skip_empty(int fd)
 {
 	char	*line;
 	char	*trimmed;
@@ -45,6 +47,7 @@ char	*get_next_line_trim_whitespaces(int fd)
 	while (trimmed && trimmed[0] == '\0')
 	{
 		free(line);
+		free(trimmed);
 		line = get_next_line(fd);
 		trimmed = ft_strtrim(line, " \f\n\r\t\v");
 	}
@@ -52,7 +55,8 @@ char	*get_next_line_trim_whitespaces(int fd)
 	return (trimmed);
 }
 
-char	*get_next_line_trim_newline(int fd)
+/* Calls get_next_line() and trims away the ending newline character */
+char	*gnl_trim_newline(int fd)
 {
 	char	*line;
 	char	*trimmed;
@@ -63,27 +67,18 @@ char	*get_next_line_trim_newline(int fd)
 	return (trimmed);
 }
 
-char	*get_next_line_skip_empty_lines(int fd)
+/* Calls get_next_line(), trimming away ending newline characters and
+ * discarding empty lines. The goal is to skip across all empty lines between
+ * the last configurable and the first line of the map description */
+char	*gnl_trim_newline_skip_empty(int fd)
 {
 	char	*line;
-	size_t	line_len;
-	size_t	i;
 
-	line = get_next_line_trim_newline(fd);
-	while (line)
+	line = gnl_trim_newline(fd);
+	while (line && line[0] == '\0')
 	{
-		i = 0;
-		line_len = ft_strlen(line);
-		while (i < line_len)
-		{
-			if (!is_whitespace(line[i]))
-			{
-				return (line);
-			}
-			i++;
-		}
 		free(line);
-		line = get_next_line_trim_newline(fd);
+		line = gnl_trim_newline(fd);
 	}
 	return (line);
 }

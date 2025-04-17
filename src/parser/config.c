@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 04:54:17 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/17 06:09:56 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/18 05:36:24 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "ft_dprintf.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <unistd.h>
 
 t_config	init_blank_config(void)
 {
@@ -27,11 +28,11 @@ t_config	init_blank_config(void)
 	config.configurables[3].type_identifier = "WE";
 	config.configurables[4].type_identifier = "F";
 	config.configurables[5].type_identifier = "C";
-	config.configurables_complete = false;
 	return (config);
 }
 
-void	set(t_configurable *element, char *line, size_t type_identifier_offset)
+void	set(t_configurable *element, t_config *config,
+		char *line, size_t type_identifier_offset)
 {
 	size_t	offset;
 
@@ -49,6 +50,10 @@ void	set(t_configurable *element, char *line, size_t type_identifier_offset)
 		offset++;
 	}
 	element->value_len = offset - element->value_offset;
+	if (++config->configurables_completed == MAX_CONFIGURABLE)
+	{
+		config->get_next_line = gnl_trim_newline_skip_empty;
+	}
 }
 
 void	validate_element(t_config *config, char *line)
@@ -72,12 +77,7 @@ void	validate_element(t_config *config, char *line)
 		{
 			if (element->identifier_offset == 0 && element->value_offset == 0)
 			{
-				set(element, line, type_identifier_offset);
-				if (++config->configurables_completed == MAX_CONFIGURABLE)
-				{
-					config->configurables_complete = true;
-					config->get_next_line = get_next_line_skip_empty_lines;
-				}
+				set(element, config, line, type_identifier_offset);
 				return ;
 			}
 			else
@@ -117,8 +117,26 @@ size_t	identify_type_identifier(char *line, char **type_identifier)
 		*type_identifier = NULL;
 	return (offset);
 }
+bool	is_valid_map_character(char c)
+{
+	return (c == ' ' || c == '0' || c == '1'
+		|| c == 'N' || c == 'S' || c == 'E' || c == 'W');
+}
 
 void	parse_map_content(t_config *config, char *line)
 {
-	(void)config; (void)line;
+	size_t			i;
+	const size_t	line_len = ft_strlen(line);
+
+	i = 0;
+	while (i < line_len)
+	{
+		if (!is_valid_map_character(line[i]))
+		{
+			ft_dprintf(STDERR_FILENO, "Error\n""Invalid map character\n");
+			exit(1);
+		}
+		i++;
+	}
+	add_row(&config->map, line);
 }

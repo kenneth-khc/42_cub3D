@@ -15,6 +15,7 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include "Map.h"
 
 typedef struct s_configurable
 {
@@ -35,19 +36,21 @@ typedef struct s_config
 	char			*(*get_next_line)(int);
 	t_configurable	configurables[MAX_CONFIGURABLE];
 	int				configurables_completed;
-	bool			configurables_complete;
+	t_map			map;
 }	t_config;
 
-void		parse(char *filename);
+t_config	parse(char *filename);
 t_config	init_blank_config(void);
 int			open_file(char *filename);
-char		*get_next_line_trim_whitespaces(int fd);
-char		*get_next_line_trim_newline(int fd);
-char		*get_next_line_skip_empty_lines(int fd);
+char		*gnl_trim_whitespaces_skip_empty(int fd);
+char		*gnl_trim_newline(int fd);
+char		*gnl_trim_newline_skip_empty(int fd);
 void		validate_element(t_config *config, char *line);
 size_t		identify_type_identifier(char *line, char **type_identifier);
 bool		is_whitespace(char c);
 bool		identified(const char* line, const char *identifier);
 void		parse_map_content(t_config *config, char *line);
+bool		validate_map(t_map *map);
+bool		validate_configurables(t_configurable *configurables);
 
 #endif

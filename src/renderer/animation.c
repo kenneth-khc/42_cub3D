@@ -21,21 +21,30 @@ t_animation	animation(t_game *game, const char *img_name)
 	int			i;
 	t_animation	anim;
 	char		*frame_filename;
+	char		*num;
 
 	i = 0;
-	frame_filename = ft_strjoin_multiple(3, img_name, ft_itoa(i), ".xpm");
+	num = ft_itoa(i);
+	frame_filename = ft_strjoin_multiple(3, img_name, num, ".xpm");
+	free(num);
 	while (open(frame_filename, O_RDONLY) != -1)
 	{
 		i++;
-		frame_filename = ft_strjoin_multiple(3, img_name, ft_itoa(i), ".xpm");
+		num = ft_itoa(i);
+		free(frame_filename);
+		frame_filename = ft_strjoin_multiple(3, img_name, num, ".xpm");
+		free(num);
 	}
 	anim.frame_count = i;
 	anim.frames = malloc(anim.frame_count * sizeof(t_image));
 	i--;
 	while (i >= 0)
 	{
-		frame_filename = ft_strjoin_multiple(3, img_name, ft_itoa(i), ".xpm");
+		num = ft_itoa(i);
+		frame_filename = ft_strjoin_multiple(3, img_name, num, ".xpm");
+		free(num);
 		load_image(game, &anim.frames[i], frame_filename);
+		free(frame_filename);
 		i--;
 	}
 	anim.frame_index = 0;
