@@ -6,7 +6,7 @@
 /*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:49:27 by kytan             #+#    #+#             */
-/*   Updated: 2025/03/12 01:55:28 by kytan            ###   ########.fr       */
+/*   Updated: 2025/03/13 13:16:54 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	init_parser(t_game *game)
 	parser.data_textures = 0;
 	parser.data_map = 0;
 	parser.breakpoint_idx = -1;
-	parser.map_size = 0;
+	parser.map_width = 0;
+	parser.map_height = 0;
 }
 
 void	start_parser(t_game *game, char *cub_file)

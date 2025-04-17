@@ -1,19 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exit_free_resources.c                              :+:      :+:    :+:   */
+/*   exit_free.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 12:02:58 by kytan             #+#    #+#             */
-/*   Updated: 2025/04/16 16:27:17 by kytan            ###   ########.fr       */
+/*   Created: 2025/03/26 22:10:11 by kytan             #+#    #+#             */
+/*   Updated: 2025/04/13 22:16:07 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "Game.h"
-
-/* ! REDO THIS SO THAT IT FREEES THE GAME AND NOT JUST THE PARSER ! */
+#include "cub.h"
 
 /**
  * Prints out all strings in a null terminated array of strings `split`

@@ -6,7 +6,7 @@
 /*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:34:07 by kytan             #+#    #+#             */
-/*   Updated: 2025/03/12 01:54:58 by kytan            ###   ########.fr       */
+/*   Updated: 2025/03/18 13:59:22 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ typedef struct s_parse
 	char	**data_map;
 
 	int	breakpoint_idx;
-	int	map_size;
+	int	map_start_i;
+	int	map_start_j; 
+	int	map_width;
+	int	map_height;
 }	t_parse;
 
 void	welcome_msg();
