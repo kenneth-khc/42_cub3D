@@ -6,11 +6,11 @@
 /*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 22:10:11 by kytan             #+#    #+#             */
-/*   Updated: 2025/04/13 22:16:07 by kytan            ###   ########.fr       */
+/*   Updated: 2025/04/18 12:14:12 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "Game.h"
 
 /**
  * Prints out all strings in a null terminated array of strings `split`
@@ -44,11 +44,16 @@ void	free_parser(t_parse *parser)
 		free_aos_n(parser->map_layout);
 }
 
+
 /**
+ * @note THIS EXIT_FREE() is originally suppose to just take n free an `t_parse` struct ONLY
+ * @note If you'll be using this you need to use it to take in and free up `t_game`
+ *
  * @brief Exits the program with an error message and frees the allocated resources
  */
 void	exit_free(char *error_msg, t_parse *parser, char *mem)
 {
+	ft_printf("Error\n");
 	if (mem)
 		printf("%s ", mem);
 	if (error_msg)

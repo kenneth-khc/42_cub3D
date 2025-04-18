@@ -6,7 +6,7 @@
 /*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/17 23:22:42 by kytan            ###   ########.fr       */
+/*   Updated: 2025/04/18 12:21:46 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,20 @@
 #include <fcntl.h> // del
 #include <unistd.h>
 #include <limits.h>
+
 int	main(int ac, char **av)
 {
 	t_game	game;
 
 	game = (t_game){0};
 
-	// if (ac != 2)
-	// 	exit_free();
-	// welcome_msg();
-	// init_parser(&game);
-	// start_parser(&game, av[1]);
-	// print_parser(&game);
-	// free_parser(&game);
+	if (ac != 2)
+		exit_free("INVALID ARGUMENTS", &game.parser, 0);	// Loof at exit_freee()'s footnote
+	welcome_msg();																			// Prints welcome message
+	init_parser(&game.parser);													// Initializes the parser struct
+	extract_main(&game.parser);													// Main function for extracting data of input file
+	parse_main(&game.parser);														// Main function for parsing map info
+	print_parser(&game.parser);													// Printer function(incomplete) for debugging
 
 	set_colour_table(&game.colours);
 	init_game(&game);

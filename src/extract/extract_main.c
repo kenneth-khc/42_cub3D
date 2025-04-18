@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   validate_main.c                                    :+:      :+:    :+:   */
+/*   extract_main.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 17:49:45 by kytan             #+#    #+#             */
-/*   Updated: 2025/03/12 16:40:18 by kytan            ###   ########.fr       */
+/*   Created: 2025/04/18 12:19:36 by kytan             #+#    #+#             */
+/*   Updated: 2025/04/18 12:20:34 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Game.h"
-#include "Validate.h"
-#include "Exit.h"
+#include "Parser.h"
 
-/**
- * main validation for texture elements and map elements
- * sets the breakpoint index
- */
-void	validate_data_file(t_parse *parser, t_game *game)
+void	extract_main(t_parse *parser)
 {
-	validate_data_elements_textures(parser->data_file, game);
-	validate_data_elements_map(parser->data_file, game);
+	extract_file_data(game.parser.fd, &game.parser);		// extracts
+	validate_map_textures(parser->file_extract, parser);
+	extract_map_data(parser->fd, parser);
 }
