@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:36:16 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/18 05:42:36 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/19 02:43:25 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,8 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#include "ft_dprintf.h"
 #include "libft.h"
-#include <stdlib.h>
+#include "Game.h"
 
 t_config	parse(char *filename)
 {
@@ -74,8 +73,7 @@ bool	validate_map(t_map *map)
 				}
 				else
 				{
-					ft_dprintf(STDERR_FILENO, "Error\nDuplicate character found.\n");
-					exit(1);
+					error("Duplicate character found.\n");
 				}
 			}
 			x++;
@@ -85,8 +83,3 @@ bool	validate_map(t_map *map)
 	return (true);
 }
 
-bool	validate_configurables(t_configurable *configurables)
-{
-	(void)configurables;
-	return (true);
-}

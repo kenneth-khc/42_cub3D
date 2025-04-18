@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:31:10 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/14 06:10:17 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/19 02:28:25 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,6 @@
 #include <mlx.h>
 #include <math.h>
 
-#ifndef TEXTURES_DIR
-# define TEXTURES_DIR "../../textures"
-#endif
-
-/* Load up the textures needed by the renderer */
-void	init_renderer(t_renderer *renderer,
-	t_game *game, t_image *world, t_dimensions screen)
-{
-	renderer->img = world;
-	renderer->screen = screen;
-	renderer->midpoint = game->screen.height / 2;
-	renderer->animations[EAST] = animation(game,
-			"textures/cat_happy/cat_happy");
-	renderer->animations[NORTH] = animation(game,
-			"textures/cat_angry/cat_angry");
-	renderer->animations[WEST] = animation(game,
-			"textures/cat_omg/cat_omg");
-	renderer->animations[SOUTH] = animation(game,
-			"textures/cat_playing/cat_playing");
-}
 
 /* Called each frame of the game to render the world onto the screen
  * The renderer is responsible for scanning through the screen horizontally
@@ -48,10 +28,9 @@ void	render(t_game *game, t_renderer *renderer, t_raycaster *raycaster)
 {
 	t_ray	*ray;
 
-	clear_walls(renderer, renderer->img, renderer->screen, game->colours.purple,
-		game->colours.cyan);
+	clear_walls(renderer, renderer->img, renderer->screen, renderer->ceiling,
+		renderer->floor);
 	renderer->current_x = 0;
-	advance_animations(renderer, renderer->animations);
 	while (renderer->current_x < game->screen.width)
 	{
 		reset_draw_line(renderer);

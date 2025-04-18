@@ -6,15 +6,17 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:43:29 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/14 01:51:03 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/18 20:58:04 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Image.h"
 #include "Vector.h"
 #include "Game.h"
+#include "ft_dprintf.h"
 #include <mlx.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 /* Create an Image object wrapping an MLX image object, along with data
  * required to manipulate it 
@@ -84,6 +86,11 @@ void	load_image(t_game *game, t_image *img, const char *filename)
 {
 	img->instance = mlx_xpm_file_to_image(game->mlx, (char *)filename,
 			&img->width, &img->height);
+	if (img->instance == NULL)
+	{
+		ft_dprintf(STDERR_FILENO, "Error\nInvalid image filepath\n");
+		exit(1);
+	}
 	img->pixels = img->width * img->height;
 	img->addr = mlx_get_data_addr(img->instance,
 			&img->bits_per_pixel, &img->size_line, &img->endian);

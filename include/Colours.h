@@ -21,6 +21,7 @@ typedef union u_colour
 	uint32_t	value;
 	struct
 	{
+		/* little endian */
 		uint8_t	blue;
 		uint8_t	green;
 		uint8_t	red;
@@ -45,7 +46,9 @@ typedef struct s_colours
 
 t_colour	create_colour(uint8_t alpha, uint8_t red, uint8_t green,
 				uint8_t blue);
+t_colour	rgb_string_to_colour(const char *rgb_string);
 void		set_colour_table(t_colours *table);
 t_colour	pixel_to_colour(uint32_t *pixel);
+
 
 #endif

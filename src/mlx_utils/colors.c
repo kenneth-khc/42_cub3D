@@ -12,6 +12,11 @@
 
 #include "Colours.h"
 #include "Image.h"
+#include "libft.h"
+#include <stddef.h>
+#include <unistd.h>
+#include <stdlib.h>
+#include "Game.h"
 
 /* Create a colour by passing in components of alpha, red, green and blue
  * The components are 8 bit each, packed together in a union to form a 32 bit
@@ -26,6 +31,55 @@ t_colour	create_colour(uint8_t alpha, uint8_t red, uint8_t green,
 	colour.s_component.green = green;
 	colour.s_component.blue = blue;
 	return (colour);
+}
+
+static int	count_occurences(char c, const char *string)
+{
+	size_t	occurences;
+
+	occurences = 0;
+	while (*string)
+	{
+		if (*string == c)
+		{
+			occurences++;
+		}
+		string++;
+	}
+	return (occurences);
+}
+
+/* Parse a string of the format "[0-255],[0-255],[0-255]" into its RGB
+ * components and create a colour from that, exiting when an error is
+ * encountered */
+t_colour	rgb_string_to_colour(const char *rgb_string)
+{
+	size_t	size;
+	char	**components;
+	int		red;
+	int		green;
+	int		blue;
+
+	if (count_occurences(',', rgb_string) != 2)
+		error("Invalid RGB format\n");
+	components = ft_split(rgb_string, ',');
+	size = 0;
+	while (components[size])
+		size++;
+	if (size != 3)
+	{
+		error("Invalid RGB colour\n");
+	}
+	red = ft_atoi(components[0]);
+	green = ft_atoi(components[1]);
+	blue = ft_atoi(components[2]);
+	if (red < 0 || red > 255
+		|| green < 0 || green > 255
+		|| blue < 0 || blue > 255)
+	{
+		error("Invalid RGB value\n");
+	}
+	return (create_colour(0, red, green, blue));
 }
 
 void	set_colour_table(t_colours *table)

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 17:01:21 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/14 02:51:35 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/19 01:13:04 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,11 @@ t_animation	animation(t_game *game, const char *img_name)
 
 void	advance_animations(t_renderer *renderer, t_animation animations[4])
 {
-	renderer->textures[NORTH] = *get_current_frame(&animations[NORTH]);
-	renderer->textures[WEST] = *get_current_frame(&animations[WEST]);
-	renderer->textures[EAST] = *get_current_frame(&animations[EAST]);
-	renderer->textures[SOUTH] = *get_current_frame(&animations[SOUTH]);
+	(void)renderer; (void)animations;
+	/*renderer->textures[NORTH] = *get_current_frame(&animations[NORTH]);*/
+	/*renderer->textures[WEST] = *get_current_frame(&animations[WEST]);*/
+	/*renderer->textures[EAST] = *get_current_frame(&animations[EAST]);*/
+	/*renderer->textures[SOUTH] = *get_current_frame(&animations[SOUTH]);*/
 }
 
 t_image	*get_current_frame(t_animation *animation)

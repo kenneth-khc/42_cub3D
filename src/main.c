@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/18 05:48:06 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/19 02:31:43 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 #include <unistd.h>
 #include <limits.h>
 #include "ft_dprintf.h"
+#include <stdlib.h>
 
 int	main(int argc, char **argv)
 {
@@ -35,12 +36,11 @@ int	main(int argc, char **argv)
 	set_colour_table(&game.colours); // probably remove later
 	if (argc != 2)
 	{
-		ft_dprintf(STDERR_FILENO, "Error\nMissing .cub file\n");
+		ft_dprintf(STDERR_FILENO, "Error\nUsage: ./cub3D <.cub file>\n");
 		return (1);
 	}
 	config = parse(*++argv);
 	validate_map(&config.map);
-	validate_configurables(config.configurables);
 	init_game(&game, &config);
 	mlx_loop(game.mlx);
 }
@@ -50,8 +50,6 @@ void	init_game(t_game *game, t_config *config)
 	game->mlx = mlx_init();
 	game->screen.width = SCREEN_WIDTH;
 	game->screen.height = SCREEN_HEIGHT;
-	game->window = mlx_new_window(game->mlx, game->screen.width,
-			game->screen.height, WINDOW_TITLE);
 	game->tile_width = TILE_WIDTH;
 	game->tile_height = TILE_HEIGHT;
 	init_keybindings(&game->keystates);
@@ -61,7 +59,9 @@ void	init_game(t_game *game, t_config *config)
 	init_minimap(game, &game->map, &game->minimap);
 	create_image(game->mlx, &game->world_3d, game->screen.width,
 		game->screen.height);
-	init_renderer(&game->renderer, game, &game->world_3d, game->screen);
+	init_renderer(&game->renderer, config, game, &game->world_3d, game->screen);
+	game->window = mlx_new_window(game->mlx, game->screen.width,
+			game->screen.height, WINDOW_TITLE);
 	mlx_hook(game->window,
 		KEYPRESS_EVENT, KEYPRESS_MASK, press_key, &game->keystates);
 	mlx_hook(game->window,
@@ -100,4 +100,11 @@ int	game_loop(t_game *game)
 	raycast(&game->raycaster, &game->player, game);
 	render(game, &game->renderer, &game->raycaster);
 	return (0);
+}
+
+void	error(const char *err_msg)
+{
+	ft_dprintf(STDERR_FILENO, "Error\n");
+	ft_dprintf(STDERR_FILENO, err_msg);
+	exit(1);
 }

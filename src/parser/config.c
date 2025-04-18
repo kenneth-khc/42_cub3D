@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 04:54:17 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/18 05:36:24 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/18 18:58:29 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ void	set(t_configurable *element, t_config *config,
 		offset++;
 	}
 	element->value_offset = offset;
-	while (line[offset] && is_whitespace(line[offset]))
+	while (line[offset])
 	{
 		offset++;
 	}

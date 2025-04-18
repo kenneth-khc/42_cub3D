@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 22:47:40 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/13 23:16:10 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/19 01:15:17 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ void	close_game(void *ptr)
 
 	mlx_destroy_image(game->mlx, game->minimap.img.instance);
 	mlx_destroy_image(game->mlx, game->world_3d.instance);
-	mlx_destroy_image(game->mlx, game->renderer.textures[0].instance);
-	mlx_destroy_image(game->mlx, game->renderer.textures[1].instance);
-	mlx_destroy_image(game->mlx, game->renderer.textures[2].instance);
-	mlx_destroy_image(game->mlx, game->renderer.textures[3].instance);
+	mlx_destroy_image(game->mlx, game->renderer.wall_textures[0].instance);
+	mlx_destroy_image(game->mlx, game->renderer.wall_textures[1].instance);
+	mlx_destroy_image(game->mlx, game->renderer.wall_textures[2].instance);
+	mlx_destroy_image(game->mlx, game->renderer.wall_textures[3].instance);
 	mlx_destroy_window(game->mlx, game->window);
 	mlx_destroy_display(game->mlx);
 	free(game->mlx);

@@ -80,9 +80,10 @@ typedef struct s_game
 
 void	init_game(t_game *game, t_config *config);
 void	init_minimap(t_game *game, t_map *map, t_minimap *minimap);
-void	init_renderer(t_renderer *renderer, t_game *game,
+void	init_renderer(t_renderer *renderer, t_config *config, t_game *game,
 			t_image *world, t_dimensions screen);
 int		game_loop(t_game *game);
 int		process_mouse(int x, int y, void *param);
+void	error(const char *err_msg);
 
 #endif

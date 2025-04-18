@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/05 21:02:15 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/14 02:52:34 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/19 01:13:38 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,18 @@ void	decide_current_texture(t_renderer *renderer, t_ray *ray)
 {
 	if (ray->hit_side == HIT_SOUTH)
 	{
-		renderer->curr_texture = &renderer->textures[SOUTH];
+		renderer->curr_texture = &renderer->wall_textures[SOUTH];
 	}
 	else if (ray->hit_side == HIT_NORTH)
 	{
-		renderer->curr_texture = &renderer->textures[NORTH];
+		renderer->curr_texture = &renderer->wall_textures[NORTH];
 	}
 	else if (ray->hit_side == HIT_EAST)
 	{
-		renderer->curr_texture = &renderer->textures[EAST];
+		renderer->curr_texture = &renderer->wall_textures[EAST];
 	}
 	else if (ray->hit_side == HIT_WEST)
 	{
-		renderer->curr_texture = &renderer->textures[WEST];
+		renderer->curr_texture = &renderer->wall_textures[WEST];
 	}
 }

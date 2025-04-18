@@ -30,8 +30,8 @@ typedef struct s_renderer
 	t_vec2i			draw_end; // the position to end drawing at
 	double			line_height; // the height of the current line to draw
 	t_image			*img; // the image to render onto
-	t_animation		animations[4]; // wall textures that are animated
-	t_image			textures[4]; // which textures to use for the curr frame
+	/*t_animation		animations[4]; // wall textures that are animated*/
+	t_image			wall_textures[4]; // which textures to use for the curr frame
 	t_animation		north_anim;
 	t_animation		south_anim;
 	t_animation		west_anim;
@@ -39,6 +39,8 @@ typedef struct s_renderer
 	t_image			debug_texture; // TODO: remove this
 	t_image			*curr_texture;
 	t_vec2d			texture_pos;
+	t_colour		ceiling;
+	t_colour		floor;
 }	t_renderer;
 
 typedef struct s_game	t_game;
