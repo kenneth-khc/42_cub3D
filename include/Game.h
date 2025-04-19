@@ -6,7 +6,7 @@
 /*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:40:30 by kecheong          #+#    #+#             */
-/*   Updated: 2025/03/05 11:43:25 by kytan            ###   ########.fr       */
+/*   Updated: 2025/04/19 15:45:04 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,5 +59,6 @@ void	init_renderer(t_renderer *renderer, t_game *game,
 			t_image *world, t_dimensions screen);
 int		game_loop(t_game *game);
 int		process_mouse(int x, int y, void *param);
+void	welcome_msg();
 
 #endif

@@ -1,3 +1,0 @@
-Kylie
-
-exit

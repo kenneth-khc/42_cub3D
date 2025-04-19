@@ -6,12 +6,11 @@
 /*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 11:34:07 by kytan             #+#    #+#             */
-/*   Updated: 2025/04/18 12:10:29 by kytan            ###   ########.fr       */
+/*   Updated: 2025/04/19 15:54:40 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #define TOTAL_TEXTURES 6
-
 
 typedef struct s_parse			t_parse;
 
@@ -81,5 +80,19 @@ typedef struct s_parse
 	int		west_boundary_idx;
 }	t_parse;
 
-void	welcome_msg();
+void	parse_main(t_parse *parser);
+
+void	parse_map_textures(char **file_extract, t_parse *parser);
+
+void	parse_map_layout(char **map_extract, t_parse *parser);
+
+void	validate_map_layout(char **map_layout, t_parse *parser);
+
+void	validate_map_textures(char **file_extract, t_parse *parser);
+
+int	valid_identifier(char *token);
+
+int	id_idx(char *id_token, t_parse *parser);
+
+int	empty_line(char *s);
 

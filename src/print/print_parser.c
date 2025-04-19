@@ -1,16 +1,16 @@
-/* ************************************************************************** */
+.//* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print.c                                            :+:      :+:    :+:   */
+/*   print_parser.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 14:11:28 by kytan             #+#    #+#             */
-/*   Updated: 2025/04/13 22:20:52 by kytan            ###   ########.fr       */
+/*   Updated: 2025/04/19 05:31:58 by kytan            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "cub.h"
+#include "Parser.h"
 
 /**
  * @brief Prints integer `num`'s binary representation
@@ -47,7 +47,7 @@ void	print_texture_paths(char **textures)
 	i = 0;
 	while (i < 6)
 	{
-		if (textures[i] == NULL)
+		if (!textures[i])
 			printf("NO TEXTURE PATH FOLLOWING TOKEN\n");
 		printf("%s\n", textures[i]);
 		i++;
