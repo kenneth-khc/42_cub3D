@@ -6,75 +6,136 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2025/04/19 01:29:22 by kecheong         ###   ########.fr        #
+#    Updated: 2025/04/20 00:14:26 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.DEFAULT_GOAL := debug
-
-GREEN := \e[0;32m
-C_RESET := \e[0;0m
-
 NAME := cub3D
-UNAME := $(shell uname)
+BONUS_NAME := $(NAME)_bonus
+
+uname := $(shell uname)
 
 CC := cc
-CFLAGS := -Wall -Werror -Wextra -MMD
+CFLAGS := -Wall -Werror -Wextra -MMD -fsanitize=address -g3
 
-ifeq ($(UNAME), Darwin)
-	MLX_dir := mlx_mac
-	MLX := $(MLX_dir)/libmlx.a
-	LDFLAGS := $(addprefix -L, mlx_mac libft)
-	LDLIBS := $(addprefix -l, mlx ft)
-	includes := $(addprefix -I, mlx_mac include libft/includes)
+LDFLAGS := $(addprefix -L, libft)
+LDLIBS := $(addprefix -l, mlx ft)
+includes := $(addprefix -I, include/common libft/includes)
+
+ifeq ($(uname), Darwin)
+	minilibx_dir := mlx_mac
+	includes += $(addprefix -I, mlx_mac)
 	framework := $(addprefix -framework, OpenGL AppKit)
+	LDFLAGS += $(addprefix -L, mlx_mac)
 else
-	MLX_dir := mlx_linux
-	MLX := $(MLX_dir)/libmlx_Linux.a
-	LDFLAGS := $(addprefix -L, mlx_linux libft)
-	LDLIBS := $(addprefix -l, mlx_Linux ft Xext X11 m z)
-	includes := $(addprefix -I, mlx_linux include libft/includes)
+	minilibx_dir := mlx_linux
+	includes += $(addprefix -I, mlx_linux)
+	LDFLAGS += $(addprefix -L, mlx_linux)
+	LDLIBS += $(addprefix -l, Xext X11 m z)
 endif
 
-LIBFT_DIR := libft
-LIBFT := $(LIBFT_DIR)/libft.a
+minilibx := $(minilibx_dir)/libmlx.a
+
+libft_dir := libft
+libft := $(libft_dir)/libft.a
 
 src_dir := src
-dirs := $(src_dir) \
-		$(src_dir)/parser \
-		$(src_dir)/map \
-		$(src_dir)/player \
-		$(src_dir)/mlx_utils \
-		$(src_dir)/raycast \
-		$(src_dir)/renderer \
-		$(src_dir)/minimap \
-		$(src_dir)/keys \
-		$(src_dir)/textures
+common_src_dir := $(src_dir)/common
+mandatory_src_dir := $(src_dir)/mandatory
+bonus_src_dir := $(src_dir)/bonus
 
-srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c))
+common_srcs := $(wildcard $(common_src_dir)/*.c)
+mandatory_srcs := $(wildcard $(mandatory_src_dir)/*.c)
+bonus_srcs := $(wildcard $(bonus_src_dir)/*.c) \
+			  $(wildcard $(bonus_src_dir)/minimap/*.c)
+
+$(info $$(common_srcs) == $(common_srcs))
+$(info $$(mandatory_srcs) == $(mandatory_srcs))
+$(info $$(bonus_srcs) == $(bonus_srcs))
+
+dirs := $(common_src_dir) \
+		$(common_src_dir)/parser \
+		$(common_src_dir)/map \
+		$(common_src_dir)/player \
+		$(common_src_dir)/mlx_utils \
+		$(common_src_dir)/raycast \
+		$(common_src_dir)/renderer \
+		$(common_src_dir)/keys
 
 obj_dir := obj
-objs := $(srcs:$(src_dir)/%.c=$(obj_dir)/%.o)
+srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c))
+
+ifeq ($(filter bonus, $(MAKECMDGOALS)), bonus)
+# dirs += $(src_dir)/bonus $(src_dir)/bonus/minimap
+includes += -Iinclude/bonus
+# $(info $$(dirs) == $(dirs))
+common_srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c)) 
+$(info $$(common_srcs) == $(common_srcs))
+# $(info $$(srcs) == $(srcs))
+# objs := $(srcs:$(src_dir)/%.c=$(obj_dir)/bonus/%.o)
+objs := $(patsubst src/common/%.c, obj/bonus/common/%.o, $(common_srcs)) \
+		$(patsubst src/bonus/%.c, obj/bonus/bonus/%.o, $(bonus_srcs))
+$(info $$(objs) == $(objs))
+# $(info $$(objs) == $(objs))
+else
+# dirs += $(src_dir)/mandatory
+includes += -Iinclude/mandatory
+common_srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c)) 
+objs := $(srcs:$(src_dir)/%.c=$(obj_dir)/mandatory/%.o)
+objs := $(patsubst src/common/%.c, obj/mandatory/common/%.o, $(common_srcs)) \
+		$(patsubst src/mandatory/%.c, obj/mandatory/mandatory/%.o, $(mandatory_srcs))
+$(info $$(objs) == $(objs))
+endif
+
+# $(info $$(dirs) = $(dirs))
+# $(info $$(srcs) = $(srcs))
+
+# $(info $$(objs) = $(objs))
 dependencies := $(objs:%.o=%.d)
 
-.PHONY: all
-all: $(MLX) $(LIBFT) $(NAME)
+green := \e[0;32m
+reset := \e[0;0m
 
-$(LIBFT):
+.PHONY: all
+all: $(minilibx) $(libft) $(NAME)
+
+bonus: $(minilibx) $(libft) $(BONUS_NAME)
+
+$(libft):
 	@if git submodule status | grep '^[+-]' ; then \
-		printf "$(GREEN)Initializing libft submodule...\n$(C_RESET)" ; \
+		printf "$(green)Initializing libft submodule...\n$(reset)" ; \
 		git submodule update --init ; \
 	fi
-	make -C $(LIBFT_DIR)
+	make -C $(libft_dir)
 
-$(MLX):
-	make -C $(MLX_dir)
+$(minilibx):
+	make -C $(minilibx_dir)
 
-$(NAME): $(LIBFT) $(objs)
+$(NAME): $(libft) $(objs)
 	$(CC) $(CFLAGS) $(objs) $(includes) $(LDFLAGS) $(LDLIBS) $(framework) -o $(NAME)
+
+$(BONUS_NAME): $(libft) $(objs)
+	$(CC) $(CFLAGS) $(objs) $(includes) $(LDFLAGS) $(LDLIBS) $(framework) -o $(BONUS_NAME)
 
 $(obj_dir):
 	mkdir -p $(obj_dir)
+
+$(obj_dir)/mandatory/common/%.o: $(src_dir)/common/%.c
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(includes) $< -c -o $@
+
+$(obj_dir)/mandatory/mandatory/%.o: $(src_dir)/mandatory/%.c
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(includes) $< -c -o $@
+
+$(obj_dir)/bonus/common/%.o: $(src_dir)/common/%.c
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(includes) $< -c -o $@
+
+$(obj_dir)/bonus/bonus/%.o: $(src_dir)/bonus/%.c
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(includes) $< -c -o $@
+
 
 $(obj_dir)/%.o: $(src_dir)/%.c | obj
 	mkdir -p $(dir $@)
@@ -86,15 +147,15 @@ clean:
 
 .PHONY: fclean
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(BONUS_NAME)
 
 .PHONY: libclean
 libclean:
-	make clean -C $(LIBFT_DIR)
+	make clean -C $(libft_dir)
 
 .PHONY: libfclean
 libfclean:
-	make fclean -C $(LIBFT_DIR)
+	make fclean -C $(libft_dir)
 
 .PHONY: re
 re: fclean all
