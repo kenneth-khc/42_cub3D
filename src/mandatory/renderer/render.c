@@ -16,7 +16,6 @@
 #include "Raycaster.h"
 #include "Renderer.h"
 #include "Vector.h"
-#include "Animation.h"
 #include <mlx.h>
 #include <math.h>
 
@@ -42,10 +41,6 @@ void	render(t_game *game, t_renderer *renderer, t_raycaster *raycaster)
 		renderer->current_x++;
 	}
 	put_image(game, renderer->img, &renderer->img->pos);
-	if (game->minimap.img.instance && game->minimap.display)
-	{
-		put_image(game, &game->minimap.img, &game->minimap.img.pos);
-	}
 }
 
 void	render_wall_slice(t_renderer *renderer, t_ray *ray)

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 20:47:58 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/14 00:04:24 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/19 22:21:23 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	rotate_left(void *ptr)
 	}
 	player->direction.x = cos(player->angle);
 	player->direction.y = -sin(player->angle);
-	update_minimap(&game->minimap, game);
+	/*update_minimap(&game->minimap, game);*/
 }
 
 void	rotate_right(void *ptr)
@@ -51,7 +51,7 @@ void	rotate_right(void *ptr)
 	}
 	player->direction.x = cos(player->angle);
 	player->direction.y = -sin(player->angle);
-	update_minimap(&game->minimap, game);
+	/*update_minimap(&game->minimap, game);*/
 }
 
 void	look_up(void *ptr)

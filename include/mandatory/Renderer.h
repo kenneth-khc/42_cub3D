@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:31:28 by kecheong          #+#    #+#             */
-/*   Updated: 2025/01/03 17:15:25 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/19 22:27:23 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 # include "Raycaster.h"
 # include "Map.h"
 # include "Image.h"
-# include "Animation.h"
 
 typedef struct s_renderer
 {
@@ -32,10 +31,10 @@ typedef struct s_renderer
 	t_image			*img; // the image to render onto
 	/*t_animation		animations[4]; // wall textures that are animated*/
 	t_image			wall_textures[4]; // which textures to use for the curr frame
-	t_animation		north_anim;
-	t_animation		south_anim;
-	t_animation		west_anim;
-	t_animation		east_anim;
+	/*t_animation		north_anim;*/
+	/*t_animation		south_anim;*/
+	/*t_animation		west_anim;*/
+	/*t_animation		east_anim;*/
 	t_image			debug_texture; // TODO: remove this
 	t_image			*curr_texture;
 	t_vec2d			texture_pos;

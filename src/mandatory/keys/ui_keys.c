@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 22:47:40 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/19 01:15:17 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/19 22:22:00 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,24 @@
 #include <mlx.h>
 #include <stdlib.h>
 
-void	toggle_minimap(void *ptr)
-{
-	t_game *const		game = (t_game *)ptr;
-	const t_key			*m_key = &game->keystates.keys[KEY_M];
-	static t_key_state	prev_m_key_state = NONE;
-
-	if (prev_m_key_state & PRESS && m_key->state & RELEASE)
-	{
-		game->minimap.display = !game->minimap.display;
-	}
-	prev_m_key_state = m_key->state;
-}
-
+/*void	toggle_minimap(void *ptr)*/
+/*{*/
+/*	t_game *const		game = (t_game *)ptr;*/
+/*	const t_key			*m_key = &game->keystates.keys[KEY_M];*/
+/*	static t_key_state	prev_m_key_state = NONE;*/
+/**/
+/*	if (prev_m_key_state & PRESS && m_key->state & RELEASE)*/
+/*	{*/
+/*		game->minimap.display = !game->minimap.display;*/
+/*	}*/
+/*	prev_m_key_state = m_key->state;*/
+/*}*/
+/**/
 void	close_game(void *ptr)
 {
 	t_game *const	game = (t_game*)ptr;
 
-	mlx_destroy_image(game->mlx, game->minimap.img.instance);
+	/*mlx_destroy_image(game->mlx, game->minimap.img.instance);*/
 	mlx_destroy_image(game->mlx, game->world_3d.instance);
 	mlx_destroy_image(game->mlx, game->renderer.wall_textures[0].instance);
 	mlx_destroy_image(game->mlx, game->renderer.wall_textures[1].instance);

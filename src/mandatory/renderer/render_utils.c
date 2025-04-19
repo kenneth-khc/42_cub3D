@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Animation.h"
 #include "Game.h"
 #include "Image.h"
 #include "Colours.h"

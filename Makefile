@@ -6,40 +6,40 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2025/04/19 01:29:22 by kecheong         ###   ########.fr        #
+#    Updated: 2025/04/20 00:14:26 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.DEFAULT_GOAL := debug
-
-GREEN := \e[0;32m
-C_RESET := \e[0;0m
-
 NAME := cub3D
-UNAME := $(shell uname)
+BONUS_NAME := $(NAME)_bonus
+
+uname := $(shell uname)
 
 CC := cc
 CFLAGS := -Wall -Werror -Wextra -MMD
 
-ifeq ($(UNAME), Darwin)
-	MLX_dir := mlx_mac
-	MLX := $(MLX_dir)/libmlx.a
-	LDFLAGS := $(addprefix -L, mlx_mac libft)
-	LDLIBS := $(addprefix -l, mlx ft)
-	includes := $(addprefix -I, mlx_mac include libft/includes)
+LDFLAGS := $(addprefix -L, libft)
+LDLIBS := $(addprefix -l, mlx ft)
+includes := $(addprefix -I, include/mandatory libft/includes)
+
+ifeq ($(uname), Darwin)
+	minilibx_dir := mlx_mac
+	includes += $(addprefix -I, mlx_mac)
 	framework := $(addprefix -framework, OpenGL AppKit)
+	LDFLAGS += $(addprefix -L, mlx_mac)
 else
-	MLX_dir := mlx_linux
-	MLX := $(MLX_dir)/libmlx_Linux.a
-	LDFLAGS := $(addprefix -L, mlx_linux libft)
-	LDLIBS := $(addprefix -l, mlx_Linux ft Xext X11 m z)
-	includes := $(addprefix -I, mlx_linux include libft/includes)
+	minilibx_dir := mlx_linux
+	includes += $(addprefix -I, mlx_linux)
+	LDFLAGS += $(addprefix -L, mlx_linux)
+	LDLIBS += $(addprefix -l, Xext X11 m z)
 endif
 
-LIBFT_DIR := libft
-LIBFT := $(LIBFT_DIR)/libft.a
+minilibx := $(minilibx_dir)/libmlx.a
 
-src_dir := src
+libft_dir := libft
+libft := $(libft_dir)/libft.a
+
+src_dir := src/mandatory
 dirs := $(src_dir) \
 		$(src_dir)/parser \
 		$(src_dir)/map \
@@ -47,9 +47,9 @@ dirs := $(src_dir) \
 		$(src_dir)/mlx_utils \
 		$(src_dir)/raycast \
 		$(src_dir)/renderer \
-		$(src_dir)/minimap \
-		$(src_dir)/keys \
-		$(src_dir)/textures
+		$(src_dir)/keys
+#		$(src_dir)/textures
+#		$(src_dir)/minimap \
 
 srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c))
 
@@ -57,20 +57,27 @@ obj_dir := obj
 objs := $(srcs:$(src_dir)/%.c=$(obj_dir)/%.o)
 dependencies := $(objs:%.o=%.d)
 
-.PHONY: all
-all: $(MLX) $(LIBFT) $(NAME)
+green := \e[0;32m
+reset := \e[0;0m
 
-$(LIBFT):
+.PHONY: all
+all: $(minilibx) $(libft) $(NAME)
+
+ifeq ($(filter bonus, $(MAKECMDGOALS)), bonus)
+
+endif
+
+$(libft):
 	@if git submodule status | grep '^[+-]' ; then \
-		printf "$(GREEN)Initializing libft submodule...\n$(C_RESET)" ; \
+		printf "$(green)Initializing libft submodule...\n$(reset)" ; \
 		git submodule update --init ; \
 	fi
-	make -C $(LIBFT_DIR)
+	make -C $(libft_dir)
 
-$(MLX):
-	make -C $(MLX_dir)
+$(minilibx):
+	make -C $(minilibx_dir)
 
-$(NAME): $(LIBFT) $(objs)
+$(NAME): $(libft) $(objs)
 	$(CC) $(CFLAGS) $(objs) $(includes) $(LDFLAGS) $(LDLIBS) $(framework) -o $(NAME)
 
 $(obj_dir):
@@ -90,11 +97,11 @@ fclean: clean
 
 .PHONY: libclean
 libclean:
-	make clean -C $(LIBFT_DIR)
+	make clean -C $(libft_dir)
 
 .PHONY: libfclean
 libfclean:
-	make fclean -C $(LIBFT_DIR)
+	make fclean -C $(libft_dir)
 
 .PHONY: re
 re: fclean all

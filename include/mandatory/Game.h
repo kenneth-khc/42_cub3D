@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:40:30 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/18 05:47:50 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/19 22:27:42 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@
 
 # include "Player.h"
 # include "Map.h"
-# include "Minimap.h"
 # include "Raycaster.h"
 # include "Keys.h"
 # include "Renderer.h"
@@ -69,8 +68,7 @@ typedef struct s_game
 	t_map			map;
 	double			tile_width; // width of 1 in-game tile
 	double			tile_height; // height of 1 in-game tile
-	t_minimap		minimap;
-	/*t_image		world2D;*/
+	/*t_minimap		minimap;*/
 	t_image			world_3d; // image of the game to be displayed
 	t_player		player;
 	t_raycaster		raycaster;
@@ -79,7 +77,6 @@ typedef struct s_game
 }	t_game;
 
 void	init_game(t_game *game, t_config *config);
-void	init_minimap(t_game *game, t_map *map, t_minimap *minimap);
 void	init_renderer(t_renderer *renderer, t_config *config, t_game *game,
 			t_image *world, t_dimensions screen);
 int		game_loop(t_game *game);
