@@ -15,6 +15,7 @@
 #include "Map.h"
 #include "Image.h"
 #include "Vector.h"
+#include "Utils.h"
 #include <math.h>
 
 void	update_minimap(t_minimap *minimap, t_game *game)
@@ -32,7 +33,7 @@ void	update_minimap(t_minimap *minimap, t_game *game)
 	fill_minimap(minimap, camera, &game->map, game);
 }
 
-void	draw_triangle(t_image *img, t_vec2d centre, t_game *game)
+void	draw_direction_indicator(t_image *img, t_vec2d centre, t_game *game)
 {
 	draw_pixel(img, centre.x, centre.y, game->colours.black);
 
@@ -44,14 +45,14 @@ void	draw_triangle(t_image *img, t_vec2d centre, t_game *game)
 	t_vec2i	end = {.x = centre.x + dirX, .y = centre.y + dirY};
 	draw_line_in_image(img, v2d_to_v2i(centre), end, game->colours.black);
 
-	double	right_end = game->player.angle - degrees_to_radians(90);
+	double	right_end = game->player.angle - radians(90);
 	double	right_x = cos(right_end);
 	double	right_y = -sin(right_end);
 
 	t_vec2i	end2 = {.x = centre.x + right_x * 10, .y = centre.y + right_y * 10};
 	draw_line_in_image(img, v2d_to_v2i(centre), end2, game->colours.black);
 
-	double	left_end = game->player.angle + degrees_to_radians(90);
+	double	left_end = game->player.angle + radians(90);
 	double	left_x = cos(left_end);
 	double	left_y = -sin(left_end);
 	t_vec2i	end3 = {.x = centre.x + left_x * 10, .y = centre.y + left_y * 10};
@@ -94,41 +95,5 @@ void	fill_minimap(t_minimap *minimap, t_camera *camera, t_map *map, t_game *game
 	}
 	draw_border(&minimap->img, 5, game->colours.black);
 	draw_box(&minimap->img, v2d_to_v2i(camera->centre), 5, game->colours.green);
-	draw_triangle(&minimap->img, camera->centre, game);
-}
-
-static void	draw_minimap_ray(t_minimap *minimap, double angle, t_game *game)
-{
-	const t_vec2i	start = {
-		.x = minimap->camera.centre.x,
-		.y = minimap->camera.centre.y
-	};
-	const double	dir_x = cos(angle);
-	const double	dir_y = -sin(angle);
-	const t_vec2i	end = {
-		.x = start.x + (dir_x * 100),
-		.y = start.x + (dir_y * 100)
-	};
-
-	draw_line_in_image(&minimap->img, start, end, game->colours.purple);
-}
-
-/* TODO: fix drawing rays to stop upon hitting a wall
- * or discard this idea entirely */
-void	draw_fov(t_minimap *minimap, t_player *player,
-	t_game *game)
-{
-	const double	angle_increment
-		= player->field_of_view / game->raycaster.ray_count;
-	const double	leftmost_ray_angle
-		= player->angle + (player->field_of_view / 2);
-	int				i;
-
-	i = 0;
-	while (i < game->raycaster.ray_count)
-	{
-		draw_minimap_ray(minimap, leftmost_ray_angle - (i * angle_increment),
-			game);
-		i++;
-	}
+	draw_direction_indicator(&minimap->img, camera->centre, game);
 }

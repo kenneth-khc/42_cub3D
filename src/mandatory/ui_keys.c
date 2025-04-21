@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 22:47:40 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 04:17:39 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/23 00:06:44 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,12 @@ int	close_game(void *ptr)
 {
 	t_game *const	game = (t_game*)ptr;
 
-	mlx_destroy_image(game->mlx, game->world_3d.instance);
-	mlx_destroy_image(game->mlx, game->renderer.wall_textures[0].instance);
-	mlx_destroy_image(game->mlx, game->renderer.wall_textures[1].instance);
-	mlx_destroy_image(game->mlx, game->renderer.wall_textures[2].instance);
-	mlx_destroy_image(game->mlx, game->renderer.wall_textures[3].instance);
+	destroy_map(&game->map);
+	destroy_image(game->mlx, &game->world_3d);
+	destroy_image(game->mlx, &game->renderer.wall_textures[0]);
+	destroy_image(game->mlx, &game->renderer.wall_textures[1]);
+	destroy_image(game->mlx, &game->renderer.wall_textures[2]);
+	destroy_image(game->mlx, &game->renderer.wall_textures[3]);
 	mlx_destroy_window(game->mlx, game->window);
 	mlx_destroy_display(game->mlx);
 	free(game->mlx);

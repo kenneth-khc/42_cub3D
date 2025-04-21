@@ -32,12 +32,13 @@ int	close_game(void *ptr)
 {
 	t_game *const	game = (t_game*)ptr;
 
-	/*mlx_destroy_image(game->mlx, game->minimap.img.instance);*/
-	mlx_destroy_image(game->mlx, game->world_3d.instance);
-	mlx_destroy_image(game->mlx, game->renderer.wall_textures[0].instance);
-	mlx_destroy_image(game->mlx, game->renderer.wall_textures[1].instance);
-	mlx_destroy_image(game->mlx, game->renderer.wall_textures[2].instance);
-	mlx_destroy_image(game->mlx, game->renderer.wall_textures[3].instance);
+	destroy_map(&game->map);
+	destroy_image(game->mlx, &game->minimap.img);
+	destroy_image(game->mlx, &game->world_3d);
+	destroy_image(game->mlx, &game->renderer.wall_textures[0]);
+	destroy_image(game->mlx, &game->renderer.wall_textures[1]);
+	destroy_image(game->mlx, &game->renderer.wall_textures[2]);
+	destroy_image(game->mlx, &game->renderer.wall_textures[3]);
 	mlx_destroy_window(game->mlx, game->window);
 	mlx_destroy_display(game->mlx);
 	free(game->mlx);

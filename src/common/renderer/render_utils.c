@@ -10,31 +10,28 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Game.h"
 #include "Image.h"
-#include "Colours.h"
 #include "Vector.h"
 #include "Renderer.h"
 
 /* Clear away walls on the screen by redrawing the ceiling and floor */
-void	clear_walls(t_renderer *renderer, t_image *world, t_dimensions screen,
-	t_colour ceiling, t_colour floor)
+void	clear_walls(t_renderer *renderer)
 {
 	int	y;
 	int	x;
 
 	x = 0;
-	while (x < screen.width)
+	while (x < renderer->screen.width)
 	{
 		y = 0;
 		while (y < renderer->midpoint)
 		{
-			draw_pixel(world, x, y, ceiling);
+			draw_pixel(renderer->img, x, y, renderer->ceiling);
 			y++;
 		}
-		while (y < screen.height)
+		while (y < renderer->screen.height)
 		{
-			draw_pixel(world, x, y, floor);
+			draw_pixel(renderer->img, x, y, renderer->floor);
 			y++;
 		}
 		x++;

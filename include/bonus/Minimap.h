@@ -42,16 +42,16 @@ typedef struct s_camera
 
 typedef struct s_minimap
 {
-	bool			display; // should the minimap be displayed, default to true
-	t_image			img;
-	t_camera		camera;
+	bool		display; // should the minimap be displayed, default to true
+	t_image		img;
+	t_camera	camera;
 }	t_minimap;
 
-void	init_minimap(t_game *game, t_map *map, t_minimap *minimap);
-void	update_minimap(t_minimap *minimap, t_game *game);
-void	update_camera(t_camera *camera, t_minimap *minimap, t_player *player);
-void	fill_minimap(t_minimap *minimap, t_camera *camera, t_map *map,
-			t_game *game);
-void	draw_fov(t_minimap *minimap, t_player *player, t_game *game);
+t_minimap	init_minimap(t_game *game);
+void		update_minimap(t_minimap *minimap, t_game *game);
+void		update_camera(t_camera *camera, t_minimap *minimap,
+				t_player *player);
+void		fill_minimap(t_minimap *minimap, t_camera *camera, t_map *map,
+				t_game *game);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 01:30:51 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 04:43:26 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 23:09:32 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,29 +21,31 @@ static void	set_texture(t_game *game, t_renderer *renderer,
 static void	set_colour(t_renderer *renderer, t_configurable *configurable);
 
 /* Load up the textures needed by the renderer */
-void	init_renderer(t_renderer *renderer, t_config *config,
+t_renderer	init_renderer(t_config *config,
 	t_game *game, t_image *world, t_dimensions screen)
 {
-	int				i;
+	t_renderer		renderer;
 	t_configurable	*configurable;
+	int				i;
 
-	renderer->img = world;
-	renderer->screen = screen;
-	renderer->midpoint = game->screen.height / 2;
+	renderer.img = world;
+	renderer.screen = screen;
+	renderer.midpoint = game->screen.height / 2;
 	i = 0;
 	while (i < MAX_CONFIGURABLE)
 	{
 		configurable = &config->configurables[i];
 		if (is_texture(configurable->type_identifier))
 		{
-			set_texture(game, renderer, configurable);
+			set_texture(game, &renderer, configurable);
 		}
 		else if (is_colour(configurable->type_identifier))
 		{
-			set_colour(renderer, configurable);
+			set_colour(&renderer, configurable);
 		}
 		i++;
 	}
+	return (renderer);
 }
 
 static

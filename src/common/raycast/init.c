@@ -43,23 +43,25 @@ void	init_ray(t_ray *ray, t_raycaster *raycaster, int ray_count,
  * calculate the angle difference between each ray by using the field of view,
  * find the angle of where the first ray starts and the last ray ends,
  * assign an id to each ray so it knows which X of the screen slice it is */
-void	init_raycaster(t_raycaster *raycaster, t_player *player,
+t_raycaster	init_raycaster(t_player *player,
 					t_dimensions *screen, t_dimensions *tile)
 {
-	t_ray	*ray;
-	int		ray_count;
+	t_raycaster	raycaster;
+	int			ray_count;
+	t_ray		*ray;
 
-	raycaster->ray_count = screen->width;
-	raycaster->angle_increment = player->field_of_view / raycaster->ray_count;
-	raycaster->leftmost_ray_angle = player->angle
+	raycaster.ray_count = screen->width;
+	raycaster.angle_increment = player->field_of_view / raycaster.ray_count;
+	raycaster.leftmost_ray_angle = player->angle
 		+ (player->field_of_view / 2);
-	raycaster->projection_plane.x = 0;
-	raycaster->projection_plane.y = 1;
+	raycaster.projection_plane.x = 0;
+	raycaster.projection_plane.y = 1;
 	ray_count = 0;
-	while (ray_count < raycaster->ray_count)
+	while (ray_count < raycaster.ray_count)
 	{
-		ray = &raycaster->rays[ray_count];
-		init_ray(ray, raycaster, ray_count, tile, player);
+		ray = &raycaster.rays[ray_count];
+		init_ray(ray, &raycaster, ray_count, tile, player);
 		ray_count++;
 	}
+	return (raycaster);
 }

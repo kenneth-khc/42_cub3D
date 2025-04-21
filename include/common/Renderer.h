@@ -6,16 +6,16 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:31:28 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/19 22:27:23 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 23:00:32 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef RENDERER_H
 # define RENDERER_H
 
+# include "Parse.h"
 # include "Vector.h"
 # include "Raycaster.h"
-# include "Map.h"
 # include "Image.h"
 
 typedef struct s_renderer
@@ -44,17 +44,17 @@ typedef struct s_renderer
 
 typedef struct s_game	t_game;
 
-void	render(t_game *game, t_renderer *renderer, t_raycaster *raycaster);
-void	init_world2D(t_game *game, t_map *map);
-void	init_world_3d(t_game *game);
-void	clear_walls(t_renderer *renderer, t_image *world, t_dimensions screen,
-			t_colour ceiling, t_colour floor);
-void	render_wall_slice(t_renderer *renderer, t_ray *ray);
-void	calculate_draw_pos(t_renderer *renderer);
-double	calculate_wall_hitpoint(t_ray *ray);
-int		calculate_texture_column(t_image *texture, double wall_hit_x,
-			t_ray *ray);
-void	reset_draw_line(t_renderer *renderer);
-void	decide_current_texture(t_renderer *renderer, t_ray *ray);
+t_renderer	init_renderer(t_config *config, t_game *game,
+				t_image *world, t_dimensions screen);
+void		render(t_game *game, t_renderer *renderer, t_raycaster *raycaster);
+void		init_world_3d(t_game *game);
+void		clear_walls(t_renderer *renderer);
+void		render_wall_slice(t_renderer *renderer, t_ray *ray);
+void		calculate_draw_pos(t_renderer *renderer);
+double		calculate_wall_hitpoint(t_ray *ray);
+int			calculate_texture_column(t_image *texture, double wall_hit_x,
+				t_ray *ray);
+void		reset_draw_line(t_renderer *renderer);
+void		decide_current_texture(t_renderer *renderer, t_ray *ray);
 
 #endif

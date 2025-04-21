@@ -39,8 +39,6 @@ typedef struct s_player
 typedef struct s_game	t_game;
 typedef struct s_map	t_map;
 
-void	init_player(t_player *player, struct s_map *map);
-void	update_player_position(t_player *player, t_vec2d new_pos,
-			t_dimensions *tile);
+t_player	init_player(struct s_map *map);
 
 #endif

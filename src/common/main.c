@@ -6,36 +6,30 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 04:31:01 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/23 00:06:57 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx.h>
 #include <stdbool.h>
 #include "Game.h"
+#include "Parse.h"
 #include "Keys.h"
-#include "Map.h"
 #include "Renderer.h"
 #include "Raycaster.h"
-#include "Colours.h" // probably don't need all these colours, remove later
-#include "Parse.h"
-#include "Minimap.h"
 #include "Utils.h"
-
-#include <fcntl.h> // del
 #include <unistd.h>
 #include <limits.h>
-#include "ft_dprintf.h"
-#include <stdlib.h>
+
+static void
+setup_event_hooks(t_game *game, void *window, t_keystates *keystates);
 
 int	main(int argc, char **argv)
 {
 	t_config	config;
 	t_game		game;
 
-	// maybe not necessary if we initialize everything properly before reading
 	game = (t_game){0};
-	set_colour_table(&game.colours); // probably remove later
 	if (argc != 2)
 	{
 		error("Usage: ./cub3D <.cub file>\n");
@@ -43,9 +37,12 @@ int	main(int argc, char **argv)
 	config = parse(*++argv);
 	validate_map(&config.map);
 	init_game(&game, &config);
+	setup_event_hooks(&game, game.window, &game.keystates);
+	destroy_config(&config);
 	mlx_loop(game.mlx);
 }
 
+static
 void	setup_event_hooks(t_game *game, void *window, t_keystates *keystates)
 {
 	mlx_hook(window, KEY_PRESS_EV, KEY_PRESS_MASK, press_key, keystates);
@@ -54,51 +51,6 @@ void	setup_event_hooks(t_game *game, void *window, t_keystates *keystates)
 	mlx_hook(window, DESTROY_WINDOW_EV, 0, close_game, game);
 	mlx_mouse_hide(game->mlx, window);
 	mlx_loop_hook(game->mlx, game_loop, game);
-}
-
-void	init_game(t_game *game, t_config *config)
-{
-	game->mlx = mlx_init();
-	if (game->mlx == NULL)
-	{
-		error("mlx_init() failed\n");
-	}
-	game->screen.width = SCREEN_WIDTH;
-	game->screen.height = SCREEN_HEIGHT;
-	game->tile.width = TILE_WIDTH;
-	game->tile.height = TILE_HEIGHT;
-	init_keybindings(&game->keystates);
-	init_map(&game->map, config);
-	init_minimap(game, &game->map, &game->minimap);
-	init_player(&game->player, &game->map);
-	init_raycaster(&game->raycaster, &game->player, &game->screen, &game->tile);
-	create_image(game->mlx, &game->world_3d, game->screen.width,
-		game->screen.height);
-	init_renderer(&game->renderer, config, game, &game->world_3d, game->screen);
-	game->window = mlx_new_window(game->mlx, game->screen.width,
-			game->screen.height, WINDOW_TITLE);
-	if (game->window == NULL)
-	{
-		error("mlx_new_window() failed\n");
-	}
-	setup_event_hooks(game, game->window, &game->keystates);
-}
-
-void	update(t_game *game, t_player *player)
-{
-	if (player->is_moving)
-	{
-		player->world_pos.x += player->delta.x;
-		player->world_pos.y += player->delta.y;
-		player->tile_index.x = player->world_pos.x / game->tile.width;
-		player->tile_index.y = player->world_pos.y / game->tile.height;
-		// TODO: fix this
-		/*update_map(&game->map, player);*/
-		player->is_moving = false;
-		player->delta.x = 0;
-		player->delta.y = 0;
-	}
-	update_minimap(&game->minimap, game);
 }
 
 int	game_loop(t_game *game)

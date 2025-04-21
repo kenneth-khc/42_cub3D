@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:04:34 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 04:16:40 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 06:37:02 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,10 @@
 
 /* Associate each MLX keycode to our own key, hooking it to a function to be
  * called when the key is pressed and/or released */
-void	init_keybindings(t_keystates *keystates)
+t_keystates	init_keybindings(void)
 {
-	t_key *const	keys = keystates->keys;
+	t_keystates		keystates;
+	t_key *const	keys = keystates.keys;
 
 	keys[KEY_W] = map_key(PRESS, MLX_KEY_W, move_forward);
 	keys[KEY_A] = map_key(PRESS, MLX_KEY_A, strafe_left);
@@ -28,17 +29,5 @@ void	init_keybindings(t_keystates *keystates)
 	keys[KEY_M] = map_key(PRESS | RELEASE, MLX_KEY_M, toggle_minimap);
 	keys[KEY_UP] = map_key(PRESS, MLX_KEY_UP, look_up);
 	keys[KEY_DOWN] = map_key(PRESS, MLX_KEY_DOWN, look_down);
-}
-
-/* Create a new keybinding, with interest specifying the state of the key
- * to call the function (PRESS or RELEASE) */
-t_key	map_key(int interest, enum e_mlx_keycodes mlx_keycode, t_action action)
-{
-	t_key	new_keybinding;
-
-	new_keybinding.mlx_keycode = mlx_keycode;
-	new_keybinding.action = action;
-	new_keybinding.state = NONE;
-	new_keybinding.interest = interest;
-	return (new_keybinding);
+	return (keystates);
 }

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:25:39 by kecheong          #+#    #+#             */
-/*   Updated: 2025/01/03 17:04:32 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 23:20:33 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ typedef struct s_image
 
 typedef struct s_game	t_game;
 
-void		create_image(void *mlx, t_image *img, int width, int height);
+t_image		create_image(void *mlx, int width, int height);
+void		destroy_image(void *mlx, t_image *img);
 void		load_image(t_game *game, t_image *img, const char *filename);
 uint32_t	*get_pixel_addr(t_image *img, int x, int y);
 bool		draw_pixel(t_image *img, int x, int y, t_colour colour);

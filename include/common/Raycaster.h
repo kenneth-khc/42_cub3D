@@ -73,17 +73,14 @@ typedef struct s_raycaster
 
 typedef struct s_game	t_game;
 
-void	init_raycaster(t_raycaster *raycaster, t_player *player,
-			t_dimensions *screen, t_dimensions *tile);
-void	update_raycaster(t_raycaster *raycaster, t_player *player,
-			t_dimensions *tile);
-void	raycast(t_raycaster *raycaster, t_player *player, t_game *game);
-void	cast(t_ray *ray, t_player *player, t_map *map);
-void	init_dda(t_ray *ray);
-void	get_distance(t_ray *ray, t_player *player);
-void	check_wall_side_hit(t_ray *ray);
-
-double	degrees_to_radians(double degrees);
-double	radians_to_degrees(double radians);
+t_raycaster	init_raycaster(t_player *player,
+				t_dimensions *screen, t_dimensions *tile);
+void		update_raycaster(t_raycaster *raycaster, t_player *player,
+				t_dimensions *tile);
+void		raycast(t_raycaster *raycaster, t_player *player, t_game *game);
+void		cast(t_ray *ray, t_player *player, t_map *map);
+void		init_dda(t_ray *ray);
+void		get_distance(t_ray *ray, t_player *player);
+void		check_wall_side_hit(t_ray *ray);
 
 #endif

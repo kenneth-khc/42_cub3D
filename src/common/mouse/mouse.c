@@ -6,11 +6,15 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 16:39:37 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 04:28:23 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 05:43:30 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Game.h"
+#include "Player.h"
+#include "Settings.h"
+#include "Utils.h"
+#include "Vector.h"
 #include <mlx.h>
 #include <math.h>
 
@@ -28,13 +32,13 @@ int	process_mouse(int x, int y, void *param)
 		return (1);
 	}
 	player->angle += MOUSE_TURN_SPEED_RADS * delta.x;
-	if (radians_to_degrees(player->angle) > 360)
+	if (player->angle > radians(360))
 	{
-		player->angle -= degrees_to_radians(360);
+		player->angle -= radians(360);
 	}
-	else if (radians_to_degrees(player->angle) < 0)
+	else if (player->angle < radians(0))
 	{
-		player->angle += degrees_to_radians(360);
+		player->angle += radians(360);
 	}
 	player->direction.x = cos(player->angle);
 	player->direction.y = -sin(player->angle);

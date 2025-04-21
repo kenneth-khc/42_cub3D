@@ -6,45 +6,12 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:40:30 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/19 22:27:42 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 23:25:36 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GAME_H
 # define GAME_H
-
-# ifndef SCREEN_WIDTH
-#  define SCREEN_WIDTH 1000
-# endif
-
-# ifndef SCREEN_HEIGHT
-#  define SCREEN_HEIGHT 1000
-# endif
-
-# ifndef WINDOW_TITLE
-#  define WINDOW_TITLE "cute3D"
-# endif
-
-# ifndef TILE_WIDTH
-#  define TILE_WIDTH 50
-# endif
-
-# ifndef TILE_HEIGHT
-#  define TILE_HEIGHT 50
-# endif
-
-# ifndef TURN_SPEED_RADS
-//#  define TURN_SPEED_RADS 0.0174533 // 1 degrees
-#  define TURN_SPEED_RADS 0.0872665 // 5 degrees
-# endif
-
-# ifndef MOUSE_TURN_SPEED_RADS
-#  define MOUSE_TURN_SPEED_RADS 0.000872665 // 0.005 degrees
-# endif
-
-# ifndef VERTICAL_CAMERA_SPEED
-#  define VERTICAL_CAMERA_SPEED 20
-# endif
 
 # include "Player.h"
 # include "Map.h"
@@ -53,12 +20,9 @@
 # include "Renderer.h"
 # include "Parse.h"
 
-# include <stdio.h>
-
 typedef struct s_game
 {
 	// debugging purposes
-	FILE			*logfile;
 	t_colours		colours;
 	// end
 	void			*mlx;
@@ -76,9 +40,8 @@ typedef struct s_game
 }	t_game;
 
 void	init_game(t_game *game, t_config *config);
-void	init_renderer(t_renderer *renderer, t_config *config, t_game *game,
-			t_image *world, t_dimensions screen);
 int		game_loop(t_game *game);
+void	update(t_game *game, t_player *player);
 int		process_mouse(int x, int y, void *param);
 
 #endif

@@ -11,7 +11,9 @@
 /* ************************************************************************** */
 
 #include "Game.h"
+#include "Settings.h"
 #include "Keys.h"
+#include "Utils.h"
 #include <math.h>
 
 /* The player starts at a certain angle based on the input of the map.
@@ -30,9 +32,9 @@ int	rotate_left(void *ptr)
 	t_player *const	player = &game->player;
 
 	player->angle += TURN_SPEED_RADS;
-	if (radians_to_degrees(player->angle) > 360)
+	if (player->angle > radians(360))
 	{
-		player->angle -= degrees_to_radians(360);
+		player->angle -= radians(360);
 	}
 	player->direction.x = cos(player->angle);
 	player->direction.y = -sin(player->angle);
@@ -45,9 +47,9 @@ int	rotate_right(void *ptr)
 	t_player *const	player = &game->player;
 
 	player->angle -= TURN_SPEED_RADS;
-	if (radians_to_degrees(player->angle < 0))
+	if (player->angle < radians(0))
 	{
-		player->angle += degrees_to_radians(360);
+		player->angle += radians(360);
 	}
 	player->direction.x = cos(player->angle);
 	player->direction.y = -sin(player->angle);

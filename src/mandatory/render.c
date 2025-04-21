@@ -26,8 +26,7 @@ void	render(t_game *game, t_renderer *renderer, t_raycaster *raycaster)
 {
 	t_ray	*ray;
 
-	clear_walls(renderer, renderer->img, renderer->screen, renderer->ceiling,
-		renderer->floor);
+	clear_walls(renderer);
 	renderer->current_x = 0;
 	while (renderer->current_x < game->screen.width)
 	{

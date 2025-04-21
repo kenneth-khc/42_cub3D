@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 18:15:54 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/02 11:01:32 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 23:09:13 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,10 @@ typedef struct s_colours
 
 typedef struct s_image	t_image;
 
+t_colours	init_colours(void);
 t_colour	create_colour(uint8_t alpha, uint8_t red, uint8_t green,
 				uint8_t blue);
 t_colour	rgb_string_to_colour(const char *rgb_string);
-void		set_colour_table(t_colours *table);
 t_colour	pixel_to_colour(uint32_t *pixel);
 t_colour	get_pixel_addr_to_colour(t_image *img, int x, int y);
 

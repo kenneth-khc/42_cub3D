@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 18:24:35 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 04:00:16 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 23:20:35 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,18 +102,21 @@ t_colour	get_pixel_addr_to_colour(t_image *img, int x, int y)
 	return (colour);
 }
 
-void	set_colour_table(t_colours *table)
+t_colours	init_colours(void)
 {
-	table->red = create_colour(0x00, 0xFF, 0x00, 0x00);
-	table->green = create_colour(0x00, 0x00, 0xFF, 0x00);
-	table->blue = create_colour(0x00, 0x00, 0xFF, 0xFF);
-	table->black = create_colour(0x00, 0x00, 0x00, 0x00);
-	table->cyan = create_colour(0x00, 0x54, 0x88, 0xF7);
-	table->white = create_colour(0x00, 0xFF, 0xFF, 0xFF);
-	table->purple = create_colour(0x00, 0xAE, 0x71, 0xF5);
-	table->grey = create_colour(0x00, 0xAC, 0xA6, 0xB3);
-	table->yellow = create_colour(0x00, 0xFF, 0xFF, 0x00);
-	table->violet = create_colour(0x00, 0x74, 0x43, 0xFA);
+	t_colours	table;
+
+	table.red = create_colour(0x00, 0xFF, 0x00, 0x00);
+	table.green = create_colour(0x00, 0x00, 0xFF, 0x00);
+	table.blue = create_colour(0x00, 0x00, 0xFF, 0xFF);
+	table.black = create_colour(0x00, 0x00, 0x00, 0x00);
+	table.cyan = create_colour(0x00, 0x54, 0x88, 0xF7);
+	table.white = create_colour(0x00, 0xFF, 0xFF, 0xFF);
+	table.purple = create_colour(0x00, 0xAE, 0x71, 0xF5);
+	table.grey = create_colour(0x00, 0xAC, 0xA6, 0xB3);
+	table.yellow = create_colour(0x00, 0xFF, 0xFF, 0x00);
+	table.violet = create_colour(0x00, 0x74, 0x43, 0xFA);
+	return (table);
 }
 
 /* Converts an address of a pixel into a Colour object */

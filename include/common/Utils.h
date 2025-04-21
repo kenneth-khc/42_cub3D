@@ -13,8 +13,8 @@
 #ifndef UTILS_H
 # define UTILS_H
 
-double	degrees_to_radians(double degrees);
-double	radians_to_degrees(double radians);
+double	radians(double degrees);
+double	degrees(double radians);
 void	error(const char *err_msg);
 
 #endif

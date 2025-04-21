@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:23:30 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 04:31:19 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/23 00:03:04 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,15 @@
 #include <stdio.h>
 
 /* Copy the map from the config into a map in our running game */
-void	init_map(t_map *map, t_config *config)
+t_map	init_map(t_config *config)
 {
-	map->width = config->map.width;
-	map->height = config->map.height;
-	map->layout = config->map.layout;
-	map->player_pos = config->map.player_pos;
+	t_map	map;
+
+	map.width = config->map.width;
+	map.height = config->map.height;
+	map.layout = config->map.layout;
+	map.player_pos = config->map.player_pos;
+	return (map);
 }
 
 /* Adds a row into the layout by reallocating enough space and copying it
@@ -83,6 +86,18 @@ void	print_map(t_map *map)
 	}
 }
 
+void	destroy_map(t_map *map)
+{
+	int	y;
+
+	y = 0;
+	while (y < map->height)
+	{
+		free(map->layout[y]);
+		y++;
+	}
+	free(map->layout);
+}
 /* PROBABLY UNUSED */
 #if 0
 

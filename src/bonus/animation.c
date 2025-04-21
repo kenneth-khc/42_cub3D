@@ -10,12 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#if 0
-
 #include <fcntl.h>
 #include <stdlib.h>
 #include "libft.h"
-/*#include "Animation.h"*/
+#include "Animation.h"
 #include "Renderer.h"
 
 t_animation	animation(t_game *game, const char *img_name)
@@ -75,5 +73,3 @@ t_image	*get_current_frame(t_animation *animation)
 	}
 	return (&animation->frames[animation->frame_index]);
 }
-
-#endif

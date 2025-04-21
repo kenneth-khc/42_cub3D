@@ -1,21 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   game_update.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/22 04:15:56 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 04:16:07 by kecheong         ###   ########.fr       */
+/*   Created: 2025/04/22 05:41:45 by kecheong          #+#    #+#             */
+/*   Updated: 2025/04/22 05:41:53 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_dprintf.h"
-#include <stdlib.h>
+#include "Game.h"
+#include "Player.h"
 
-void	error(const char *err_msg)
+void	update(t_game *game, t_player *player)
 {
-	ft_dprintf(STDERR_FILENO, "Error\n");
-	ft_dprintf(STDERR_FILENO, err_msg);
-	exit(1);
+	if (player->is_moving)
+	{
+		player->world_pos.x += player->delta.x;
+		player->world_pos.y += player->delta.y;
+		player->tile_index.x = player->world_pos.x / game->tile.width;
+		player->tile_index.y = player->world_pos.y / game->tile.height;
+		player->is_moving = false;
+		player->delta.x = 0;
+		player->delta.y = 0;
+	}
 }

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 04:54:17 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/18 18:58:29 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 05:18:54 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ t_config	init_blank_config(void)
 {
 	t_config	config;
 
-	ft_bzero(&config, sizeof(config));
+	config = (t_config){0};
 	config.configurables[0].type_identifier = "NO";
 	config.configurables[1].type_identifier = "SO";
 	config.configurables[2].type_identifier = "EA";
@@ -109,12 +109,6 @@ size_t	identify_type_identifier(char *line, char **type_identifier)
 	else
 		*type_identifier = NULL;
 	return (offset);
-}
-
-bool	is_valid_map_character(char c)
-{
-	return (c == ' ' || c == '0' || c == '1'
-		|| c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }
 
 void	parse_map_content(t_config *config, char *line)

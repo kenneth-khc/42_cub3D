@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 07:08:15 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 00:52:54 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 05:17:20 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,4 +32,10 @@ bool	is_player(char c)
 bool	is_floor(char c)
 {
 	return (c == '0' || is_player(c));
+}
+
+bool	is_valid_map_character(char c)
+{
+	return (c == ' ' || c == '0' || c == '1'
+		|| c == 'N' || c == 'S' || c == 'E' || c == 'W');
 }

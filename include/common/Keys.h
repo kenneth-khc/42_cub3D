@@ -111,24 +111,24 @@ typedef struct s_keystates
 typedef struct s_game	t_game;
 typedef struct s_player	t_player;
 
-t_key	map_key(int interest, enum e_mlx_keycodes keycode, t_action action);
-void	init_keybindings(t_keystates *keys);
-int		press_release_key(int mlx_keycode, t_keystates *keys);
-int		press_key(int mlx_keycode, t_keystates *keys);
-int		release_key(int mlx_keycode, t_keystates *keys);
-void	process_keys(t_keystates *keys, t_game *game);
+t_key		map_key(int interest, enum e_mlx_keycodes keycode, t_action action);
+t_keystates	init_keybindings(void);
+int			press_release_key(int mlx_keycode, t_keystates *keys);
+int			press_key(int mlx_keycode, t_keystates *keys);
+int			release_key(int mlx_keycode, t_keystates *keys);
+void		process_keys(t_keystates *keys, t_game *game);
 
-int		look_up(void *game);
-int		look_down(void *game);
-int		move_forward(void *ptr);
-int		move_backward(void *ptr);
-int		strafe_left(void *ptr);
-int		strafe_right(void *ptr);
+int			look_up(void *game);
+int			look_down(void *game);
+int			move_forward(void *ptr);
+int			move_backward(void *ptr);
+int			strafe_left(void *ptr);
+int			strafe_right(void *ptr);
 
-int		rotate_left(void *ptr);
-int		rotate_right(void *ptr);
+int			rotate_left(void *ptr);
+int			rotate_right(void *ptr);
 
-int		toggle_minimap(void *ptr);
-int		close_game(void *ptr);
+int			toggle_minimap(void *ptr);
+int			close_game(void *ptr);
 
 #endif

@@ -12,17 +12,17 @@
 
 #include "Game.h"
 #include "Minimap.h"
-#include "Map.h"
 
-void	init_minimap(t_game *game, t_map *map, t_minimap *minimap)
+t_minimap	init_minimap(t_game *game)
 {
-	int	width = game->screen.width * MINIMAP_SCALE;
-	int	height = game->screen.height * MINIMAP_SCALE;
-	create_image(game->mlx, &minimap->img, width, height);
-	minimap->img.pos.x = MINIMAP_X_OFFSET;
-	minimap->img.pos.y = MINIMAP_Y_OFFSET;
-	(void)map;
-	minimap->display = true;
-	printf("%d %d\n", minimap->img.width, minimap->img.height);
-	update_minimap(minimap, game);
+	t_minimap	minimap;
+	const int	width = game->screen.width * MINIMAP_SCALE;
+	const int	height = game->screen.height * MINIMAP_SCALE;
+
+	minimap.img = create_image(game->mlx, width, height);
+	minimap.img.pos.x = MINIMAP_X_OFFSET;
+	minimap.img.pos.y = MINIMAP_Y_OFFSET;
+	minimap.display = true;
+	update_minimap(&minimap, game);
+	return (minimap);
 }

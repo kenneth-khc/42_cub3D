@@ -6,13 +6,14 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:43:29 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/18 20:58:04 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 23:21:01 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Image.h"
 #include "Vector.h"
 #include "Game.h"
+#include "Utils.h"
 #include "ft_dprintf.h"
 #include <mlx.h>
 #include <stdlib.h>
@@ -22,18 +23,30 @@
  * required to manipulate it 
  * Instance is the void* handler of the image passed into/from MLX image
  * functions */
-void	create_image(void *mlx, t_image *img, int width, int height)
+t_image	create_image(void *mlx, int width, int height)
 {
-	img->instance = mlx_new_image(mlx, width, height);
-	img->width = width;
-	img->height = height;
-	img->pixels = img->width * img->height;
-	img->addr = mlx_get_data_addr(img->instance,
-			&img->bits_per_pixel, &img->size_line, &img->endian);
-	img->bytes_per_pixel = img->bits_per_pixel / 8;
-	img->bytes = img->pixels * img->bytes_per_pixel;
-	img->pos.x = 0;
-	img->pos.y = 0;
+	t_image	img;
+
+	img.instance = mlx_new_image(mlx, width, height);
+	if (img.instance == NULL)
+	{
+		error("mlx_new_image() failed\n");
+	}
+	img.width = width;
+	img.height = height;
+	img.pixels = img.width * img.height;
+	img.addr = mlx_get_data_addr(img.instance,
+			&img.bits_per_pixel, &img.size_line, &img.endian);
+	img.bytes_per_pixel = img.bits_per_pixel / 8;
+	img.bytes = img.pixels * img.bytes_per_pixel;
+	img.pos.x = 0;
+	img.pos.y = 0;
+	return (img);
+}
+
+void	destroy_image(void *mlx, t_image *img)
+{
+	mlx_destroy_image(mlx, img->instance);
 }
 
 /* Index into the pixel array of the image to grab the exact pixel

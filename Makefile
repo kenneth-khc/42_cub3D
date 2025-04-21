@@ -6,7 +6,7 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2025/04/22 01:25:41 by kecheong         ###   ########.fr        #
+#    Updated: 2025/04/22 06:38:41 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,7 +56,9 @@ dirs := $(common_src_dir) \
 		$(common_src_dir)/mlx_utils \
 		$(common_src_dir)/raycast \
 		$(common_src_dir)/renderer \
-		$(common_src_dir)/keys
+		$(common_src_dir)/keys \
+		$(common_src_dir)/mouse \
+		$(common_src_dir)/utils
 
 obj_dir := obj
 
