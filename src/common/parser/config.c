@@ -13,6 +13,7 @@
 #include "Parse.h"
 #include "libft.h"
 #include "ft_dprintf.h"
+#include "Utils.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -66,10 +67,7 @@ void	validate_element(t_config *config, char *line)
 	i = 0;
 	type_identifier_offset = identify_type_identifier(line, &type_identifier);
 	if (type_identifier == NULL)
-	{
-		ft_dprintf(STDERR_FILENO, "Error\nInvalid type identifier\n");
-		exit(1);
-	}
+		error("Invalid type identifier\n");
 	while (i < MAX_CONFIGURABLE)
 	{
 		element = &config->configurables[i];
@@ -77,19 +75,14 @@ void	validate_element(t_config *config, char *line)
 		{
 			if (element->identifier_offset == 0 && element->value_offset == 0)
 			{
-				set(element, config, line, type_identifier_offset);
-				return ;
+				return (set(element, config, line, type_identifier_offset));
 			}
 			else
-			{
-				ft_dprintf(STDERR_FILENO, "Error\nDuplicate value for element\n");
-				exit(1);
-			}
+				error("Duplicate value for element\n");
 		}
 		i++;
 	}
-	ft_dprintf(STDERR_FILENO, "Error\nInvalid type identifier\n");
-	exit(1);
+	error("Invalid type identifier\n");
 }
 
 // TODO: prettify
@@ -117,6 +110,7 @@ size_t	identify_type_identifier(char *line, char **type_identifier)
 		*type_identifier = NULL;
 	return (offset);
 }
+
 bool	is_valid_map_character(char c)
 {
 	return (c == ' ' || c == '0' || c == '1'

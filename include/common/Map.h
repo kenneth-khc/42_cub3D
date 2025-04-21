@@ -39,6 +39,7 @@ void	pad_borders(t_map *map);
 
 /* PROBABLY UNUSED */
 # if 0
+
 void	update_map(t_map *map, t_player *player);
 # endif
 

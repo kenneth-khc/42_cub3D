@@ -24,7 +24,7 @@
  * and the player's field of view moves to the left accordingly
  * By pressing the right arrow key, decrement the angle (going clockwise)
  * and the field of view moves to the right accordingly */
-void	rotate_left(void *ptr)
+int	rotate_left(void *ptr)
 {
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
@@ -36,10 +36,10 @@ void	rotate_left(void *ptr)
 	}
 	player->direction.x = cos(player->angle);
 	player->direction.y = -sin(player->angle);
-	/*update_minimap(&game->minimap, game);*/
+	return (1);
 }
 
-void	rotate_right(void *ptr)
+int	rotate_right(void *ptr)
 {
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
@@ -51,10 +51,10 @@ void	rotate_right(void *ptr)
 	}
 	player->direction.x = cos(player->angle);
 	player->direction.y = -sin(player->angle);
-	/*update_minimap(&game->minimap, game);*/
+	return (1);
 }
 
-void	look_up(void *ptr)
+int	look_up(void *ptr)
 {
 	t_game *const		game = (t_game *)ptr;
 	static const int	upper_bound = SCREEN_HEIGHT - SCREEN_HEIGHT / 4;
@@ -63,9 +63,10 @@ void	look_up(void *ptr)
 	{
 		game->renderer.midpoint += VERTICAL_CAMERA_SPEED;
 	}
+	return (1);
 }
 
-void	look_down(void *ptr)
+int	look_down(void *ptr)
 {
 	t_game *const		game = (t_game *)ptr;
 	static const int	lower_bound = SCREEN_HEIGHT / 4;
@@ -74,4 +75,5 @@ void	look_down(void *ptr)
 	{
 		game->renderer.midpoint -= VERTICAL_CAMERA_SPEED;
 	}
+	return (1);
 }

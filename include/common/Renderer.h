@@ -30,7 +30,7 @@ typedef struct s_renderer
 	double			line_height; // the height of the current line to draw
 	t_image			*img; // the image to render onto
 	/*t_animation		animations[4]; // wall textures that are animated*/
-	t_image			wall_textures[4]; // which textures to use for the curr frame
+	t_image			wall_textures[4]; // N/S/E/W wall textures
 	/*t_animation		north_anim;*/
 	/*t_animation		south_anim;*/
 	/*t_animation		west_anim;*/

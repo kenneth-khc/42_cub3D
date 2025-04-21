@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 18:24:35 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 03:59:01 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 04:00:16 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,14 @@ t_colour	rgb_string_to_colour(const char *rgb_string)
 	}
 	free_2d_array(components);
 	return (create_colour(0, r, g, b));
+}
+
+t_colour	get_pixel_addr_to_colour(t_image *img, int x, int y)
+{
+	uint32_t *const	pixel = get_pixel_addr(img, x, y);
+	const t_colour	colour = pixel_to_colour(pixel);
+
+	return (colour);
 }
 
 void	set_colour_table(t_colours *table)

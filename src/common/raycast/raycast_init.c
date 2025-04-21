@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "Raycaster.h"
-#include "Game.h"
 #include "libft.h"
 #include <math.h>
 
@@ -44,8 +43,8 @@ void	init_ray(t_ray *ray, t_raycaster *raycaster, int ray_count,
  * calculate the angle difference between each ray by using the field of view,
  * find the angle of where the first ray starts and the last ray ends,
  * assign an id to each ray so it knows which X of the screen slice it is */
-void	init_raycaster(t_raycaster *raycaster, t_player *player, t_dimensions *screen,
-					t_dimensions *tile)
+void	init_raycaster(t_raycaster *raycaster, t_player *player,
+					t_dimensions *screen, t_dimensions *tile)
 {
 	t_ray	*ray;
 	int		ray_count;

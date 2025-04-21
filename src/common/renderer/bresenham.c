@@ -10,11 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
-#include <stdlib.h>
-#include <mlx.h>
 #include "Image.h"
 #include "Vector.h"
+#include <mlx.h>
+#include <stdlib.h>
 
 static void	draw_low(t_image *img, t_vec2i start,
 		t_vec2i end, t_colour colour)

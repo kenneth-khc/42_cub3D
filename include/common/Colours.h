@@ -44,11 +44,13 @@ typedef struct s_colours
 	t_colour	violet;
 }	t_colours;
 
+typedef struct s_image	t_image;
+
 t_colour	create_colour(uint8_t alpha, uint8_t red, uint8_t green,
 				uint8_t blue);
 t_colour	rgb_string_to_colour(const char *rgb_string);
 void		set_colour_table(t_colours *table);
 t_colour	pixel_to_colour(uint32_t *pixel);
-
+t_colour	get_pixel_addr_to_colour(t_image *img, int x, int y);
 
 #endif

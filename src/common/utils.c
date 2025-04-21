@@ -1,33 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   config_utils.c                                     :+:      :+:    :+:   */
+/*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/17 05:35:32 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 00:52:51 by kecheong         ###   ########.fr       */
+/*   Created: 2025/04/22 04:15:56 by kecheong          #+#    #+#             */
+/*   Updated: 2025/04/22 04:16:07 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "ft_dprintf.h"
+#include <stdlib.h>
 
-bool	identified(const char *line, const char *identifier)
+void	error(const char *err_msg)
 {
-	const size_t	identifier_len = ft_strlen(identifier);
-	size_t			i;
-
-	i = 0;
-	while (i < identifier_len)
-	{
-		if (line[i] != identifier[i])
-		{
-			return (false);
-		}
-		else
-		{
-			i++;
-		}
-	}
-	return (true);
+	ft_dprintf(STDERR_FILENO, "Error\n");
+	ft_dprintf(STDERR_FILENO, err_msg);
+	exit(1);
 }

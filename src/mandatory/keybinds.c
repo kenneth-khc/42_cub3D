@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:04:34 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/21 02:37:58 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 04:17:01 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ void	init_keybindings(t_keystates *keystates)
 	keys[KEY_LEFT] = map_key(PRESS, MLX_KEY_LEFT, rotate_left);
 	keys[KEY_RIGHT] = map_key(PRESS, MLX_KEY_RIGHT, rotate_right);
 	keys[KEY_ESC] = map_key(RELEASE, MLX_KEY_ESC, close_game);
-	/*keys[KEY_M] = map_key(PRESS | RELEASE, MLX_KEY_M, toggle_minimap);*/
 	keys[KEY_UP] = map_key(PRESS, MLX_KEY_UP, look_up);
 	keys[KEY_DOWN] = map_key(PRESS, MLX_KEY_DOWN, look_down);
 }

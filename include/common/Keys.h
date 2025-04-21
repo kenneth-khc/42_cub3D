@@ -15,22 +15,24 @@
 
 # include <stdbool.h>
 
+/* X11 Events according to the MLX documentation */
 enum e_events
 {
-	KEYPRESS_EVENT = 2,
-	KEYRELEASE_EVENT = 3,
-	MOUSEMOVE_EVENT = 6,
-	ENTER_EVENT = 7, // event for when mouse enters the window
-	LEAVE_EVENT = 8
+	KEY_PRESS_EV = 2,
+	KEY_RELEASE_EV = 3,
+	MOUSE_MOVE_EV = 6,
+	WINDOW_ENTER_EV = 7, // event for when mouse enters the window
+	WINDOW_LEAVE_EV = 8, // event for when mouse leaves the window
+	DESTROY_WINDOW_EV = 17 // event for when the X button top right is clicked
 };
 
-/* Event masks according to the MLX documentation */
+/* X11 Event masks according to the MLX documentation */
 enum e_event_masks
 {
-	KEYPRESS_MASK = 1L << 0,
-	KEYRELEASE_MASK = 1L << 1,
-	ENTER_WINDOW_MASK = 1L << 4,
-	LEAVE_WINDOW_MASK = 1L << 5,
+	KEY_PRESS_MASK = 1L << 0,
+	KEY_RELEASE_MASK = 1L << 1,
+	WINDOW_ENTER_MASK = 1L << 4,
+	WINDOW_LEAVE_MASK = 1L << 5,
 	POINTER_MOTION_MASK = 1L << 6
 };
 
@@ -82,7 +84,7 @@ enum e_keycodes
 # define N_KEYS 10 // number of keys that we care about
 
 typedef struct s_key	t_key;
-typedef void			(*t_action)(void*);
+typedef int				(*t_action)(void*);
 
 typedef enum e_key_state
 {
@@ -116,17 +118,17 @@ int		press_key(int mlx_keycode, t_keystates *keys);
 int		release_key(int mlx_keycode, t_keystates *keys);
 void	process_keys(t_keystates *keys, t_game *game);
 
-void	look_up(void *game);
-void	look_down(void *game);
-void	move_forward(void *ptr);
-void	move_backward(void *ptr);
-void	strafe_left(void *ptr);
-void	strafe_right(void *ptr);
+int		look_up(void *game);
+int		look_down(void *game);
+int		move_forward(void *ptr);
+int		move_backward(void *ptr);
+int		strafe_left(void *ptr);
+int		strafe_right(void *ptr);
 
-void	rotate_left(void *ptr);
-void	rotate_right(void *ptr);
+int		rotate_left(void *ptr);
+int		rotate_right(void *ptr);
 
-void	toggle_minimap(void *ptr);
-void	close_game(void *ptr);
+int		toggle_minimap(void *ptr);
+int		close_game(void *ptr);
 
 #endif

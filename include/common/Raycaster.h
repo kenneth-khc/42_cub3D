@@ -73,7 +73,8 @@ typedef struct s_raycaster
 
 typedef struct s_game	t_game;
 
-void	init_raycaster(t_raycaster *raycaster, t_player *player, t_dimensions *screen, t_dimensions *tile);
+void	init_raycaster(t_raycaster *raycaster, t_player *player,
+			t_dimensions *screen, t_dimensions *tile);
 void	update_raycaster(t_raycaster *raycaster, t_player *player,
 			t_dimensions *tile);
 void	raycast(t_raycaster *raycaster, t_player *player, t_game *game);

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 22:47:40 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/21 02:34:22 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 04:30:19 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <mlx.h>
 #include <stdlib.h>
 
-void	toggle_minimap(void *ptr)
+int	toggle_minimap(void *ptr)
 {
 	t_game *const		game = (t_game *)ptr;
 	const t_key			*m_key = &game->keystates.keys[KEY_M];
@@ -25,9 +25,10 @@ void	toggle_minimap(void *ptr)
 		game->minimap.display = !game->minimap.display;
 	}
 	prev_m_key_state = m_key->state;
+	return (1);
 }
 
-void	close_game(void *ptr)
+int	close_game(void *ptr)
 {
 	t_game *const	game = (t_game*)ptr;
 

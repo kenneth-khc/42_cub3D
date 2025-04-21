@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/15 16:39:37 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/19 22:27:52 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 04:28:23 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,5 @@ int	process_mouse(int x, int y, void *param)
 	player->direction.y = -sin(player->angle);
 	mlx_mouse_move(game->mlx, game->window,
 		SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2);
-	/*update_minimap(&game->minimap, game);*/
 	return (1);
 }

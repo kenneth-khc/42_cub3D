@@ -13,9 +13,9 @@
 #ifndef PARSE_H
 # define PARSE_H
 
-#include <stdbool.h>
-#include <stddef.h>
-#include "Map.h"
+# include "Map.h"
+# include <stdbool.h>
+# include <stddef.h>
 
 typedef struct s_configurable
 {
@@ -29,7 +29,7 @@ typedef struct s_configurable
 	size_t	value_len;
 }	t_configurable;
 
-#define MAX_CONFIGURABLE 6
+# define MAX_CONFIGURABLE 6
 
 typedef struct s_config
 {
@@ -50,7 +50,7 @@ size_t		identify_type_identifier(char *line, char **type_identifier);
 bool		is_whitespace(char c);
 bool		is_player(char c);
 bool		is_floor(char c);
-bool		identified(const char* line, const char *identifier);
+bool		identified(const char *line, const char *identifier);
 void		parse_map_content(t_config *config, char *line);
 void		validate_map(t_map *map);
 bool		validate_configurables(t_configurable *configurables);

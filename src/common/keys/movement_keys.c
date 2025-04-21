@@ -24,7 +24,7 @@
  * A - strafe player to the left (move in +90 degrees)
  * D - strafe player to the right (move in -90 degrees)
  */
-void	move_forward(void *ptr)
+int	move_forward(void *ptr)
 {
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
@@ -46,9 +46,10 @@ void	move_forward(void *ptr)
 		player->delta.y += dy;
 		player->is_moving = true;
 	}
+	return (1);
 }
 
-void	move_backward(void *ptr)
+int	move_backward(void *ptr)
 {
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
@@ -70,9 +71,10 @@ void	move_backward(void *ptr)
 		player->delta.y += dy;
 		player->is_moving = true;
 	}
+	return (1);
 }
 
-void	strafe_left(void *ptr)
+int	strafe_left(void *ptr)
 {
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
@@ -94,9 +96,10 @@ void	strafe_left(void *ptr)
 		player->delta.y += dy;
 		player->is_moving = true;
 	}
+	return (1);
 }
 
-void	strafe_right(void *ptr)
+int	strafe_right(void *ptr)
 {
 	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
@@ -118,4 +121,5 @@ void	strafe_right(void *ptr)
 		player->delta.y += dy;
 		player->is_moving = true;
 	}
+	return (1);
 }

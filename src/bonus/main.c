@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/21 03:50:08 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 04:31:01 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,16 @@ int	main(int argc, char **argv)
 	mlx_loop(game.mlx);
 }
 
+void	setup_event_hooks(t_game *game, void *window, t_keystates *keystates)
+{
+	mlx_hook(window, KEY_PRESS_EV, KEY_PRESS_MASK, press_key, keystates);
+	mlx_hook(window, KEY_RELEASE_EV, KEY_RELEASE_MASK, release_key, keystates);
+	mlx_hook(window, MOUSE_MOVE_EV, POINTER_MOTION_MASK, process_mouse, game);
+	mlx_hook(window, DESTROY_WINDOW_EV, 0, close_game, game);
+	mlx_mouse_hide(game->mlx, window);
+	mlx_loop_hook(game->mlx, game_loop, game);
+}
+
 void	init_game(t_game *game, t_config *config)
 {
 	game->mlx = mlx_init();
@@ -71,25 +81,15 @@ void	init_game(t_game *game, t_config *config)
 	{
 		error("mlx_new_window() failed\n");
 	}
-	mlx_hook(game->window,
-		KEYPRESS_EVENT, KEYPRESS_MASK, press_key, &game->keystates);
-	mlx_hook(game->window,
-		KEYRELEASE_EVENT, KEYRELEASE_EVENT, release_key, &game->keystates);
-	mlx_hook(game->window,
-		MOUSEMOVE_EVENT, POINTER_MOTION_MASK, process_mouse, game);
-	mlx_mouse_hide(game->mlx, game->window);
-	mlx_loop_hook(game->mlx, game_loop, game);
+	setup_event_hooks(game, game->window, &game->keystates);
 }
 
 void	update(t_game *game, t_player *player)
 {
 	if (player->is_moving)
 	{
-		/*printf("%f %f", player->world_pos.x, player->world_pos.y);*/
-		/*printf(" => ");*/
 		player->world_pos.x += player->delta.x;
 		player->world_pos.y += player->delta.y;
-		/*printf("%f %f\n", player->world_pos.x, player->world_pos.y);*/
 		player->tile_index.x = player->world_pos.x / game->tile.width;
 		player->tile_index.y = player->world_pos.y / game->tile.height;
 		// TODO: fix this
@@ -109,11 +109,4 @@ int	game_loop(t_game *game)
 	raycast(&game->raycaster, &game->player, game);
 	render(game, &game->renderer, &game->raycaster);
 	return (0);
-}
-
-void	error(const char *err_msg)
-{
-	ft_dprintf(STDERR_FILENO, "Error\n");
-	ft_dprintf(STDERR_FILENO, err_msg);
-	exit(1);
 }

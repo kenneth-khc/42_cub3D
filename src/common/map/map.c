@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:23:30 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 03:58:04 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 04:31:19 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ void	print_map(t_map *map)
 
 /* PROBABLY UNUSED */
 #if 0
+
 void	update_map(t_map *map, t_player *player)
 {
 	const t_vec2i	old_pos = map->player_pos;

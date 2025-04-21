@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:31:10 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/21 03:22:19 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 04:28:02 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include "Vector.h"
 #include <mlx.h>
 #include <math.h>
-
 
 /* Called each frame of the game to render the world onto the screen
  * The renderer is responsible for scanning through the screen horizontally
@@ -35,8 +34,7 @@ void	render(t_game *game, t_renderer *renderer, t_raycaster *raycaster)
 		reset_draw_line(renderer);
 		ray = &raycaster->rays[renderer->current_x];
 		decide_current_texture(renderer, ray);
-		renderer->line_height = game->screen.height
-				/ ray->distance_from_camera;
+		renderer->line_height = game->screen.height / ray->distance_from_camera;
 		render_wall_slice(renderer, ray);
 		renderer->current_x++;
 	}
@@ -49,7 +47,6 @@ void	render_wall_slice(t_renderer *renderer, t_ray *ray)
 	double			step;
 	int				text_y_index;
 	t_colour		colour;
-	uint32_t		*pixel;
 
 	calculate_draw_pos(renderer);
 	step = renderer->curr_texture->height / renderer->line_height;
@@ -63,9 +60,8 @@ void	render_wall_slice(t_renderer *renderer, t_ray *ray)
 	while (renderer->draw_start.y < renderer->draw_end.y)
 	{
 		text_y_index = (int)renderer->texture_pos.y;
-		pixel = get_pixel_addr(renderer->curr_texture,
+		colour = get_pixel_addr_to_colour(renderer->curr_texture,
 				renderer->texture_pos.x, text_y_index);
-		colour = pixel_to_colour(pixel);
 		draw_pixel(renderer->img,
 			renderer->draw_start.x, renderer->draw_start.y, colour);
 		renderer->texture_pos.y += step;

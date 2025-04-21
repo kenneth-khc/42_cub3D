@@ -33,7 +33,8 @@ void	raycast(t_raycaster *raycaster, t_player *player, t_game *game)
 
 /* Update the raycaster's angles and positions based on the new player
  * angles and positions */
-void	update_raycaster(t_raycaster *raycaster, t_player *player, t_dimensions *tile)
+void	update_raycaster(t_raycaster *raycaster, t_player *player,
+			t_dimensions *tile)
 {
 	int		i;
 	t_ray	*ray;
@@ -47,10 +48,6 @@ void	update_raycaster(t_raycaster *raycaster, t_player *player, t_dimensions *ti
 	{
 		ray = &raycaster->rays[i];
 		ray->world_pos = player->world_pos;
-		/*ray->tile_index.x = player->world_pos.x / game->tile_width;*/
-		/*ray->tile_index.y = player->world_pos.y / game->tile_height;*/
-		/*ray->tile_offset.x = player->world_pos.x / game->tile_width;*/
-		/*ray->tile_offset.y = player->world_pos.y / game->tile_height;*/
 		ray->tile_index.x = ray->world_pos.x / tile->width;
 		ray->tile_index.y = ray->world_pos.y / tile->height;
 		ray->tile_offset.x = ray->world_pos.x / tile->width;
