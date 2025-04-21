@@ -13,10 +13,11 @@
 #ifndef RAYCASTER_H
 # define RAYCASTER_H
 
-# include <stdbool.h>
 # include "Player.h"
 # include "Vector.h"
 # include "Map.h"
+# include <stdint.h>
+# include <stdbool.h>
 
 # ifndef SCREEN_WIDTH
 #  define SCREEN_WIDTH 1000

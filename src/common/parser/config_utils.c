@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 05:35:32 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/17 05:45:31 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 00:52:51 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,5 @@ bool	identified(const char *line, const char *identifier)
 		{
 			i++;
 		}
-	}
-	return (true);
-}
-
-bool	is_whitespace(char c)
-{
-	return (c == ' ' || c == '\f' || c == '\n'
-		|| c == '\r' || c == '\t' || c == '\v');
+	} return (true);
 }

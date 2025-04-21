@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 23:04:43 by kecheong          #+#    #+#             */
-/*   Updated: 2024/10/30 23:04:56 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 03:39:24 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,6 @@
 
 double	degrees_to_radians(double degrees);
 double	radians_to_degrees(double radians);
+void	error(const char *err_msg);
 
 #endif

@@ -6,7 +6,7 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2025/04/20 00:14:26 by kecheong         ###   ########.fr        #
+#    Updated: 2025/04/22 01:25:41 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ BONUS_NAME := $(NAME)_bonus
 uname := $(shell uname)
 
 CC := cc
-CFLAGS := -Wall -Werror -Wextra -MMD -fsanitize=address -g3
+CFLAGS := -Wall -Werror -Wextra -MMD -g3 #-fsanitize=address
 
 LDFLAGS := $(addprefix -L, libft)
 LDLIBS := $(addprefix -l, mlx ft)
@@ -49,10 +49,6 @@ mandatory_srcs := $(wildcard $(mandatory_src_dir)/*.c)
 bonus_srcs := $(wildcard $(bonus_src_dir)/*.c) \
 			  $(wildcard $(bonus_src_dir)/minimap/*.c)
 
-$(info $$(common_srcs) == $(common_srcs))
-$(info $$(mandatory_srcs) == $(mandatory_srcs))
-$(info $$(bonus_srcs) == $(bonus_srcs))
-
 dirs := $(common_src_dir) \
 		$(common_src_dir)/parser \
 		$(common_src_dir)/map \
@@ -63,34 +59,19 @@ dirs := $(common_src_dir) \
 		$(common_src_dir)/keys
 
 obj_dir := obj
-srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c))
 
 ifeq ($(filter bonus, $(MAKECMDGOALS)), bonus)
-# dirs += $(src_dir)/bonus $(src_dir)/bonus/minimap
 includes += -Iinclude/bonus
-# $(info $$(dirs) == $(dirs))
 common_srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c)) 
-$(info $$(common_srcs) == $(common_srcs))
-# $(info $$(srcs) == $(srcs))
-# objs := $(srcs:$(src_dir)/%.c=$(obj_dir)/bonus/%.o)
 objs := $(patsubst src/common/%.c, obj/bonus/common/%.o, $(common_srcs)) \
 		$(patsubst src/bonus/%.c, obj/bonus/bonus/%.o, $(bonus_srcs))
-$(info $$(objs) == $(objs))
-# $(info $$(objs) == $(objs))
 else
-# dirs += $(src_dir)/mandatory
 includes += -Iinclude/mandatory
 common_srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c)) 
-objs := $(srcs:$(src_dir)/%.c=$(obj_dir)/mandatory/%.o)
 objs := $(patsubst src/common/%.c, obj/mandatory/common/%.o, $(common_srcs)) \
 		$(patsubst src/mandatory/%.c, obj/mandatory/mandatory/%.o, $(mandatory_srcs))
-$(info $$(objs) == $(objs))
 endif
 
-# $(info $$(dirs) = $(dirs))
-# $(info $$(srcs) = $(srcs))
-
-# $(info $$(objs) = $(objs))
 dependencies := $(objs:%.o=%.d)
 
 green := \e[0;32m

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 08:42:45 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/19 22:21:16 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 03:48:32 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 #include "Raycaster.h"
 #include "Colours.h" // probably don't need all these colours, remove later
 #include "Parse.h"
+#include "Utils.h"
 
 #include <fcntl.h> // del
 #include <unistd.h>

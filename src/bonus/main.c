@@ -20,6 +20,7 @@
 #include "Colours.h" // probably don't need all these colours, remove later
 #include "Parse.h"
 #include "Minimap.h"
+#include "Utils.h"
 
 #include <fcntl.h> // del
 #include <unistd.h>

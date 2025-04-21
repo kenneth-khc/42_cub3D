@@ -48,9 +48,11 @@ char		*gnl_trim_newline_skip_empty(int fd);
 void		validate_element(t_config *config, char *line);
 size_t		identify_type_identifier(char *line, char **type_identifier);
 bool		is_whitespace(char c);
+bool		is_player(char c);
+bool		is_floor(char c);
 bool		identified(const char* line, const char *identifier);
 void		parse_map_content(t_config *config, char *line);
-bool		validate_map(t_map *map);
+void		validate_map(t_map *map);
 bool		validate_configurables(t_configurable *configurables);
 
 #endif

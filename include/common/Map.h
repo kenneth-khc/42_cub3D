@@ -13,29 +13,33 @@
 #ifndef MAP_H
 # define MAP_H
 
-# include "Image.h"
 # include "Player.h"
+# include "Vector.h"
 
 typedef struct s_map
 {
-	/*char	layout[10][10];*/
-	char	**layout;
-	t_vec2i	player_pos;
 	int		width;
 	int		height;
-	/*t_image	img; // mlx image used to display the map onto the screen*/
+	char	**layout;
+	t_vec2i	player_pos;
 }	t_map;
 
-struct	s_game;
 struct	s_config;
 
 void	init_map(t_map *map, struct s_config *config);
 void	add_row(t_map *map, char *line);
-void	set_floors(t_map *map, t_player *player);
-void	print_map(char layout[10][10]);
+void	print_map(t_map *map);
 bool	collide(t_map *map, t_vec2d *world_pos, t_dimensions *tile);
 bool	within_world_bounds(t_vec2d *pos, t_map *map, t_dimensions *tile);
 bool	is_wall(t_map *map, int x, int y);
+bool	is_whitespace(char c);
+bool	is_player(char c);
+bool	is_floor(char c);
+void	pad_borders(t_map *map);
+
+/* PROBABLY UNUSED */
+# if 0
 void	update_map(t_map *map, t_player *player);
+# endif
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 18:24:35 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/14 01:50:27 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 03:59:01 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include <stddef.h>
 #include <unistd.h>
 #include <stdlib.h>
-#include "Game.h"
+#include "Utils.h"
 
 /* Create a colour by passing in components of alpha, red, green and blue
  * The components are 8 bit each, packed together in a union to form a 32 bit
@@ -49,6 +49,19 @@ static int	count_occurences(char c, const char *string)
 	return (occurences);
 }
 
+void	free_2d_array(char **arr)
+{
+	void	*ptr;
+
+	ptr = arr;
+	while (*arr)
+	{
+		free(*arr);
+		arr++;
+	}
+	free(ptr);
+}
+
 /* Parse a string of the format "[0-255],[0-255],[0-255]" into its RGB
  * components and create a colour from that, exiting when an error is
  * encountered */
@@ -56,30 +69,29 @@ t_colour	rgb_string_to_colour(const char *rgb_string)
 {
 	size_t	size;
 	char	**components;
-	int		red;
-	int		green;
-	int		blue;
+	int		r;
+	int		g;
+	int		b;
 
 	if (count_occurences(',', rgb_string) != 2)
 		error("Invalid RGB format\n");
 	components = ft_split(rgb_string, ',');
+	if (components == NULL)
+		error("Memory allocation failed at ft_split()\n");
 	size = 0;
 	while (components[size])
 		size++;
 	if (size != 3)
-	{
 		error("Invalid RGB colour\n");
-	}
-	red = ft_atoi(components[0]);
-	green = ft_atoi(components[1]);
-	blue = ft_atoi(components[2]);
-	if (red < 0 || red > 255
-		|| green < 0 || green > 255
-		|| blue < 0 || blue > 255)
+	r = ft_atoi(components[0]);
+	g = ft_atoi(components[1]);
+	b = ft_atoi(components[2]);
+	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
 	{
 		error("Invalid RGB value\n");
 	}
-	return (create_colour(0, red, green, blue));
+	free_2d_array(components);
+	return (create_colour(0, r, g, b));
 }
 
 void	set_colour_table(t_colours *table)

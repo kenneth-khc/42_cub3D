@@ -6,17 +6,13 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:36:16 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/19 02:43:25 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/22 03:47:45 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Parse.h"
-#include <stdio.h>
 #include <unistd.h>
 #include <fcntl.h>
-
-#include "libft.h"
-#include "Game.h"
 
 t_config	parse(char *filename)
 {
@@ -24,14 +20,12 @@ t_config	parse(char *filename)
 	char		*line;
 	t_config	config;
 
-	printf("Filename: %s\n", filename);
 	config = init_blank_config();
 	fd = open_file(filename);
 	config.get_next_line = gnl_trim_whitespaces_skip_empty;
 	line = config.get_next_line(fd);
 	while (line)
 	{
-		printf("|%s|\n", line);
 		if (config.configurables_completed != MAX_CONFIGURABLE)
 		{
 			validate_element(&config, line);
@@ -43,43 +37,6 @@ t_config	parse(char *filename)
 		}
 		line = config.get_next_line(fd);
 	}
+	pad_borders(&config.map);
 	return (config);
 }
-
-bool	is_player(char c)
-{
-	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
-}
-
-bool	validate_map(t_map *map)
-{
-	int	y;
-	int	x;
-	int	row_len;
-
-	y = 0;
-	while (y < map->height)
-	{
-		x = 0;
-		row_len = ft_strlen(map->layout[y]);
-		while (x < row_len)
-		{
-			if (is_player(map->layout[y][x]))
-			{
-				if (map->player_pos.x == 0 && map->player_pos.y == 0)
-				{
-					map->player_pos.x = x;
-					map->player_pos.y = y;
-				}
-				else
-				{
-					error("Duplicate character found.\n");
-				}
-			}
-			x++;
-		}
-		y++;
-	}
-	return (true);
-}
-
