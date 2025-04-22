@@ -1,27 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   config.c                                           :+:      :+:    :+:   */
+/*   math_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/23 00:00:55 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/23 00:01:29 by kecheong         ###   ########.fr       */
+/*   Created: 2025/04/23 22:46:11 by kecheong          #+#    #+#             */
+/*   Updated: 2025/04/23 22:46:33 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Config.h"
-#include <stdlib.h>
+#include "Vector.h"
+#include <math.h>
 
-void	destroy_config(t_config *config)
+/* Converts an angle in degrees to an angle in radians because C functions
+ * work with radians only */
+double	radians(double degrees)
 {
-	int	i;
-
-	i = 0;
-	while (i < MAX_CONFIGURABLE)
-	{
-		free(config->configurables[i].line);
-		i++;
-	}
+	return (degrees * M_PI / 180.0);
 }
 
+/* Converts an angle in radians into degrees */
+double	degrees(double radians)
+{
+	return (radians * 180.0 / M_PI);
+}
+
+t_vec2i	vec2i(t_vec2d dv)
+{
+	t_vec2i	iv;
+
+	iv.x = dv.x;
+	iv.y = dv.y;
+	return (iv);
+}

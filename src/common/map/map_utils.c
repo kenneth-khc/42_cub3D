@@ -15,12 +15,7 @@
 
 bool	is_wall(t_map *map, int x, int y)
 {
-	return (map->layout[y][x] == '1' || map->layout[y][x] == ' ');
-}
-
-bool	is_wall_or_padding(char c)
-{
-	return (c == '1' || c == ' ');
+	return (map->layout[y][x] == '1');
 }
 
 bool	is_whitespace(char c)

@@ -6,7 +6,7 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2025/04/23 00:50:09 by kecheong         ###   ########.fr        #
+#    Updated: 2025/04/24 01:17:13 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -82,7 +82,7 @@ reset := \e[0;0m
 .PHONY: all
 all: $(minilibx) $(libft) $(NAME)
 
-bonus: $(minilibx) $(libft) $(BONUS_NAME)
+bonus: $(BONUS_NAME)
 
 $(libft):
 	@if git submodule status | grep '^[+-]' ; then \

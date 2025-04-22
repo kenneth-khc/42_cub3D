@@ -40,5 +40,7 @@ typedef struct s_config
 
 t_config	init_blank_config(void);
 void		destroy_config(t_config *config);
+void		set(t_configurable *element, t_config *config,
+				char *line, size_t type_identifier_offset);
 
 #endif

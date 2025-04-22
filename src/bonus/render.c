@@ -6,10 +6,11 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:31:10 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/21 03:26:26 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/24 02:27:00 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "Animation.h"
 #include "Colours.h"
 #include "Game.h"
 #include "Image.h"

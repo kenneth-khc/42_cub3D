@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:43:29 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 23:21:01 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/24 01:47:50 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,24 +47,6 @@ t_image	create_image(void *mlx, int width, int height)
 void	destroy_image(void *mlx, t_image *img)
 {
 	mlx_destroy_image(mlx, img->instance);
-}
-
-/* Index into the pixel array of the image to grab the exact pixel
- * If out of bounds, return NULL instead */
-uint32_t	*get_pixel_addr(t_image *img, int x, int y)
-{
-	const uint64_t	offset = (x * img->bytes_per_pixel) + (y * img->size_line);
-	char			*pixel;
-
-	if (offset < img->bytes)
-	{
-		pixel = &img->addr[offset];
-		return ((uint32_t *)pixel);
-	}
-	else
-	{
-		return (NULL);
-	}
 }
 
 /* Wrapper for mlx_put_image, taking in an Image object and the point

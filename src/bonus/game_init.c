@@ -27,7 +27,6 @@ void	init_game(t_game *game, t_config *config)
 	game->mlx = init_mlx();
 	game->keystates = init_keybindings();
 	game->map = init_map(config);
-	game->colours = init_colours();
 	game->minimap = init_minimap(game);
 	game->player = init_player(&game->map);
 	game->raycaster = init_raycaster(&game->player, &game->screen, &game->tile);

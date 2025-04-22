@@ -14,21 +14,8 @@
 # define MINIMAP_H
 
 # include <stdbool.h>
-# include "Map.h"
 # include "Image.h"
 # include "Vector.h"
-
-# ifndef MINIMAP_SCALE
-#  define MINIMAP_SCALE 0.3
-# endif
-
-# ifndef MINIMAP_X_OFFSET
-#  define MINIMAP_X_OFFSET 10
-# endif
-
-# ifndef MINIMAP_Y_OFFSET
-#  define MINIMAP_Y_OFFSET 10
-# endif
 
 /* A camera overlooking the 2D map */
 typedef struct s_camera
@@ -45,13 +32,16 @@ typedef struct s_minimap
 	bool		display; // should the minimap be displayed, default to true
 	t_image		img;
 	t_camera	camera;
+	t_colour	border_colour;
+	int			border_thickness;
+	t_colour	background_colour;
+	t_colour	wall_colour;
+	t_colour	player_indicator_colour;
+	int			player_box_half_dimension;
+	t_colour	direction_indicator_colour;
 }	t_minimap;
 
 t_minimap	init_minimap(t_game *game);
-void		update_minimap(t_minimap *minimap, t_game *game);
-void		update_camera(t_camera *camera, t_minimap *minimap,
-				t_player *player);
-void		fill_minimap(t_minimap *minimap, t_camera *camera, t_map *map,
-				t_game *game);
+void		update_minimap(t_minimap *minimap, t_vec2d *pos, t_game *game);
 
 #endif

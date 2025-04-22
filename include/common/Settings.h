@@ -54,4 +54,16 @@
 #  define FIELD_OF_VIEW_ANGLE 60
 # endif
 
+# ifndef MINIMAP_SCALE
+#  define MINIMAP_SCALE 0.3
+# endif
+
+# ifndef MINIMAP_X_OFFSET
+#  define MINIMAP_X_OFFSET 10
+# endif
+
+# ifndef MINIMAP_Y_OFFSET
+#  define MINIMAP_Y_OFFSET 10
+# endif
+
 #endif

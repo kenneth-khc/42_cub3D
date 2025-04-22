@@ -33,6 +33,4 @@ typedef struct s_dimensions
 	int	height;
 }	t_dimensions;
 
-t_vec2i	v2d_to_v2i(t_vec2d d);
-
 #endif

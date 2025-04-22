@@ -13,8 +13,13 @@
 #ifndef UTILS_H
 # define UTILS_H
 
+# include "Vector.h"
+
 double	radians(double degrees);
 double	degrees(double radians);
 void	error(const char *err_msg);
+t_vec2i	vec2i(t_vec2d dv);
+int		count_occurences(char c, const char *string);
+void	free_2d_array(char **arr);
 
 #endif
