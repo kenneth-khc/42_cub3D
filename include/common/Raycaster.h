@@ -13,18 +13,12 @@
 #ifndef RAYCASTER_H
 # define RAYCASTER_H
 
+# include "Settings.h"
 # include "Player.h"
 # include "Vector.h"
 # include "Map.h"
 # include <stdint.h>
 # include <stdbool.h>
-
-# ifndef SCREEN_WIDTH
-#  define SCREEN_WIDTH 1000
-# endif
-# ifndef SCREEN_HEIGHT
-#  define SCREEN_HEIGHT 1000
-# endif
 
 typedef enum e_hit_side
 {

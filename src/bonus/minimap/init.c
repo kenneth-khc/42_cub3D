@@ -23,6 +23,8 @@ t_minimap	init_minimap(t_game *game)
 	minimap.img.pos.x = MINIMAP_X_OFFSET;
 	minimap.img.pos.y = MINIMAP_Y_OFFSET;
 	minimap.display = true;
+	minimap.camera.half_dimension = (double)minimap.img.width / 2;
+	minimap.camera.centre = (t_vec2d){minimap.camera.half_dimension, minimap.camera.half_dimension};
 	update_minimap(&minimap, game);
 	return (minimap);
 }

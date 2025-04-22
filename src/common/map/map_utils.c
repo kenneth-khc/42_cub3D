@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/02 07:08:15 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 05:17:20 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/23 00:47:52 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,12 @@
 
 bool	is_wall(t_map *map, int x, int y)
 {
-	return (map->layout[y][x] == '1');
+	return (map->layout[y][x] == '1' || map->layout[y][x] == ' ');
+}
+
+bool	is_wall_or_padding(char c)
+{
+	return (c == '1' || c == ' ');
 }
 
 bool	is_whitespace(char c)

@@ -13,16 +13,8 @@
 #include "Game.h"
 #include "Player.h"
 
-void	update(t_game *game, t_player *player)
+void	update(t_game *game)
 {
-	if (player->is_moving)
-	{
-		player->world_pos.x += player->delta.x;
-		player->world_pos.y += player->delta.y;
-		player->tile_index.x = player->world_pos.x / game->tile.width;
-		player->tile_index.y = player->world_pos.y / game->tile.height;
-		player->is_moving = false;
-		player->delta.x = 0;
-		player->delta.y = 0;
-	}
+	(void)game;
+	return ;
 }

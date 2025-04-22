@@ -55,9 +55,8 @@ void	setup_event_hooks(t_game *game, void *window, t_keystates *keystates)
 
 int	game_loop(t_game *game)
 {
-	mlx_clear_window(game->mlx, game->window);
 	process_keys(&game->keystates, game);
-	update(game, &game->player);
+	update(game);
 	raycast(&game->raycaster, &game->player, game);
 	render(game, &game->renderer, &game->raycaster);
 	return (0);

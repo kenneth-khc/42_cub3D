@@ -18,7 +18,6 @@
 # include "Raycaster.h"
 # include "Keys.h"
 # include "Renderer.h"
-# include "Parse.h"
 # include "Minimap.h"
 
 typedef struct s_game
@@ -42,7 +41,7 @@ typedef struct s_game
 
 void	init_game(t_game *game, t_config *config);
 int		game_loop(t_game *game);
-void	update(t_game *game, t_player *player);
+void	update(t_game *game);
 int		process_mouse(int x, int y, void *param);
 
 #endif

@@ -14,6 +14,7 @@
 #include "Vector.h"
 #include <math.h>
 
+// TODO: hmm...
 bool	collide(t_map *map, t_vec2d *world_pos, t_dimensions *tile)
 {
 	t_vec2d	pos;
@@ -27,6 +28,22 @@ bool	collide(t_map *map, t_vec2d *world_pos, t_dimensions *tile)
 	else
 	{
 		return (false);
+	}
+}
+
+bool	movable(t_vec2d pos, t_map *map, t_dimensions tile)
+{
+	t_vec2i	tile_index;
+
+	tile_index.x = pos.x / tile.width;
+	tile_index.y = pos.y / tile.height;
+	if (map->layout[tile_index.y][tile_index.x] == '1')
+	{
+		return (false);
+	}
+	else
+	{
+		return (true);
 	}
 }
 

@@ -18,7 +18,6 @@
 # include "Raycaster.h"
 # include "Keys.h"
 # include "Renderer.h"
-# include "Parse.h"
 
 typedef struct s_game
 {
@@ -31,7 +30,6 @@ typedef struct s_game
 	t_dimensions	screen;
 	t_map			map;
 	t_dimensions	tile; // width and height of 1 in-game tile
-	/*t_minimap		minimap;*/
 	t_image			world_3d; // image of the game to be displayed
 	t_player		player;
 	t_raycaster		raycaster;
@@ -41,7 +39,7 @@ typedef struct s_game
 
 void	init_game(t_game *game, t_config *config);
 int		game_loop(t_game *game);
-void	update(t_game *game, t_player *player);
+void	update(t_game *game);
 int		process_mouse(int x, int y, void *param);
 
 #endif

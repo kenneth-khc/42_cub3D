@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:11:39 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/15 20:33:22 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/23 01:31:43 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,15 @@ int	move_forward(void *ptr)
 	t_player *const	player = &game->player;
 	const double	dx = player->direction.x * player->speed;
 	const double	dy = player->direction.y * player->speed;
-	t_vec2d			test;
+	const t_vec2d	ori = player->world_pos;
 
-	test.x = player->world_pos.x + dx;
-	test.y = player->world_pos.y;
-	if (!collide(&game->map, &test, &game->tile))
+	if (movable((t_vec2d){ori.x + dx, ori.y}, &game->map, game->tile))
 	{
-		player->delta.x += dx;
-		player->is_moving = true;
+		player->world_pos.x += dx;
 	}
-	test.x = player->world_pos.x;
-	test.y = player->world_pos.y + dy;
-	if (!collide(&game->map, &test, &game->tile))
+	if (movable((t_vec2d){ori.x, ori.y + dy}, &game->map, game->tile))
 	{
-		player->delta.y += dy;
-		player->is_moving = true;
+		player->world_pos.y += dy;
 	}
 	return (1);
 }
@@ -55,21 +49,15 @@ int	move_backward(void *ptr)
 	t_player *const	player = &game->player;
 	const double	dx = -player->direction.x * player->speed;
 	const double	dy = -player->direction.y * player->speed;
-	t_vec2d			test;
+	const t_vec2d	ori = player->world_pos;
 
-	test.x = player->world_pos.x + dx;
-	test.y = player->world_pos.y;
-	if (!collide(&game->map, &test, &game->tile))
+	if (movable((t_vec2d){ori.x + dx, ori.y}, &game->map, game->tile))
 	{
-		player->delta.x += dx;
-		player->is_moving = true;
+		player->world_pos.x += dx;
 	}
-	test.x = player->world_pos.x;
-	test.y = player->world_pos.y + dy;
-	if (!collide(&game->map, &test, &game->tile))
+	if (movable((t_vec2d){ori.x, ori.y + dy}, &game->map, game->tile))
 	{
-		player->delta.y += dy;
-		player->is_moving = true;
+		player->world_pos.y += dy;
 	}
 	return (1);
 }
@@ -80,21 +68,15 @@ int	strafe_left(void *ptr)
 	t_player *const	player = &game->player;
 	const double	dx = cos(player->angle + M_PI_2) * player->speed;
 	const double	dy = -sin(player->angle + M_PI_2) * player->speed;
-	t_vec2d			test;
+	const t_vec2d	ori = player->world_pos;
 
-	test.x = player->world_pos.x + dx;
-	test.y = player->world_pos.y;
-	if (!collide(&game->map, &test, &game->tile))
+	if (movable((t_vec2d){ori.x + dx, ori.y}, &game->map, game->tile))
 	{
-		player->delta.x += dx;
-		player->is_moving = true;
+		player->world_pos.x += dx;
 	}
-	test.x = player->world_pos.x;
-	test.y = player->world_pos.y + dy;
-	if (!collide(&game->map, &test, &game->tile))
+	if (movable((t_vec2d){ori.x, ori.y + dy}, &game->map, game->tile))
 	{
-		player->delta.y += dy;
-		player->is_moving = true;
+		player->world_pos.y += dy;
 	}
 	return (1);
 }
@@ -105,21 +87,15 @@ int	strafe_right(void *ptr)
 	t_player *const	player = &game->player;
 	const double	dx = cos(player->angle - M_PI_2) * player->speed;
 	const double	dy = -sin(player->angle - M_PI_2) * player->speed;
-	t_vec2d			test;
+	const t_vec2d	ori = player->world_pos;
 
-	test.x = player->world_pos.x + dx;
-	test.y = player->world_pos.y;
-	if (!collide(&game->map, &test, &game->tile))
+	if (movable((t_vec2d){ori.x + dx, ori.y}, &game->map, game->tile))
 	{
-		player->delta.x += dx;
-		player->is_moving = true;
+		player->world_pos.x += dx;
 	}
-	test.x = player->world_pos.x;
-	test.y = player->world_pos.y + dy;
-	if (!collide(&game->map, &test, &game->tile))
+	if (movable((t_vec2d){ori.x, ori.y + dy}, &game->map, game->tile))
 	{
-		player->delta.y += dy;
-		player->is_moving = true;
+		player->world_pos.y += dy;
 	}
 	return (1);
 }

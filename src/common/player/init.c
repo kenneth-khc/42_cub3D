@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:17:27 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 05:45:44 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/23 01:12:01 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,6 @@ t_player	init_player(t_map *map)
 	player.direction.y = -sin(player.angle);
 	player.field_of_view = radians(FIELD_OF_VIEW_ANGLE);
 	player.speed = PLAYER_SPEED;
-	player.delta.x = 0;
-	player.delta.y = 0;
 	return (player);
 }
 
