@@ -31,7 +31,7 @@ else
 	minilibx_dir := mlx_linux
 	includes += $(addprefix -I, mlx_linux)
 	LDFLAGS += $(addprefix -L, mlx_linux)
-	LDLIBS += $(addprefix -l, Xext X11 m z)
+	LDLIBS += $(addprefix -l, Xext X11 m z Xfixes)
 endif
 
 minilibx := $(minilibx_dir)/libmlx.a
