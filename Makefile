@@ -6,7 +6,7 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2025/04/24 01:17:13 by kecheong         ###   ########.fr        #
+#    Updated: 2025/04/24 03:30:44 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,36 +40,38 @@ libft_dir := libft
 libft := $(libft_dir)/libft.a
 
 src_dir := src
-common_src_dir := $(src_dir)/common
-mandatory_src_dir := $(src_dir)/mandatory
-bonus_src_dir := $(src_dir)/bonus
+common := $(src_dir)/common
+mandatory := $(src_dir)/mandatory
+bonus := $(src_dir)/bonus
 
-common_srcs := $(wildcard $(common_src_dir)/*.c)
-mandatory_srcs := $(wildcard $(mandatory_src_dir)/*.c)
-bonus_srcs := $(wildcard $(bonus_src_dir)/*.c) \
-			  $(wildcard $(bonus_src_dir)/minimap/*.c)
+common_srcs := src/common/main.c
+common_srcs += $(addprefix $(common)/parser/, parse.c config.c file_helpers.c)
+common_srcs += $(addprefix $(common)/map/, map.c map_padding.c map_validation.c map_utils.c)
+common_srcs += $(addprefix $(common)/keys/, init.c key_events.c movement_keys.c camera_keys.c)
+common_srcs += $(addprefix $(common)/player/, init.c)
+common_srcs += $(addprefix $(common)/raycast/, init.c raycast.c raycast_utils.c)
+common_srcs += $(addprefix $(common)/renderer/, bresenham.c)
+common_srcs += $(addprefix $(common)/utils/, utils.c math_utils.c collision.c)
+common_srcs += $(addprefix $(common)/mouse/, mouse.c)
+common_srcs += $(addprefix $(common)/mlx_utils/, draw.c image.c colors.c pixels.c)
+$(info $$(common_srcs) == $(common_srcs))
 
-dirs := $(common_src_dir) \
-		$(common_src_dir)/parser \
-		$(common_src_dir)/map \
-		$(common_src_dir)/player \
-		$(common_src_dir)/mlx_utils \
-		$(common_src_dir)/raycast \
-		$(common_src_dir)/renderer \
-		$(common_src_dir)/keys \
-		$(common_src_dir)/mouse \
-		$(common_src_dir)/utils
+# TODO: subdirectories
+mandatory_srcs := $(addprefix $(mandatory)/, game_init.c game_update.c keybinds.c render.c \
+		  render_utils.c renderer_init.c ui_keys.c)
+
+bonus_srcs := $(addprefix $(bonus)/, game_init.c game_update.c keybinds.c render.c \
+		  render_utils.c renderer_init.c ui_keys.c animation.c animation_utils.c)
+bonus_srcs += $(addprefix $(bonus)/minimap/, init.c minimap.c)
 
 obj_dir := obj
 
 ifeq ($(filter bonus, $(MAKECMDGOALS)), bonus)
 includes += -Iinclude/bonus
-common_srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c)) 
 objs := $(patsubst src/common/%.c, obj/bonus/common/%.o, $(common_srcs)) \
 		$(patsubst src/bonus/%.c, obj/bonus/bonus/%.o, $(bonus_srcs))
 else
 includes += -Iinclude/mandatory
-common_srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c)) 
 objs := $(patsubst src/common/%.c, obj/mandatory/common/%.o, $(common_srcs)) \
 		$(patsubst src/mandatory/%.c, obj/mandatory/mandatory/%.o, $(mandatory_srcs))
 endif
@@ -79,9 +81,13 @@ dependencies := $(objs:%.o=%.d)
 green := \e[0;32m
 reset := \e[0;0m
 
+# all: mandatory bonus
+
 .PHONY: all
 all: $(minilibx) $(libft) $(NAME)
 
+# mandatory: $(NAME)
+#
 bonus: $(BONUS_NAME)
 
 $(libft):
@@ -94,10 +100,10 @@ $(libft):
 $(minilibx):
 	make -C $(minilibx_dir)
 
-$(NAME): $(libft) $(objs)
+$(NAME): $(libft) $(minilibx) $(objs)
 	$(CC) $(CFLAGS) $(objs) $(includes) $(LDFLAGS) $(LDLIBS) $(framework) -o $(NAME)
 
-$(BONUS_NAME): $(libft) $(objs)
+$(BONUS_NAME): $(libft) $(minilibx) $(objs)
 	$(CC) $(CFLAGS) $(objs) $(includes) $(LDFLAGS) $(LDLIBS) $(framework) -o $(BONUS_NAME)
 
 $(obj_dir):
