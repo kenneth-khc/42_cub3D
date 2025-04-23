@@ -47,6 +47,7 @@ t_animation	animation(t_game *game, const char *filepath)
 	{
 		anim = animate_from_frames(filename, anim.frame_count, game);
 	}
+	free(filename);
 	return (anim);
 }
 
