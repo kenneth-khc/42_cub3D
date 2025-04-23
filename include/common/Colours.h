@@ -51,6 +51,6 @@ t_colour	create_colour(uint8_t alpha, uint8_t red, uint8_t green,
 				uint8_t blue);
 t_colour	rgb_string_to_colour(const char *rgb_string);
 t_colour	pixel_to_colour(uint32_t *pixel);
-t_colour	get_pixel_addr_to_colour(t_image *img, int x, int y);
+t_colour	get_pixel_addr_to_colour(const t_image *img, int x, int y);
 
 #endif

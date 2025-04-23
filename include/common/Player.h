@@ -32,6 +32,7 @@ typedef struct s_player
 	t_vec2d		direction; // a normalized direction vector
 	t_vec2i		tile_index; // position in the map/2D array
 	t_vec2d		world_pos; // position in the game world, not the screen
+	bool		is_moving;
 }	t_player;
 
 typedef struct s_game	t_game;

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:11:39 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/23 01:31:43 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/24 05:56:08 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,12 @@ int	move_forward(void *ptr)
 	if (movable((t_vec2d){ori.x + dx, ori.y}, &game->map, game->tile))
 	{
 		player->world_pos.x += dx;
+		player->is_moving = true;
 	}
 	if (movable((t_vec2d){ori.x, ori.y + dy}, &game->map, game->tile))
 	{
 		player->world_pos.y += dy;
+		player->is_moving = true;
 	}
 	return (1);
 }
@@ -54,10 +56,12 @@ int	move_backward(void *ptr)
 	if (movable((t_vec2d){ori.x + dx, ori.y}, &game->map, game->tile))
 	{
 		player->world_pos.x += dx;
+		player->is_moving = true;
 	}
 	if (movable((t_vec2d){ori.x, ori.y + dy}, &game->map, game->tile))
 	{
 		player->world_pos.y += dy;
+		player->is_moving = true;
 	}
 	return (1);
 }
@@ -72,10 +76,12 @@ int	strafe_left(void *ptr)
 
 	if (movable((t_vec2d){ori.x + dx, ori.y}, &game->map, game->tile))
 	{
+		player->is_moving = true;
 		player->world_pos.x += dx;
 	}
 	if (movable((t_vec2d){ori.x, ori.y + dy}, &game->map, game->tile))
 	{
+		player->is_moving = true;
 		player->world_pos.y += dy;
 	}
 	return (1);
@@ -91,10 +97,12 @@ int	strafe_right(void *ptr)
 
 	if (movable((t_vec2d){ori.x + dx, ori.y}, &game->map, game->tile))
 	{
+		player->is_moving = true;
 		player->world_pos.x += dx;
 	}
 	if (movable((t_vec2d){ori.x, ori.y + dy}, &game->map, game->tile))
 	{
+		player->is_moving = true;
 		player->world_pos.y += dy;
 	}
 	return (1);

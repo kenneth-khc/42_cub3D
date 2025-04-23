@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:31:10 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/24 02:27:00 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/24 06:22:30 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,13 @@ void	render(t_game *game, t_renderer *renderer, t_raycaster *raycaster)
 	{
 		put_image(game, &game->minimap.img, &game->minimap.img.pos);
 	}
+	if (game->player.is_moving)
+	{
+		put_animation_onto_img(&renderer->cat_walking, renderer->img);
+		game->player.is_moving = false;
+	}
+	else
+		put_animation_onto_img(&renderer->cat, renderer->img);
 }
 
 void	render_wall_slice(t_renderer *renderer, t_ray *ray)

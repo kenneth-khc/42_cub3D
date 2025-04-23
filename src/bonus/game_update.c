@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:41:02 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/24 02:28:28 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/24 06:06:54 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,14 @@ void	update(t_game *game)
 	{
 		update_minimap(minimap, &player->world_pos, game);
 	}
-	advance_animations(renderer, renderer->wall_animations);
+	renderer->wall_textures[NORTH]
+		= *advance_frame(&renderer->wall_animations[NORTH]);
+	renderer->wall_textures[WEST]
+		= *advance_frame(&renderer->wall_animations[WEST]);
+	renderer->wall_textures[EAST]
+		= *advance_frame(&renderer->wall_animations[EAST]);
+	renderer->wall_textures[SOUTH]
+		= *advance_frame(&renderer->wall_animations[SOUTH]);
+	advance_frame(&renderer->cat);
+	advance_frame(&renderer->cat_walking);
 }

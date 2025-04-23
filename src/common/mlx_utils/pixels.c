@@ -16,7 +16,7 @@
 
 /* Index into the pixel array of the image to grab the exact pixel
  * If out of bounds, return NULL instead */
-uint32_t	*get_pixel_addr(t_image *img, int x, int y)
+uint32_t	*get_pixel_addr(const t_image *img, int x, int y)
 {
 	const uint64_t	offset = (x * img->bytes_per_pixel) + (y * img->size_line);
 	char			*pixel;
@@ -41,7 +41,7 @@ t_colour	pixel_to_colour(uint32_t *pixel)
 	return (ret);
 }
 
-t_colour	get_pixel_addr_to_colour(t_image *img, int x, int y)
+t_colour	get_pixel_addr_to_colour(const t_image *img, int x, int y)
 {
 	uint32_t *const	pixel = get_pixel_addr(img, x, y);
 	const t_colour	colour = pixel_to_colour(pixel);

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:31:28 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 23:00:32 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/24 06:24:07 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,19 +30,15 @@ typedef struct s_renderer
 	t_vec2i			draw_end; // the position to end drawing at
 	double			line_height; // the height of the current line to draw
 	t_image			*img; // the image to render onto
-	/*t_animation		animations[4]; // wall textures that are animated*/
-	/*t_image			wall_textures[4]; // N/S/E/W wall textures*/
 	t_image			wall_textures[4];
 	t_animation		wall_animations[4];
-	/*t_animation		north_anim;*/
-	/*t_animation		south_anim;*/
-	/*t_animation		west_anim;*/
-	/*t_animation		east_anim;*/
-	t_image			debug_texture; // TODO: remove this
 	t_image			*curr_texture;
 	t_vec2d			texture_pos;
 	t_colour		ceiling;
 	t_colour		floor;
+	t_animation		cat;
+	t_animation		cat_walking;
+	t_animation		cat_laying;
 }	t_renderer;
 
 typedef struct s_game	t_game;

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 17:01:21 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/24 02:46:09 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/24 06:24:59 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ void	destroy_animation(void *mlx, t_animation *animation)
 		destroy_image(mlx, &animation->frames[count]);
 		count++;
 	}
+	free(animation->frames);
 }
 
 static
@@ -90,15 +91,36 @@ t_animation	animate_from_frames(const char *filename, int frame_count,
 	return (animation);
 }
 
-void	advance_animations(t_renderer *renderer, t_animation animations[4])
+void	put_animation_onto_img(t_animation *animation, t_image *img)
 {
-	renderer->wall_textures[NORTH] = *get_current_frame(&animations[NORTH]);
-	renderer->wall_textures[WEST] = *get_current_frame(&animations[WEST]);
-	renderer->wall_textures[EAST] = *get_current_frame(&animations[EAST]);
-	renderer->wall_textures[SOUTH] = *get_current_frame(&animations[SOUTH]);
+	t_vec2i			dest;
+	t_vec2i			frame;
+	t_colour		colour;
+	const t_image	*curr_frame = &animation->frames[animation->frame_index];
+
+	frame.x = 0;
+	frame.y = 0;
+	dest.y = animation->pos.y;
+	while (frame.y < curr_frame->height)
+	{
+		dest.x = animation->pos.x;
+		frame.x = 0;
+		while (frame.x < curr_frame->width)
+		{
+			colour = get_pixel_addr_to_colour(curr_frame, frame.x, frame.y);
+			if (colour.s_component.alpha == 0x0)
+			{
+				draw_pixel(img, dest.x, dest.y, colour);
+			}
+			dest.x++;
+			frame.x++;
+		}
+		dest.y++;
+		frame.y++;
+	}
 }
 
-t_image	*get_current_frame(t_animation *animation)
+t_image	*advance_frame(t_animation *animation)
 {
 	animation->ticks++;
 	if (animation->ticks >= animation->ticks_to_advance)
