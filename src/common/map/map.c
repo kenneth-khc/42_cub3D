@@ -44,11 +44,7 @@ void	add_row(t_map *map, char *line)
 		map->width = row_len;
 	}
 	map->height++;
-	map->layout = malloc(sizeof(char *) * map->height);
-	if (map->layout == NULL)
-	{
-		error("out of memory\n");
-	}
+	map->layout = xmalloc(sizeof(char *) * map->height);
 	i = 0;
 	while (i < map->height - 1)
 	{

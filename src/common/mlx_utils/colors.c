@@ -6,12 +6,11 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 18:24:35 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/23 23:00:14 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/24 02:55:43 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Colours.h"
-#include "Image.h"
 #include "libft.h"
 #include <stddef.h>
 #include <unistd.h>
@@ -44,7 +43,7 @@ t_colour	rgb_string_to_colour(const char *rgb_string)
 	int		g;
 	int		b;
 
-	if (count_occurences(',', rgb_string) != 2)
+	if (count_occurrences(',', rgb_string) != 2)
 		error("Invalid RGB format\n");
 	components = ft_split(rgb_string, ',');
 	if (components == NULL)

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/03 17:01:21 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/24 02:39:05 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/24 02:46:09 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,11 +36,7 @@ t_animation	animation(t_game *game, const char *filepath)
 	anim.frame_count = count_animation_frames(filename);
 	if (anim.frame_count == 0)
 	{
-		anim.frames = malloc(sizeof(*anim.frames));
-		if (anim.frames == NULL)
-		{
-			error("out of memory\n");
-		}
+		anim.frames = xmalloc(sizeof(*anim.frames));
 		load_image(game, anim.frames, filepath);
 		anim.frame_count = 1;
 		anim.frame_index = 0;
@@ -75,11 +71,7 @@ t_animation	animate_from_frames(const char *filename, int frame_count,
 	char		*frame_filename;
 	t_animation	animation;
 
-	animation.frames = malloc(sizeof(t_image) * frame_count);
-	if (animation.frames == NULL)
-	{
-		error("out of memory\n");
-	}
+	animation.frames = xmalloc(sizeof(t_image) * frame_count);
 	animation.frame_count = frame_count;
 	num = 0;
 	while (num < frame_count)
