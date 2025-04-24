@@ -1,0 +1,13 @@
+
+NO          textures/cat/cat0.xpm
+SO                                 textures/cat_angry/cat_angry0.xpm
+EA                textures/cat_omg/cat_omg0.xpm
+WE     textures/cat_happy/cat_happy0.xpm
+
+F 123,123,0
+C 0,123,123
+
+     11
+11111101 
+1N000011 
+1111111

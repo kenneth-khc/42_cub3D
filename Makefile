@@ -6,109 +6,161 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2025/04/14 06:09:22 by kecheong         ###   ########.fr        #
+#    Updated: 2025/04/24 17:15:23 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-.DEFAULT_GOAL := debug
-
-GREEN := \e[0;32m
-C_RESET := \e[0;0m
-
 NAME := cub3D
-UNAME := $(shell uname)
+BONUS_NAME := $(NAME)_bonus
 
+build_type ?= debug
+# compiler options
 CC := cc
-CFLAGS := -Wall -Werror -Wextra -MMD
+ifeq ($(build_type), debug)
+CFLAGS := -Wall -Werror -Wextra -MMD -g3
+else ifeq ($(build_type), fsan)
+CFLAGS := -Wall -Werror -Wextra -MMD -g3 -fsanitize=address
+else ifeq ($(build_type), release)
+CFLAGS := -Wall -Werror -Wextra -O3
+endif
+LDFLAGS := $(addprefix -L, libft)
+LDLIBS := $(addprefix -l, mlx ft)
+includes := $(addprefix -I, include/common include/$(VERSION) libft/includes)
 
-ifeq ($(UNAME), Darwin)
-	MLX_dir := mlx_mac
-	MLX := $(MLX_dir)/libmlx.a
-	LDFLAGS := $(addprefix -L, mlx_mac libft)
-	LDLIBS := $(addprefix -l, mlx ft)
-	includes := $(addprefix -I, mlx_mac include libft/includes)
+# Linux or MacOS
+uname := $(shell uname)
+ifeq ($(uname), Darwin)
+	minilibx_dir := mlx_mac
+	includes += $(addprefix -I, mlx_mac)
 	framework := $(addprefix -framework, OpenGL AppKit)
+	LDFLAGS += $(addprefix -L, mlx_mac)
 else
-	MLX_dir := mlx_linux
-	MLX := $(MLX_dir)/libmlx_Linux.a
-	LDFLAGS := $(addprefix -L, mlx_linux libft)
-	LDLIBS := $(addprefix -l, mlx_Linux ft Xext X11 m z)
-	includes := $(addprefix -I, mlx_linux include libft/includes)
+	minilibx_dir := mlx_linux
+	includes += $(addprefix -I, mlx_linux)
+	LDFLAGS += $(addprefix -L, mlx_linux)
+	LDLIBS += $(addprefix -l, Xext X11 m z Xfixes)
 endif
 
-LIBFT_DIR := libft
-LIBFT := $(LIBFT_DIR)/libft.a
+# libraries
+minilibx := $(minilibx_dir)/libmlx.a
+libft_dir := libft
+libft := $(libft_dir)/libft.a
 
+# source directories
 src_dir := src
-dirs := $(src_dir) \
-		$(src_dir)/map \
-		$(src_dir)/player \
-		$(src_dir)/mlx_utils \
-		$(src_dir)/raycast \
-		$(src_dir)/renderer \
-		$(src_dir)/minimap \
-		$(src_dir)/keys \
-		$(src_dir)/textures
+common := $(src_dir)/common
+version := $(src_dir)/$(VERSION)
+mandatory := $(src_dir)/mandatory
+bonus := $(src_dir)/bonus
 
-srcs := $(foreach dir, $(dirs), $(wildcard $(dir)/*.c))
+# common sources
+common_srcs := src/common/main.c \
+	$(addprefix $(common)/parser/, parse.c config.c file_helpers.c) \
+	$(addprefix $(common)/map/, map.c map_padding.c map_validation.c map_utils.c) \
+	$(addprefix $(common)/keys/, init.c key_events.c movement_keys.c camera_keys.c) \
+	$(addprefix $(common)/player/, init.c) \
+	$(addprefix $(common)/raycast/, init.c raycast.c raycast_utils.c) \
+	$(addprefix $(common)/utils/, utils.c math_utils.c collision.c) \
+	$(addprefix $(common)/mouse/, mouse.c) \
+	$(addprefix $(common)/mlx_utils/, draw.c image.c colors.c pixels.c)
 
-obj_dir := obj
-objs := $(srcs:$(src_dir)/%.c=$(obj_dir)/%.o)
+# mandatory sources
+mandatory_srcs := $(addprefix $(mandatory)/, game_init.c game_update.c) \
+	$(addprefix $(mandatory)/keys/, keybinds.c ui_keys.c) \
+	$(addprefix $(mandatory)/renderer/, init.c render.c render_utils.c)
+
+# bonus sources
+bonus_srcs := $(addprefix $(bonus)/, game_init.c game_update.c) \
+	$(addprefix $(bonus)/keys/, keybinds.c ui_keys.c) \
+	$(addprefix $(bonus)/renderer/, init.c render.c render_utils.c) \
+	$(addprefix $(bonus)/minimap/, init.c minimap.c triangle.c) \
+	$(addprefix $(bonus)/animation/, animation.c animation_utils.c)
+
+# object files depending on mandatory or bonus
+obj := obj/$(build_type)
+ifeq ($(VERSION), mandatory)
+objs := $(patsubst src/common/%.c, $(obj)/mandatory/common/%.o, $(common_srcs)) \
+		$(patsubst src/mandatory/%.c, $(obj)/mandatory/mandatory/%.o, $(mandatory_srcs))
+else ifeq ($(VERSION), bonus)
+objs := $(patsubst src/common/%.c, $(obj)/bonus/common/%.o, $(common_srcs)) \
+		$(patsubst src/bonus/%.c, $(obj)/bonus/bonus/%.o, $(bonus_srcs))
+endif
+
 dependencies := $(objs:%.o=%.d)
 
-.PHONY: all
-all: $(MLX) $(LIBFT) $(NAME)
+# colours
+green := \033[0;32m
+reset := \033[0;0m
 
-$(LIBFT):
+all: mandatory bonus
+	@printf "$(green)Done compiling $(NAME) and $(BONUS_NAME)!$(reset)\n"
+
+mandatory:
+	@echo Compiling mandatory...
+	@$(MAKE) VERSION=mandatory --no-print-directory cub3D
+
+bonus:
+	@echo Compiling bonus...
+	@$(MAKE) VERSION=bonus --no-print-directory cub3D_bonus
+
+$(NAME): $(libft) $(minilibx) $(objs)
+	$(CC) $(CFLAGS) $(objs) $(includes) $(LDFLAGS) $(LDLIBS) $(framework) -o $(NAME)
+	@printf "$(green)Mandatory compiled!$(reset)\n"
+
+$(BONUS_NAME): $(libft) $(minilibx) $(objs)
+	$(CC) $(CFLAGS) $(objs) $(includes) $(LDFLAGS) $(LDLIBS) $(framework) -o $(BONUS_NAME)
+	@printf "$(green)Bonus compiled!$(reset)\n"
+
+$(libft):
 	@if git submodule status | grep '^[+-]' ; then \
-		printf "$(GREEN)Initializing libft submodule...\n$(C_RESET)" ; \
+		printf "$(green)Initializing libft submodule...\n$(reset)" ; \
 		git submodule update --init ; \
 	fi
-	make -C $(LIBFT_DIR)
+	@$(MAKE) -C $(libft_dir)
 
-$(MLX):
-	make -C $(MLX_dir)
+$(minilibx):
+	@$(MAKE) -C $(minilibx_dir)
 
-$(NAME): $(LIBFT) $(objs)
-	$(CC) $(CFLAGS) $(objs) $(includes) $(LDFLAGS) $(LDLIBS) $(framework) -o $(NAME)
+# pattern rules for object files depending on which VERSION the Makefile
+# is invoked with
+$(obj)/$(VERSION)/common/%.o: $(src_dir)/common/%.c
+	mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(includes) $< -c -o $@
 
-$(obj_dir):
-	mkdir -p $(obj_dir)
-
-$(obj_dir)/%.o: $(src_dir)/%.c | obj
+$(obj)/$(VERSION)/$(VERSION)/%.o: $(src_dir)/$(VERSION)/%.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) $(includes) $< -c -o $@
 
 .PHONY: clean
 clean:
-	$(RM) -r $(obj_dir)
+	$(RM) -r obj/
 
 .PHONY: fclean
 fclean: clean
-	$(RM) $(NAME)
+	$(RM) $(NAME) $(BONUS_NAME)
 
 .PHONY: libclean
 libclean:
-	make clean -C $(LIBFT_DIR)
+	@$(MAKE) clean -C $(libft_dir)
 
 .PHONY: libfclean
 libfclean:
-	make fclean -C $(LIBFT_DIR)
+	@$(MAKE) fclean -C $(libft_dir)
 
 .PHONY: re
 re: fclean all
 
 .PHONY: release
-release: CFLAGS += -O3
-release: all
+release:
+	@$(MAKE) all build_type=release --no-print-directory
 
 .PHONY: debug
-debug: CFLAGS += -g3
-debug: all
+debug:
+	@$(MAKE) all build_type=debug --no-print-directory
 
 .PHONY: fsan
-fsan: CFLAGS += -fsanitize=address,undefined -g3
-fsan: all
+fsan:
+	@$(MAKE) all build_type=fsan --no-print-directory
 
 .PHONY: norminette
 norminette:
