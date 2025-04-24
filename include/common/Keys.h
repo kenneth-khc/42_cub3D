@@ -83,8 +83,9 @@ enum e_keycodes
 
 # define N_KEYS 10 // number of keys that we care about
 
+typedef struct s_game	t_game;
 typedef struct s_key	t_key;
-typedef int				(*t_action)(void*);
+typedef int				(*t_action)(t_game*);
 
 typedef enum e_key_state
 {
@@ -118,17 +119,17 @@ int			press_key(int mlx_keycode, t_keystates *keys);
 int			release_key(int mlx_keycode, t_keystates *keys);
 void		process_keys(t_keystates *keys, t_game *game);
 
-int			look_up(void *game);
-int			look_down(void *game);
-int			move_forward(void *ptr);
-int			move_backward(void *ptr);
-int			strafe_left(void *ptr);
-int			strafe_right(void *ptr);
+int			look_up(t_game *game);
+int			look_down(t_game *game);
+int			move_forward(t_game *game);
+int			move_backward(t_game *game);
+int			strafe_left(t_game *game);
+int			strafe_right(t_game *game);
 
-int			rotate_left(void *ptr);
-int			rotate_right(void *ptr);
+int			rotate_left(t_game *game);
+int			rotate_right(t_game *game);
 
-int			toggle_minimap(void *ptr);
-int			close_game(void *ptr);
+int			toggle_minimap(t_game *game);
+int			close_game(t_game *game);
 
 #endif

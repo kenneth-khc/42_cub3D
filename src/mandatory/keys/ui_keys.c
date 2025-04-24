@@ -14,10 +14,8 @@
 #include <mlx.h>
 #include <stdlib.h>
 
-int	close_game(void *ptr)
+int	close_game(t_game *game)
 {
-	t_game *const	game = (t_game*)ptr;
-
 	destroy_map(&game->map);
 	destroy_image(game->mlx, &game->world_3d);
 	destroy_image(game->mlx, &game->renderer.wall_textures[0]);

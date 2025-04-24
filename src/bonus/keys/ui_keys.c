@@ -14,9 +14,8 @@
 #include <mlx.h>
 #include <stdlib.h>
 
-int	toggle_minimap(void *ptr)
+int	toggle_minimap(t_game *game)
 {
-	t_game *const		game = (t_game *)ptr;
 	const t_key			*m_key = &game->keystates.keys[KEY_M];
 	static t_key_state	prev_m_key_state = NONE;
 
@@ -28,9 +27,8 @@ int	toggle_minimap(void *ptr)
 	return (1);
 }
 
-int	close_game(void *ptr)
+int	close_game(t_game *game)
 {
-	t_game *const		game = (t_game*)ptr;
 	t_renderer *const	renderer = &game->renderer;
 
 	destroy_map(&game->map);

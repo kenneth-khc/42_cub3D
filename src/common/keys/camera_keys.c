@@ -26,9 +26,8 @@
  * and the player's field of view moves to the left accordingly
  * By pressing the right arrow key, decrement the angle (going clockwise)
  * and the field of view moves to the right accordingly */
-int	rotate_left(void *ptr)
+int	rotate_left(t_game *game)
 {
-	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
 
 	player->angle += TURN_SPEED_RADS;
@@ -41,9 +40,8 @@ int	rotate_left(void *ptr)
 	return (1);
 }
 
-int	rotate_right(void *ptr)
+int	rotate_right(t_game *game)
 {
-	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
 
 	player->angle -= TURN_SPEED_RADS;
@@ -56,9 +54,8 @@ int	rotate_right(void *ptr)
 	return (1);
 }
 
-int	look_up(void *ptr)
+int	look_up(t_game *game)
 {
-	t_game *const		game = (t_game *)ptr;
 	static const int	upper_bound = SCREEN_HEIGHT - SCREEN_HEIGHT / 4;
 
 	if (game->renderer.midpoint < upper_bound)
@@ -68,9 +65,8 @@ int	look_up(void *ptr)
 	return (1);
 }
 
-int	look_down(void *ptr)
+int	look_down(t_game *game)
 {
-	t_game *const		game = (t_game *)ptr;
 	static const int	lower_bound = SCREEN_HEIGHT / 4;
 
 	if (game->renderer.midpoint > lower_bound)

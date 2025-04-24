@@ -24,9 +24,8 @@
  * A - strafe player to the left (move in +90 degrees)
  * D - strafe player to the right (move in -90 degrees)
  */
-int	move_forward(void *ptr)
+int	move_forward(t_game *game)
 {
-	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
 	const double	dx = player->direction.x * player->speed;
 	const double	dy = player->direction.y * player->speed;
@@ -45,9 +44,8 @@ int	move_forward(void *ptr)
 	return (1);
 }
 
-int	move_backward(void *ptr)
+int	move_backward(t_game *game)
 {
-	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
 	const double	dx = -player->direction.x * player->speed;
 	const double	dy = -player->direction.y * player->speed;
@@ -66,9 +64,8 @@ int	move_backward(void *ptr)
 	return (1);
 }
 
-int	strafe_left(void *ptr)
+int	strafe_left(t_game *game)
 {
-	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
 	const double	dx = cos(player->angle + M_PI_2) * player->speed;
 	const double	dy = -sin(player->angle + M_PI_2) * player->speed;
@@ -87,9 +84,8 @@ int	strafe_left(void *ptr)
 	return (1);
 }
 
-int	strafe_right(void *ptr)
+int	strafe_right(t_game *game)
 {
-	t_game *const	game = (t_game *)ptr;
 	t_player *const	player = &game->player;
 	const double	dx = cos(player->angle - M_PI_2) * player->speed;
 	const double	dy = -sin(player->angle - M_PI_2) * player->speed;
