@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:43:39 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/23 22:57:58 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/24 19:14:35 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,11 @@
 #include "Map.h"
 #include "Image.h"
 #include "Vector.h"
-#include "Utils.h"
-#include <math.h>
 
 static void
 draw_walls(t_minimap *minimap, t_camera *camera, t_map *map);
 static bool
 in_game_and_is_wall(t_vec2d *pos, t_map *map);
-static void
-draw_player_indicator(t_minimap *minimap, t_camera *camera);
-static void
-draw_direction_indicator(t_minimap *minimap, t_vec2d centre, t_player *player);
 
 void	update_minimap(t_minimap *minimap, t_vec2d *player_pos, t_game *game)
 {
@@ -39,8 +33,7 @@ void	update_minimap(t_minimap *minimap, t_vec2d *player_pos, t_game *game)
 	draw_walls(minimap, camera, &game->map);
 	draw_border(&minimap->img, minimap->border_thickness,
 		minimap->border_colour);
-	draw_player_indicator(minimap, camera);
-	draw_direction_indicator(minimap, camera->centre, &game->player);
+	draw_player_indicator(minimap, camera, &game->player);
 }
 
 static void	draw_walls(t_minimap *minimap, t_camera *camera, t_map *map)
@@ -92,54 +85,4 @@ static bool	in_game_and_is_wall(t_vec2d *pos, t_map *map)
 	{
 		return (false);
 	}
-}
-
-static void	draw_player_indicator(t_minimap *minimap, t_camera *camera)
-{
-	t_vec2i	start;
-	t_vec2i	end;
-	int		x;
-
-	start.x = camera->centre.x - minimap->player_box_half_dimension;
-	start.y = camera->centre.y - minimap->player_box_half_dimension;
-	end.x = camera->centre.x + minimap->player_box_half_dimension;
-	end.y = camera->centre.y + minimap->player_box_half_dimension;
-	x = start.x;
-	while (start.y != end.y)
-	{
-		start.x = x;
-		while (start.x != end.x)
-		{
-			draw_pixel(&minimap->img, start.x, start.y,
-				minimap->player_indicator_colour);
-			start.x++;
-		}
-		start.y++;
-	}
-}
-
-static
-void	draw_direction_indicator(t_minimap *minimap, t_vec2d centre,
-	t_player *player)
-{
-	const double	left_dir = player->angle + radians(90);
-	const double	right_dir = player->angle - radians(90);
-	t_vec2i			front_end;
-	t_vec2i			right_end;
-	t_vec2i			left_end;
-
-	front_end.x = centre.x + player->direction.x * 20;
-	front_end.y = centre.y + player->direction.y * 20;
-	draw_line_in_image(&minimap->img, vec2i(centre), front_end,
-		minimap->direction_indicator_colour);
-\
-	right_end.x = centre.x + cos(right_dir) * 10;
-	right_end.y = centre.y + -sin(right_dir) * 10;
-	draw_line_in_image(&minimap->img, vec2i(centre), right_end,
-		minimap->direction_indicator_colour);
-\
-	left_end.x = centre.x + cos(left_dir) * 10;
-	left_end.y = centre.y + -sin(left_dir) * 10;
-	draw_line_in_image(&minimap->img, vec2i(centre), left_end,
-		minimap->direction_indicator_colour);
 }

@@ -6,7 +6,7 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2025/04/24 04:56:39 by kecheong         ###   ########.fr        #
+#    Updated: 2025/04/24 17:15:23 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,7 +60,6 @@ common_srcs := src/common/main.c \
 	$(addprefix $(common)/keys/, init.c key_events.c movement_keys.c camera_keys.c) \
 	$(addprefix $(common)/player/, init.c) \
 	$(addprefix $(common)/raycast/, init.c raycast.c raycast_utils.c) \
-	$(addprefix $(common)/renderer/, bresenham.c) \
 	$(addprefix $(common)/utils/, utils.c math_utils.c collision.c) \
 	$(addprefix $(common)/mouse/, mouse.c) \
 	$(addprefix $(common)/mlx_utils/, draw.c image.c colors.c pixels.c)
@@ -74,7 +73,7 @@ mandatory_srcs := $(addprefix $(mandatory)/, game_init.c game_update.c) \
 bonus_srcs := $(addprefix $(bonus)/, game_init.c game_update.c) \
 	$(addprefix $(bonus)/keys/, keybinds.c ui_keys.c) \
 	$(addprefix $(bonus)/renderer/, init.c render.c render_utils.c) \
-	$(addprefix $(bonus)/minimap/, init.c minimap.c) \
+	$(addprefix $(bonus)/minimap/, init.c minimap.c triangle.c) \
 	$(addprefix $(bonus)/animation/, animation.c animation_utils.c)
 
 # object files depending on mandatory or bonus

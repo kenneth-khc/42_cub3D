@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:29:47 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 05:40:58 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/24 17:20:14 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ void	init_game(t_game *game, t_config *config)
 	game->mlx = init_mlx();
 	game->keystates = init_keybindings();
 	game->map = init_map(config);
-	game->minimap = init_minimap(game);
 	game->player = init_player(&game->map);
+	game->minimap = init_minimap(game);
 	game->raycaster = init_raycaster(&game->player, &game->screen, &game->tile);
 	game->world_3d = create_image(game->mlx, game->screen.width,
 			game->screen.height);

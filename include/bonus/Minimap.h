@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/14 17:34:27 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/21 03:28:30 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/24 21:31:11 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdbool.h>
 # include "Image.h"
 # include "Vector.h"
+# include "Player.h"
 
 /* A camera overlooking the 2D map */
 typedef struct s_camera
@@ -43,5 +44,7 @@ typedef struct s_minimap
 
 t_minimap	init_minimap(t_game *game);
 void		update_minimap(t_minimap *minimap, t_vec2d *pos, t_game *game);
+void		draw_player_indicator(t_minimap *minimap, t_camera *camera,
+				t_player *player);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 22:46:31 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/24 06:17:33 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/24 21:26:46 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,11 @@
 
 # ifndef MINIMAP_Y_OFFSET
 #  define MINIMAP_Y_OFFSET 10
+# endif
+
+# ifndef PLAYER_INDICATOR_MAGNITUDE
+#  define PLAYER_INDICATOR_MAGNITUDE 25
+
 # endif
 
 /********************************** Cat **************************************/

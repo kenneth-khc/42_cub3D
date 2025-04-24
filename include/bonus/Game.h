@@ -22,9 +22,6 @@
 
 typedef struct s_game
 {
-	// debugging purposes
-	/*t_colours		colours;*/
-	// end
 	void			*mlx;
 	void			*window;
 
