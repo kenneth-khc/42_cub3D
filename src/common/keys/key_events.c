@@ -12,6 +12,7 @@
 
 #include "Keys.h"
 #include <stdbool.h>
+#include <stddef.h>
 
 /* Go through our keys, checking the state of each key, and call its associated
  * function if we are interested in that state */
@@ -21,6 +22,7 @@ void	process_keys(t_keystates *keystates, t_game *game)
 	t_key	*key;
 
 	i = 0;
+	key = (t_key *){0};
 	while (i < N_KEYS)
 	{
 		key = &keystates->keys[i];
@@ -83,6 +85,7 @@ int	translate_keycode(t_keystates *keystates, int mlx_keycode)
 	t_key	*key;
 
 	i = 0;
+	key = NULL;
 	while (i < N_KEYS)
 	{
 		key = &keystates->keys[i];

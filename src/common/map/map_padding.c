@@ -55,7 +55,8 @@ static char	*pad_until_max_width(char *row, int width)
 	int		row_len;
 	int		x;
 
-	padded_row = xmalloc(sizeof (*padded_row) * width);
+	padded_row = xmalloc(sizeof (*padded_row) * (width + 1));
+	padded_row[width] = '\0';
 	row_len = ft_strlen(row);
 	x = 0;
 	while (x < row_len)

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "Keys.h"
+#include "libft.h"
 
 /* Associate each MLX keycode to our own key, hooking it to a function to be
  * called when the key is pressed and/or released */
@@ -19,6 +20,7 @@ t_keystates	init_keybindings(void)
 	t_keystates		keystates;
 	t_key *const	keys = keystates.keys;
 
+	ft_bzero(&keystates, sizeof(keystates));
 	keys[KEY_W] = map_key(PRESS, MLX_KEY_W, move_forward);
 	keys[KEY_A] = map_key(PRESS, MLX_KEY_A, strafe_left);
 	keys[KEY_S] = map_key(PRESS, MLX_KEY_S, move_backward);

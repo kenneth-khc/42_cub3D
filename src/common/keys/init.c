@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "Keys.h"
+#include "libft.h"
 
 /* Create a new keybinding, with interest specifying the state of the key
  * to call the function (PRESS or RELEASE) */
@@ -18,6 +19,7 @@ t_key	map_key(int interest, enum e_mlx_keycodes mlx_keycode, t_action action)
 {
 	t_key	new_keybinding;
 
+	ft_bzero(&new_keybinding, sizeof(t_key));
 	new_keybinding.mlx_keycode = mlx_keycode;
 	new_keybinding.action = action;
 	new_keybinding.state = NONE;
