@@ -6,7 +6,7 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2025/04/24 17:15:23 by kecheong         ###   ########.fr        #
+#    Updated: 2025/04/26 05:05:38 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,11 +73,12 @@ mandatory_srcs := $(addprefix $(mandatory)/, game_init.c game_update.c) \
 # bonus sources
 bonus_srcs := $(addprefix $(bonus)/, game_init.c game_update.c) \
 	$(addprefix $(bonus)/parser/, parse.c config.c file_helpers.c) \
-	$(addprefix $(bonus)/keys/, keybinds.c ui_keys.c) \
+	$(addprefix $(bonus)/keys/, keybinds.c ui_keys.c movement_keys.c action_keys.c) \
 	$(addprefix $(bonus)/renderer/, init.c render.c render_utils.c) \
 	$(addprefix $(bonus)/minimap/, init.c minimap.c triangle.c) \
+	$(addprefix $(bonus)/doors/, init.c door_utils.c) \
 	$(addprefix $(bonus)/animation/, animation.c animation_utils.c) \
-	$(bonus)/raycast.c $(bonus)/collision.c $(bonus)/movement_keys.c $(bonus)/doors.c
+	$(bonus)/raycast.c $(bonus)/collision.c
 
 # object files depending on mandatory or bonus
 obj := obj/$(build_type)

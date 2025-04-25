@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:00:51 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/25 21:31:42 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 03:59:40 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ enum e_mlx_keycodes
 
 # elif defined(__APPLE__)
 
+/* Incomplete because I don't have an Apple machine to know this ... */
 enum e_mlx_keycodes
 {
 	MLX_KEY_W = 13,
@@ -116,7 +117,7 @@ typedef struct s_player	t_player;
 
 t_key		map_key(int interest, enum e_mlx_keycodes keycode, t_action action);
 t_keystates	init_keybindings(void);
-int			press_release_key(int mlx_keycode, t_keystates *keys);
+bool		pressed_and_released(const t_key *key, enum e_keycodes keycode);
 int			press_key(int mlx_keycode, t_keystates *keys);
 int			release_key(int mlx_keycode, t_keystates *keys);
 void		process_keys(t_keystates *keys, t_game *game);

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 22:46:31 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/24 21:26:46 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:04:38 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,10 @@
 #  define FIELD_OF_VIEW_ANGLE 60
 # endif
 
+# ifndef PLAYER_TOUCH_MAGNITUDE
+#  define PLAYER_TOUCH_MAGNITUDE 25
+# endif
+
 /******************************** Minimap ************************************/
 # ifndef MINIMAP_SCALE
 #  define MINIMAP_SCALE 0.3
@@ -67,6 +71,10 @@
 
 # ifndef MINIMAP_Y_OFFSET
 #  define MINIMAP_Y_OFFSET 10
+# endif
+
+# ifndef MINIMAP_BORDER_THICKNESS
+#  define MINIMAP_BORDER_THICKNESS 10
 # endif
 
 # ifndef PLAYER_INDICATOR_MAGNITUDE

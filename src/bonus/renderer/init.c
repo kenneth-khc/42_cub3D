@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 01:30:51 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/25 22:13:59 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:22:56 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ t_renderer	init_renderer(t_config *config,
 		}
 		i++;
 	}
-	printf("Okay.\n");
 	load_cat_animations(&renderer, screen, game);
 	return (renderer);
 }
@@ -78,31 +77,21 @@ static
 void	set_texture(t_game *game, t_renderer *renderer,
 					t_configurable *configurable)
 {
-	t_animation		*renderer_anim_slot;
-	const char		*texture_filepath = configurable->line
+	t_animation	*renderer_anim_slot;
+	const char	*texture_filepath = configurable->line
 		+ configurable->value_offset;
 
 	renderer_anim_slot = NULL;
 	if (ft_strcmp(configurable->type_identifier, "NO") == 0)
-	{
 		renderer_anim_slot = &renderer->wall_animations[NORTH];
-	}
 	else if (ft_strcmp(configurable->type_identifier, "SO") == 0)
-	{
 		renderer_anim_slot = &renderer->wall_animations[SOUTH];
-	}
 	else if (ft_strcmp(configurable->type_identifier, "EA") == 0)
-	{
 		renderer_anim_slot = &renderer->wall_animations[EAST];
-	}
 	else if (ft_strcmp(configurable->type_identifier, "WE") == 0)
-	{
 		renderer_anim_slot = &renderer->wall_animations[WEST];
-	}
 	else if (ft_strcmp(configurable->type_identifier, "DOOR") == 0)
-	{
 		renderer_anim_slot = &renderer->door_animation;
-	}
 	*renderer_anim_slot = animation(game, texture_filepath);
 }
 

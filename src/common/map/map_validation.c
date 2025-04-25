@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 00:45:25 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 03:39:43 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:26:00 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 
 static void	validate_single_player(t_map *map, int x, int y);
 static void	check_surrounding(const t_map *map, int x, int y);
+
+bool	is_door(char c)
+{
+	return (c == 'D');
+}
 
 void	validate_map(t_map *map)
 {
@@ -34,7 +39,7 @@ void	validate_map(t_map *map)
 			{
 				validate_single_player(map, x, y);
 			}
-			if (is_floor(c))
+			if (is_floor(c) || is_door(c))
 			{
 				check_surrounding(map, x, y);
 			}

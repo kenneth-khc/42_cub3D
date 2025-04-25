@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 21:46:37 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/13 23:01:55 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 03:57:03 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,4 +96,23 @@ int	translate_keycode(t_keystates *keystates, int mlx_keycode)
 		i++;
 	}
 	return (-1);
+}
+
+/* Store the previous states of each key, initialized to NONE by default.
+ * When this gets called with a key, we check the previous stored state,
+ * returning true if it was previously PRESSED and now RELEASED. */
+bool	pressed_and_released(const t_key *key, enum e_keycodes keycode)
+{
+	static enum e_key_state	states[N_KEYS] = {NONE};
+
+	if (states[keycode] & PRESS && key->state & RELEASE)
+	{
+		states[keycode] = key->state;
+		return (true);
+	}
+	else
+	{
+		states[keycode] = key->state;
+		return (false);
+	}
 }

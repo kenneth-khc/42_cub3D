@@ -6,13 +6,13 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/17 04:52:38 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/17 06:22:39 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:34:42 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Parse.h"
+#include "Utils.h"
 #include "libft.h"
-#include "ft_dprintf.h"
 #include "get_next_line.h"
 #include <fcntl.h>
 #include <stdlib.h>
@@ -23,14 +23,12 @@ int	open_file(char *filename)
 
 	if (ft_str_endswith(filename, ".cub") == false)
 	{
-		ft_dprintf(STDERR_FILENO, "Error\n" "Expecting file extension .cub\n");
-		exit(1);
+		error("Expecting file extension .cub\n");
 	}
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
-		ft_dprintf(STDERR_FILENO, "Error\n" "Failed to open file\n");
-		exit(1);
+		error("Failed to open file\n");
 	}
 	return (fd);
 }

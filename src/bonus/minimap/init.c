@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 01:00:16 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/24 18:39:51 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:04:26 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ t_minimap	init_minimap(t_game *game)
 	minimap.open_door_colour = create_colour(0x0, 0x0, 0x30, 0x30);
 	minimap.closed_door_colour = create_colour(0x0, 0x0, 0xFF, 0x30);
 	minimap.border_colour = create_colour(0x00, 0x00, 0x00, 0x00);
-	minimap.border_thickness = 10;
+	minimap.border_thickness = MINIMAP_BORDER_THICKNESS;
 	minimap.player_indicator_colour = create_colour(0x00, 0x00, 0xFF, 0x00);
 	minimap.player_box_half_dimension = 30;
 	minimap.direction_indicator_colour = create_colour(0x00, 0x00, 0x00, 0x00);

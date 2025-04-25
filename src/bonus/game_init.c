@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:29:47 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/25 22:12:25 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:08:43 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,22 +16,19 @@
 #include "Minimap.h"
 #include "Renderer.h"
 #include "Utils.h"
-#include "libft.h"
 #include <mlx.h>
 
 static void	set_game_dimensions(t_game *game);
 static void	*init_mlx(void);
 static void	*init_window(void *mlx, t_dimensions *screen);
-#include <stdio.h>
 
 void	init_game(t_game *game, t_config *config)
 {
 	set_game_dimensions(game);
 	game->mlx = init_mlx();
 	game->keystates = init_keybindings();
-	// TODO: Test doors
 	game->map = init_map(config);
-	game->door_states = init_doors(config, game);
+	game->doors = init_doors(&game->map);
 	game->player = init_player(&game->map);
 	game->minimap = init_minimap(game);
 	game->raycaster = init_raycaster(&game->player, &game->screen, &game->tile);

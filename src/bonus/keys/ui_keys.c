@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 22:47:40 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/24 06:24:14 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:12:15 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,12 @@
 
 int	toggle_minimap(t_game *game)
 {
-	const t_key			*m_key = &game->keystates.keys[KEY_M];
-	static t_key_state	prev_m_key_state = NONE;
+	const t_key	*m_key = &game->keystates.keys[KEY_M];
 
-	if (prev_m_key_state & PRESS && m_key->state & RELEASE)
+	if (pressed_and_released(m_key, KEY_M))
 	{
 		game->minimap.display = !game->minimap.display;
 	}
-	prev_m_key_state = m_key->state;
 	return (1);
 }
 
@@ -34,8 +32,7 @@ int	close_game(t_game *game)
 	destroy_map(&game->map);
 	destroy_image(game->mlx, &game->minimap.img);
 	destroy_image(game->mlx, &game->world_3d);
-	destroy_image(game->mlx, &game->door_states.img);
-	free(game->door_states.doors);
+	free(game->doors.ptr);
 	destroy_animation(game->mlx, &renderer->wall_animations[0]);
 	destroy_animation(game->mlx, &renderer->wall_animations[1]);
 	destroy_animation(game->mlx, &renderer->wall_animations[2]);
@@ -43,6 +40,7 @@ int	close_game(t_game *game)
 	destroy_animation(game->mlx, &renderer->cat);
 	destroy_animation(game->mlx, &renderer->cat_walking);
 	destroy_animation(game->mlx, &renderer->cat_laying);
+	destroy_animation(game->mlx, &renderer->door_animation);
 	mlx_destroy_window(game->mlx, game->window);
 	mlx_destroy_display(game->mlx);
 	free(game->mlx);

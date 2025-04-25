@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 20:36:16 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 05:18:09 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 06:03:20 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-#include <stdio.h>
 t_config	parse(char *filename)
 {
 	int			fd;
@@ -29,9 +28,10 @@ t_config	parse(char *filename)
 	fd = open_file(filename);
 	config.get_next_line = gnl_trim_whitespaces_skip_empty;
 	line = config.get_next_line(fd);
+	if (line == NULL)
+		error("File is empty\n");
 	while (line)
 	{
-		printf("|%s|\n", line);
 		if (config.configurables_completed != MAX_CONFIGURABLE)
 		{
 			validate_element(&config, line);
@@ -65,7 +65,8 @@ void	validate_element(t_config *config, char *line)
 		{
 			if (element->identifier_offset == 0 && element->value_offset == 0)
 			{
-				return (set(element, config, line, type_identifier_offset));
+				set(element, config, line, type_identifier_offset);
+				return ;
 			}
 			else
 				error("Duplicate value for element\n");
@@ -105,7 +106,9 @@ size_t	identify_type_identifier(char *line, char **type_identifier)
 
 	offset = 0;
 	while (line[offset] && is_whitespace(line[offset]))
+	{
 		offset++;
+	}
 	if (identified(&line[offset], "NO"))
 		*type_identifier = "NO";
 	else if (identified(&line[offset], "SO"))

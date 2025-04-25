@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 22:38:09 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/23 01:03:55 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:19:17 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 #include "Vector.h"
 #include <math.h>
 #include <stdbool.h>
+
+static void	update_raycaster(t_raycaster *raycaster, t_player *player,
+				t_dimensions *tile);
+static void	cast(t_ray *ray, t_player *player, t_map *map, t_doors *doors);
+static void	check_ray_hit(t_ray *ray, t_map *map, t_doors *doors);
 
 void	raycast(t_raycaster *raycaster, t_player *player, t_game *game)
 {
@@ -26,14 +31,14 @@ void	raycast(t_raycaster *raycaster, t_player *player, t_game *game)
 	while (x < game->screen.width)
 	{
 		ray = &raycaster->rays[x];
-		cast(ray, player, &game->map, &game->door_states);
+		cast(ray, player, &game->map, &game->doors);
 		x++;
 	}
 }
 
 /* Update the raycaster's angles and positions based on the new player
  * angles and positions */
-void	update_raycaster(t_raycaster *raycaster, t_player *player,
+static void	update_raycaster(t_raycaster *raycaster, t_player *player,
 			t_dimensions *tile)
 {
 	int		i;
@@ -61,7 +66,7 @@ void	update_raycaster(t_raycaster *raycaster, t_player *player,
 }
 
 /* Send forth a ray until it hits a wall. Behold, wizardry. */
-void	cast(t_ray *ray, t_player *player, t_map *map, t_door_states *door_states)
+static void	cast(t_ray *ray, t_player *player, t_map *map, t_doors *doors)
 {
 	init_dda(ray);
 	ray->hit_door = false;
@@ -79,17 +84,25 @@ void	cast(t_ray *ray, t_player *player, t_map *map, t_door_states *door_states)
 			ray->hit_side = HIT_HORIZONTAL;
 			ray->y_axis_distance += ray->dy;
 		}
-		if (is_wall(map, ray->tile_index.x, ray->tile_index.y))
-		{
-			ray->hit = true;
-			check_wall_side_hit(ray);
-		}
-		else if (door_states->doors[ray->tile_index.y * map->width + ray->tile_index.x].is_closed)
-		{
-			ray->hit_door = true;
-			ray->hit = true;
-			check_wall_side_hit(ray);
-		}
+		check_ray_hit(ray, map, doors);
 	}
 	get_distance(ray, player);
+}
+
+static void	check_ray_hit(t_ray *ray, t_map *map, t_doors *doors)
+{
+	t_door	*door;
+
+	door = get_door(doors, ray->tile_index.x, ray->tile_index.y);
+	if (is_wall(map, ray->tile_index.x, ray->tile_index.y))
+	{
+		ray->hit = true;
+		check_wall_side_hit(ray);
+	}
+	else if (door && door->is_closed)
+	{
+		ray->hit_door = true;
+		ray->hit = true;
+		check_wall_side_hit(ray);
+	}
 }

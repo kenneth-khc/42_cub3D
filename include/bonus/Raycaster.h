@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:43:08 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/25 21:04:04 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:18:28 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,10 +71,7 @@ typedef struct s_game	t_game;
 
 t_raycaster	init_raycaster(t_player *player,
 				t_dimensions *screen, t_dimensions *tile);
-void		update_raycaster(t_raycaster *raycaster, t_player *player,
-				t_dimensions *tile);
 void		raycast(t_raycaster *raycaster, t_player *player, t_game *game);
-void		cast(t_ray *ray, t_player *player, t_map *map, t_door_states *);
 void		init_dda(t_ray *ray);
 void		get_distance(t_ray *ray, t_player *player);
 void		check_wall_side_hit(t_ray *ray);

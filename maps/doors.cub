@@ -5,8 +5,8 @@ EA                textures/cat_omg/cat_omg.xpm
 WE     textures/cat_happy/cat_happy.xpm
 DOOR textures/cat_mouth_open.xpm
 
-F 255,100,0
-C 225,30,0
+F 235,144,245
+C 164,226,252
 
 11111111
 100D0001
