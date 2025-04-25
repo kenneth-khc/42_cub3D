@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/19 01:30:51 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/24 06:24:16 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/25 22:13:59 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "Animation.h"
 #include "Settings.h"
 #include "libft.h"
+#include <stdio.h>
 
 static void
 load_cat_animations(t_renderer *renderer, t_dimensions screen, t_game *game);
@@ -49,6 +50,7 @@ t_renderer	init_renderer(t_config *config,
 		}
 		i++;
 	}
+	printf("Okay.\n");
 	load_cat_animations(&renderer, screen, game);
 	return (renderer);
 }
@@ -96,6 +98,10 @@ void	set_texture(t_game *game, t_renderer *renderer,
 	else if (ft_strcmp(configurable->type_identifier, "WE") == 0)
 	{
 		renderer_anim_slot = &renderer->wall_animations[WEST];
+	}
+	else if (ft_strcmp(configurable->type_identifier, "DOOR") == 0)
+	{
+		renderer_anim_slot = &renderer->door_animation;
 	}
 	*renderer_anim_slot = animation(game, texture_filepath);
 }

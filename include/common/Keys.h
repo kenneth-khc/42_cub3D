@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:00:51 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/14 03:57:10 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/25 21:31:42 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ enum e_mlx_keycodes
 	MLX_KEY_RIGHT = 65363,
 	MLX_KEY_DOWN = 65364,
 	MLX_KEY_ESC = 65307,
-	MLX_KEY_M = 109
+	MLX_KEY_M = 109,
+	MLX_KEY_SPACEBAR = 32
 };
 
 # elif defined(__APPLE__)
@@ -78,10 +79,11 @@ enum e_keycodes
 	KEY_ESC = 6,
 	KEY_M = 7,
 	KEY_UP = 8,
-	KEY_DOWN = 9
+	KEY_DOWN = 9,
+	KEY_SPACEBAR = 10
 };
 
-# define N_KEYS 10 // number of keys that we care about
+# define N_KEYS 11 // number of keys that we care about
 
 typedef struct s_game	t_game;
 typedef struct s_key	t_key;
@@ -125,6 +127,7 @@ int			move_forward(t_game *game);
 int			move_backward(t_game *game);
 int			strafe_left(t_game *game);
 int			strafe_right(t_game *game);
+int			open_door(t_game *game);
 
 int			rotate_left(t_game *game);
 int			rotate_right(t_game *game);

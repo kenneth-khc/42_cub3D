@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:40:30 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 23:23:06 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/25 22:13:37 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "Keys.h"
 # include "Renderer.h"
 # include "Minimap.h"
+# include "Doors.h"
 
 typedef struct s_game
 {
@@ -34,6 +35,7 @@ typedef struct s_game
 	t_raycaster		raycaster;
 	t_renderer		renderer;
 	t_keystates		keystates;
+	t_door_states	door_states;
 }	t_game;
 
 void	init_game(t_game *game, t_config *config);

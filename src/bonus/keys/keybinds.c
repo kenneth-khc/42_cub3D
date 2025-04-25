@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 20:04:34 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 06:37:02 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/25 22:14:14 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,6 @@ t_keystates	init_keybindings(void)
 	keys[KEY_M] = map_key(PRESS | RELEASE, MLX_KEY_M, toggle_minimap);
 	keys[KEY_UP] = map_key(PRESS, MLX_KEY_UP, look_up);
 	keys[KEY_DOWN] = map_key(PRESS, MLX_KEY_DOWN, look_down);
+	keys[KEY_SPACEBAR] = map_key(PRESS | RELEASE, MLX_KEY_SPACEBAR, open_door);
 	return (keystates);
 }

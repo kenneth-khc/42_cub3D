@@ -69,7 +69,11 @@ void	reset_draw_line(t_renderer *renderer)
 
 void	decide_current_texture(t_renderer *renderer, t_ray *ray)
 {
-	if (ray->hit_side == HIT_SOUTH)
+	if (ray->hit_door)
+	{
+		renderer->curr_texture = &renderer->door_animation.frames[0];
+	}
+	else if (ray->hit_side == HIT_SOUTH)
 	{
 		renderer->curr_texture = &renderer->wall_textures[SOUTH];
 	}

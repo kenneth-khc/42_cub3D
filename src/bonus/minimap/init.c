@@ -28,11 +28,12 @@ t_minimap	init_minimap(t_game *game)
 		minimap.camera.half_dimension};
 	minimap.background_colour = create_colour(0x00, 0x54, 0x88, 0xF7);
 	minimap.wall_colour = create_colour(0x00, 0xAC, 0xA6, 0xB3);
+	minimap.open_door_colour = create_colour(0x0, 0x0, 0x30, 0x30);
+	minimap.closed_door_colour = create_colour(0x0, 0x0, 0xFF, 0x30);
 	minimap.border_colour = create_colour(0x00, 0x00, 0x00, 0x00);
 	minimap.border_thickness = 10;
 	minimap.player_indicator_colour = create_colour(0x00, 0x00, 0xFF, 0x00);
 	minimap.player_box_half_dimension = 30;
 	minimap.direction_indicator_colour = create_colour(0x00, 0x00, 0x00, 0x00);
-	update_minimap(&minimap, &game->player.world_pos, game);
 	return (minimap);
 }

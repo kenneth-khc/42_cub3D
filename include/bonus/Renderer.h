@@ -32,6 +32,7 @@ typedef struct s_renderer
 	t_image			*img; // the image to render onto
 	t_image			wall_textures[4];
 	t_animation		wall_animations[4];
+	t_animation		door_animation;
 	t_image			*curr_texture;
 	t_vec2d			texture_pos;
 	t_colour		ceiling;

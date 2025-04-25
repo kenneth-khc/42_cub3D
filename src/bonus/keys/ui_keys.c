@@ -34,6 +34,8 @@ int	close_game(t_game *game)
 	destroy_map(&game->map);
 	destroy_image(game->mlx, &game->minimap.img);
 	destroy_image(game->mlx, &game->world_3d);
+	destroy_image(game->mlx, &game->door_states.img);
+	free(game->door_states.doors);
 	destroy_animation(game->mlx, &renderer->wall_animations[0]);
 	destroy_animation(game->mlx, &renderer->wall_animations[1]);
 	destroy_animation(game->mlx, &renderer->wall_animations[2]);

@@ -6,38 +6,22 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 01:53:56 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/22 05:43:51 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/25 22:14:56 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "Map.h"
+#include "Doors.h"
 #include "Vector.h"
-#include <math.h>
 
-// TODO: hmm...
-bool	collide(t_map *map, t_vec2d *world_pos, t_dimensions *tile)
-{
-	t_vec2d	pos;
-
-	pos.x = floor(world_pos->x / tile->width);
-	pos.y = floor(world_pos->y / tile->height);
-	if (map->layout[(int)pos.y][(int)pos.x] == '1')
-	{
-		return (true);
-	}
-	else
-	{
-		return (false);
-	}
-}
-
-bool	movable(t_vec2d pos, t_map *map, t_dimensions tile)
+bool	movable(t_vec2d pos, t_map *map, t_dimensions tile, t_door_states *doors_state)
 {
 	t_vec2i	tile_index;
 
 	tile_index.x = pos.x / tile.width;
 	tile_index.y = pos.y / tile.height;
-	if (map->layout[tile_index.y][tile_index.x] == '1')
+	if (map->layout[tile_index.y][tile_index.x] == '1' ||
+		get_door(doors_state, tile_index.x, tile_index.y)->is_closed)
 	{
 		return (false);
 	}
@@ -45,21 +29,4 @@ bool	movable(t_vec2d pos, t_map *map, t_dimensions tile)
 	{
 		return (true);
 	}
-}
-
-bool	within_world_bounds(t_vec2d *world_pos, t_map *map, t_dimensions *tile)
-{
-	t_vec2i	m;
-	bool	within_x_axis;
-	bool	within_y_axis;
-
-	if (world_pos->x < 0 || world_pos->y < 0)
-	{
-		return (false);
-	}
-	m.x = world_pos->x / tile->width;
-	m.y = world_pos->y / tile->height;
-	within_x_axis = m.x >= 0 && m.x < map->width;
-	within_y_axis = m.y >= 0 && m.y < map->height;
-	return (within_x_axis && within_y_axis);
 }

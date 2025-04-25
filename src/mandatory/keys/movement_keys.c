@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/04 21:11:39 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/24 05:56:08 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/25 22:16:36 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "Map.h"
 #include <math.h>
 
-// TODO: fix diagonal movement into walls
+bool	movable(t_vec2d pos, t_map *map, t_dimensions dimensions);
 
 /* For player movement, WASD is used
  * W - move player forward

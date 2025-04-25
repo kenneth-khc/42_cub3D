@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:43:08 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/02 10:00:25 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/25 21:04:04 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_ray
 	double	y_step; // how much worldY to step by when it goes 1 mapX
 	bool	hit;
 	uint8_t	hit_side;
+	bool	hit_door;
 
 	double	dx; // distance it travels when going from 1 X to the next
 	double	dy; // distance it travels when going from 1 Y to the next
