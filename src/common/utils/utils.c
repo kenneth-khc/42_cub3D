@@ -14,10 +14,23 @@
 #include <stdlib.h>
 
 /* Log to stderr and exit */
-void	error(const char *err_msg)
+/*void	error(const char *err_msg)*/
+/*{*/
+/*	ft_dprintf(STDERR_FILENO, "Error\n");*/
+/*	ft_dprintf(STDERR_FILENO, err_msg);*/
+/*	exit(1);*/
+/*}*/
+
+void	error(char *err_msg, const char *thing)
 {
-	ft_dprintf(STDERR_FILENO, "Error\n");
-	ft_dprintf(STDERR_FILENO, err_msg);
+	if (thing)
+	{
+		ft_dprintf(STDERR_FILENO, "Error\n%s `%s`\n", err_msg, thing);
+	}
+	else
+	{
+		ft_dprintf(STDERR_FILENO, "Error\n%s\n", err_msg);
+	}
 	exit(1);
 }
 
@@ -29,7 +42,7 @@ void	*xmalloc(size_t size)
 	ptr = malloc(size);
 	if (ptr == NULL)
 	{
-		error("out of memory");
+		error("out of memory", NULL);
 	}
 	return (ptr);
 }

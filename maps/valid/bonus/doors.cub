@@ -3,12 +3,16 @@ NO          textures/cat/cat.xpm
 SO                                 textures/cat_angry/cat_angry.xpm
 EA                textures/cat_omg/cat_omg.xpm
 WE     textures/cat_happy/cat_happy.xpm
+DOOR textures/cat_mouth_open.xpm
 
-F 255,100,0
-C 225,30,0
+F 235,144,245
+C 164,226,252
 
-11111111
-10000001
-10100001
-10N10001
-11111111
+1111111111
+1E01010101
+100D010101
+1111D10101
+10D000D101
+1010001001
+11111D1011
+1111111111

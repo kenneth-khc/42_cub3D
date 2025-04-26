@@ -10,9 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Utils.h"
-#include "libft.h"
 #include "Parse.h"
+#include "libft.h"
+#include "ft_dprintf.h"
 #include <stdlib.h>
 
 #define MAX_CONFIGURABLE 6
@@ -40,9 +40,10 @@ const char	*validate_type_identifier(char *line)
 		}
 		i++;
 	}
+	ft_dprintf(STDERR_FILENO, "Invalid type identifier `%s`\n",
+		test_identifier);
 	free(test_identifier);
-	error("Invalid type identifier...\n");
-	return (NULL);
+	exit(1);
 }
 
 static char	*extract_type_identifier(char *line)

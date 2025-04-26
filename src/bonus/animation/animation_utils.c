@@ -50,7 +50,7 @@ char	*extract_xpm_filename(const char *filepath)
 
 	if (!ft_str_endswith(filepath, ".xpm"))
 	{
-		error("Texture does not end with .xpm\n");
+		error("Texture does not end with .xpm:", filepath);
 	}
 	filename = ft_substr(filepath, 0, ft_strlen(filepath) - 4);
 	return (filename);

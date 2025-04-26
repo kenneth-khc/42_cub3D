@@ -12,7 +12,7 @@
 
 #include "Parse.h"
 #include "libft.h"
-#include "ft_dprintf.h"
+#include "Utils.h"
 #include "get_next_line.h"
 #include <fcntl.h>
 #include <stdlib.h>
@@ -23,14 +23,12 @@ int	open_file(char *filename)
 
 	if (ft_str_endswith(filename, ".cub") == false)
 	{
-		ft_dprintf(STDERR_FILENO, "Error\n" "Expecting file extension .cub\n");
-		exit(1);
+		error("Expecting file extension .cub, got", filename);
 	}
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
-		ft_dprintf(STDERR_FILENO, "Error\n" "Failed to open file\n");
-		exit(1);
+		error("Failed to open file", filename);
 	}
 	return (fd);
 }

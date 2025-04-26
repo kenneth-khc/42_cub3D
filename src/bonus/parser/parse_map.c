@@ -27,7 +27,7 @@ void	parse_map_content(t_config *config, char *line)
 	{
 		if (!is_valid_map_character(line[i]))
 		{
-			error("Invalid map character\n");
+			error("Invalid map character", NULL);
 		}
 		i++;
 	}

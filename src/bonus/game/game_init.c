@@ -44,7 +44,7 @@ static void	*init_mlx(void)
 
 	if (mlx == NULL)
 	{
-		error("mlx_init() failed\n");
+		error("mlx_init() failed", NULL);
 	}
 	return (mlx);
 }
@@ -56,7 +56,7 @@ static void	*init_window(void *mlx, t_dimensions *screen)
 
 	if (window == NULL)
 	{
-		error("mlx_new_window() failed\n");
+		error("mlx_new_window() failed", NULL);
 	}
 	return (window);
 }

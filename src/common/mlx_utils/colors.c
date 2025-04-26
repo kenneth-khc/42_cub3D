@@ -44,21 +44,21 @@ t_colour	rgb_string_to_colour(const char *rgb_string)
 	int		b;
 
 	if (count_occurrences(',', rgb_string) != 2)
-		error("Invalid RGB format\n");
+		error("Invalid RGB format", rgb_string);
 	components = ft_split(rgb_string, ',');
 	if (components == NULL)
-		error("Memory allocation failed at ft_split()\n");
+		error("Memory allocation failed at ft_split()", NULL);
 	size = 0;
 	while (components[size])
 		size++;
 	if (size != 3)
-		error("Invalid RGB colour\n");
+		error("Invalid RGB colour", rgb_string);
 	r = ft_atoi(components[0]);
 	g = ft_atoi(components[1]);
 	b = ft_atoi(components[2]);
 	if (r < 0 || r > 255 || g < 0 || g > 255 || b < 0 || b > 255)
 	{
-		error("Invalid RGB value\n");
+		error("Invalid RGB value", rgb_string);
 	}
 	free_2d_array(components);
 	return (create_colour(0, r, g, b));

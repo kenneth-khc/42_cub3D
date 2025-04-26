@@ -1,0 +1,20 @@
+
+
+
+
+EA  textures/cat_very_angry/cat_very_angry.xpm
+WE  textures/cat_blush/cat_blush.xpm
+SO  textures/cat_cute/cat_cute.xpm
+SO  textures/cat_dance/cat_dance.xpm
+DOOR  textures/cat_mouth_open.xpm
+
+F 123,123,0
+C 0,0,123
+
+1111111111111111111111
+1E10000001010000011101
+1001011100000101000001
+1100010001010000111001
+1011110111011111101101
+1000000100000000001001
+1111111111111111111111

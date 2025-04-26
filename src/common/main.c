@@ -32,13 +32,14 @@ int	main(int argc, char **argv)
 	game = (t_game){0};
 	if (argc != 2)
 	{
-		error("Usage: ./cub3D <.cub file>\n");
+		error("Usage: ./cub3D <.cub file>\n", NULL);
 	}
 	config = parse(*++argv);
 	validate_map(&config.map);
 	init_game(&game, &config);
 	setup_event_hooks(&game, game.window, &game.keystates);
 	destroy_config(&config);
+	print_map(&game.map);
 	mlx_loop(game.mlx);
 }
 

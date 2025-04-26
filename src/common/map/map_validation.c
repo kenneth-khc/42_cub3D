@@ -28,7 +28,6 @@ void	validate_map(t_map *map)
 	char	c;
 
 	y = 0;
-	print_map(map);
 	while (y < map->height)
 	{
 		x = 0;
@@ -62,7 +61,7 @@ void	validate_single_player(t_map *map, int x, int y)
 	}
 	else
 	{
-		error("Duplicate player found.\n");
+		error("Duplicate player found.", NULL);
 	}
 }
 
@@ -85,6 +84,6 @@ void	check_surrounding(const t_map *map, int x, int y)
 		|| map->layout[y + 1][x] == ' '
 		|| map->layout[y + 1][x + 1] == ' ')
 	{
-		error("Map is not surrounded by walls completely\n");
+		error("Map is not surrounded by walls completely", NULL);
 	}
 }

@@ -30,7 +30,7 @@ t_image	create_image(void *mlx, int width, int height)
 	img.instance = mlx_new_image(mlx, width, height);
 	if (img.instance == NULL)
 	{
-		error("mlx_new_image() failed\n");
+		error("mlx_new_image() failed", NULL);
 	}
 	img.width = width;
 	img.height = height;
@@ -83,7 +83,8 @@ void	load_image(t_game *game, t_image *img, const char *filename)
 			&img->width, &img->height);
 	if (img->instance == NULL)
 	{
-		ft_dprintf(STDERR_FILENO, "Error\nInvalid image filepath\n");
+		ft_dprintf(STDERR_FILENO,
+			"Error\nInvalid image filepath `%s`\n", filename);
 		exit(1);
 	}
 	img->pixels = img->width * img->height;

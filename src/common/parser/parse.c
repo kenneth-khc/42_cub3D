@@ -29,7 +29,7 @@ t_config	parse(char *filename)
 	config.get_next_line = gnl_trim_whitespaces_skip_empty;
 	line = config.get_next_line(fd);
 	if (line == NULL)
-		error("File is empty\n");
+		error("File is empty\n", NULL);
 	while (line)
 	{
 		if (config.configurables_completed != MAX_CONFIGURABLE)
@@ -50,18 +50,17 @@ t_config	parse(char *filename)
 void	validate_element(t_config *config, char *line)
 {
 	int				i;
-	const char		*type_identifier;
+	const char		*type_identifier = validate_type_identifier(line);
 	t_configurable	*element;
 
 	i = 0;
-	type_identifier = validate_type_identifier(line);
 	while (i < MAX_CONFIGURABLE)
 	{
 		element = &config->configurables[i];
 		if (element->type_identifier
 			&& ft_strcmp(type_identifier, element->type_identifier) == 0)
 		{
-			error("Duplicate value for element\n");
+			error("Duplicate", type_identifier);
 		}
 		else if (element->value_offset == 0)
 		{
@@ -72,7 +71,7 @@ void	validate_element(t_config *config, char *line)
 		}
 		i++;
 	}
-	error("Invalid type identifier\n");
+	error("Invalid type identifier", type_identifier);
 }
 
 t_configurable	set(const char *type_identifier, char *line)

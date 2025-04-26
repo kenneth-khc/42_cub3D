@@ -19,7 +19,6 @@ static char	*pad_until_max_width(char *row, int width);
 static char	*pad_sides(char *row);
 static char	**create_padded_layout(size_t size);
 static char	*create_padded_row(size_t size);
-void		error(const char *msg);
 
 void	pad_borders(t_map *map)
 {
