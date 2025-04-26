@@ -55,6 +55,7 @@ bonus := $(src_dir)/bonus
 
 # common sources
 common_srcs := src/common/main.c \
+	$(addprefix $(common)/, parse.c) \
 	$(addprefix $(common)/map/, map.c map_padding.c map_validation.c map_utils.c) \
 	$(addprefix $(common)/keys/, init.c key_events.c camera_keys.c) \
 	$(addprefix $(common)/player/, init.c) \
@@ -65,14 +66,14 @@ common_srcs := src/common/main.c \
 
 # mandatory sources
 mandatory_srcs := $(addprefix $(mandatory)/, game_init.c game_update.c) \
-	$(addprefix $(mandatory)/parser/, parse.c config.c file_helpers.c) \
+	$(addprefix $(mandatory)/parser/, file_helpers.c parse_configurable.c parse_map.c) \
 	$(addprefix $(mandatory)/keys/, keybinds.c ui_keys.c movement_keys.c) \
 	$(addprefix $(mandatory)/renderer/, init.c render.c render_utils.c) \
 	$(mandatory)/raycast.c $(mandatory)/collision.c
 
 # bonus sources
 bonus_srcs := $(addprefix $(bonus)/, game_init.c game_update.c) \
-	$(addprefix $(bonus)/parser/, parse.c config.c file_helpers.c) \
+	$(addprefix $(bonus)/parser/, file_helpers.c parse_configurable.c parse_map.c) \
 	$(addprefix $(bonus)/keys/, keybinds.c ui_keys.c movement_keys.c action_keys.c) \
 	$(addprefix $(bonus)/renderer/, init.c render.c render_utils.c) \
 	$(addprefix $(bonus)/minimap/, init.c minimap.c triangle.c) \

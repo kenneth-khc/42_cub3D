@@ -34,7 +34,7 @@ bool	is_wall(t_map *map, int x, int y);
 bool	is_whitespace(char c);
 bool	is_player(char c);
 bool	is_floor(char c);
-bool	is_valid_map_character(char c);
+/*bool	is_valid_map_character(char c);*/
 void	pad_borders(t_map *map);
 
 /* PROBABLY UNUSED */

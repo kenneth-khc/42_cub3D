@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:23:30 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/23 00:03:04 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 09:10:59 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	add_row(t_map *map, char *line)
 		map->width = row_len;
 	}
 	map->height++;
-	map->layout = xmalloc(sizeof(char *) * map->height);
+	map->layout = xmalloc(sizeof(*map->layout) * map->height);
 	i = 0;
 	while (i < map->height - 1)
 	{

@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 23:59:49 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/25 21:41:54 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 09:13:17 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@
 
 typedef struct s_configurable
 {
-	char	*line;
-	char	*type_identifier;
+	char		*line;
+	const char	*type_identifier;
 
-	size_t	identifier_offset;
-	size_t	identifier_len;
+	size_t		identifier_offset;
+	size_t		identifier_len;
 
-	size_t	value_offset;
-	size_t	value_len;
+	size_t		value_offset;
+	size_t		value_len;
 }	t_configurable;
 
 # define MAX_CONFIGURABLE 7
@@ -38,9 +38,9 @@ typedef struct s_config
 	t_map			map;
 }	t_config;
 
-t_config	init_blank_config(void);
-void		destroy_config(t_config *config);
-void		set(t_configurable *element, t_config *config,
-				char *line, size_t type_identifier_offset);
+t_config		init_blank_config(void);
+void			destroy_config(t_config *config);
+const char		*validate_type_identifier(char *line);
+t_configurable	set(const char *type_identifier, char *line);
 
 #endif
