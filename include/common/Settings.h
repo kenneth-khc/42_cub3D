@@ -15,11 +15,11 @@
 
 /******************************** Game ***************************************/
 # ifndef SCREEN_WIDTH
-#  define SCREEN_WIDTH 1000
+#  define SCREEN_WIDTH 1024
 # endif
 
 # ifndef SCREEN_HEIGHT
-#  define SCREEN_HEIGHT 1000
+#  define SCREEN_HEIGHT 768
 # endif
 
 # ifndef WINDOW_TITLE
@@ -61,9 +61,14 @@
 # endif
 
 /******************************** Minimap ************************************/
-# ifndef MINIMAP_SCALE
-#  define MINIMAP_SCALE 0.3
-# endif
+
+// WARN:
+// Don't dynamically scale with this or it'll break the minimap because
+// the tiles aren't scaled accordingly....
+# define MINIMAP_SCALE 0.3
+
+# define MINIMAP_WIDTH 300
+# define MINIMAP_HEIGHT 300
 
 # ifndef MINIMAP_X_OFFSET
 #  define MINIMAP_X_OFFSET 10

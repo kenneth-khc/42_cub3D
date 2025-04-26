@@ -35,8 +35,8 @@ static void	calculate_ray_y_step(t_ray *ray);
 void	init_dda(t_ray *ray)
 {
 	ray->hit = false;
-	ray->dx = fabs(1 / ray->dir.x);
-	ray->dy = fabs(1 / ray->dir.y);
+	ray->dx = sqrt(1 + (ray->dir.y * ray->dir.y) / (ray->dir.x * ray->dir.x));
+	ray->dy = sqrt(1 + (ray->dir.x * ray->dir.x) / (ray->dir.y * ray->dir.y));
 	calculate_ray_x_step(ray);
 	calculate_ray_y_step(ray);
 }
@@ -73,11 +73,6 @@ void	calculate_ray_y_step(t_ray *ray)
 	}
 }
 
-// HACK: fisheye correction. implement a proper projection plane so this
-// isn't necessary
-/*ray->distance_travelled*/
-/*	= ray->distance_travelled*/
-/*		* cos(player->angle - ray->angle);*/
 void	get_distance(t_ray *ray, t_player *player)
 {
 	if (ray->hit_side == HIT_EAST || ray->hit_side == HIT_WEST)

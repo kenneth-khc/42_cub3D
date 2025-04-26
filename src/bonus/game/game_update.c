@@ -35,4 +35,5 @@ void	update(t_game *game)
 		= *advance_frame(&renderer->wall_animations[SOUTH]);
 	advance_frame(&renderer->cat);
 	advance_frame(&renderer->cat_walking);
+	advance_frame(&renderer->cat_laying);
 }

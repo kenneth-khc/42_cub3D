@@ -27,8 +27,8 @@ typedef struct s_game
 	void			*window;
 
 	t_dimensions	screen;
-	t_map			map;
 	t_dimensions	tile; // width and height of 1 in game tile
+	t_map			map;
 	t_minimap		minimap;
 	t_image			world_3d; // image of the game to be displayed
 	t_player		player;

@@ -19,8 +19,7 @@
 t_ray	init_ray(t_raycaster *raycaster, int ray_count,
 			t_dimensions *tile, t_player *player)
 {
-	const double	camera_x = 2 * ray_count / (double)raycaster->ray_count - 1;
-	t_ray			ray;
+	t_ray	ray;
 
 	ft_memset(&ray, 0, sizeof(ray));
 	ray.id = ray_count;
@@ -31,10 +30,6 @@ t_ray	init_ray(t_raycaster *raycaster, int ray_count,
 	ray.tile_offset.y = player->world_pos.y / tile->height;
 	ray.angle = raycaster->leftmost_ray_angle
 		- (ray.id * raycaster->angle_increment);
-	ray.dir.x = player->direction.x
-		+ raycaster->projection_plane.x * camera_x;
-	ray.dir.y = player->direction.y
-		+ raycaster->projection_plane.y * camera_x;
 	ray.dir.x = cos(ray.angle);
 	ray.dir.y = -sin(ray.angle);
 	return (ray);
@@ -55,8 +50,6 @@ t_raycaster	init_raycaster(t_player *player,
 	raycaster.angle_increment = player->field_of_view / raycaster.ray_count;
 	raycaster.leftmost_ray_angle = player->angle
 		+ (player->field_of_view / 2);
-	raycaster.projection_plane.x = 0;
-	raycaster.projection_plane.y = 1;
 	ray_count = 0;
 	while (ray_count < raycaster.ray_count)
 	{

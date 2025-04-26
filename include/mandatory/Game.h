@@ -21,15 +21,12 @@
 
 typedef struct s_game
 {
-	// debugging purposes
-	t_colours		colours;
-	// end
 	void			*mlx;
 	void			*window;
 
 	t_dimensions	screen;
-	t_map			map;
 	t_dimensions	tile; // width and height of 1 in-game tile
+	t_map			map;
 	t_image			world_3d; // image of the game to be displayed
 	t_player		player;
 	t_raycaster		raycaster;

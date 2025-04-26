@@ -29,6 +29,7 @@ typedef union u_colour
 	}	s_component;
 }	t_colour;
 
+# if 0
 /* Some common colours used throughout debugging */
 typedef struct s_colours
 {
@@ -44,9 +45,11 @@ typedef struct s_colours
 	t_colour	violet;
 }	t_colours;
 
+t_colours	init_colours(void);
+# endif
+
 typedef struct s_image	t_image;
 
-t_colours	init_colours(void);
 t_colour	create_colour(uint8_t alpha, uint8_t red, uint8_t green,
 				uint8_t blue);
 t_colour	rgb_string_to_colour(const char *rgb_string);

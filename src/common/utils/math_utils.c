@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Vector.h"
 #include <math.h>
 
 /* Converts an angle in degrees to an angle in radians because C functions
@@ -24,13 +23,4 @@ double	radians(double degrees)
 double	degrees(double radians)
 {
 	return (radians * 180.0 / M_PI);
-}
-
-t_vec2i	vec2i(t_vec2d dv)
-{
-	t_vec2i	iv;
-
-	iv.x = dv.x;
-	iv.y = dv.y;
-	return (iv);
 }

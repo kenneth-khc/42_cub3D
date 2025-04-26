@@ -7,8 +7,10 @@ WE     textures/cat_happy/cat_happy.xpm
 F 255,100,0
 C 225,30,0
 
-11111111
-10100001
-10000001
-10N10001
-11111111
+DOOR  textures/cat_very_angry/cat_very_angry.xpm
+
+11111
+10001
+10N01
+10001
+11111

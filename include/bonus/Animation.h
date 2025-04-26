@@ -17,11 +17,11 @@
 
 typedef struct s_animation
 {
-	t_image	*frames;
-	int		frame_count;
-	int		frame_index;
-	int		ticks;
-	int		ticks_to_advance;
+	t_image	*frames; // array of frames
+	int		frame_count; // number of frames
+	int		frame_index; // which frame we are currently using
+	int		ticks; // accumulating number of ticks
+	int		ticks_to_advance; // number of ticks to swap to next frame
 	t_vec2i	pos; // where the animation should be placed onto
 }	t_animation;
 

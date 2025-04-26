@@ -16,16 +16,16 @@
 t_minimap	init_minimap(t_game *game)
 {
 	t_minimap	minimap;
-	const int	width = game->screen.width * MINIMAP_SCALE;
-	const int	height = game->screen.height * MINIMAP_SCALE;
+	const int	width = MINIMAP_WIDTH;
+	const int	height = MINIMAP_HEIGHT;
 
 	minimap.img = create_image(game->mlx, width, height);
 	minimap.img.pos.x = MINIMAP_X_OFFSET;
 	minimap.img.pos.y = MINIMAP_Y_OFFSET;
 	minimap.display = true;
 	minimap.camera.half_dimension = (double)minimap.img.width / 2;
-	minimap.camera.centre = (t_vec2d){minimap.camera.half_dimension,
-		minimap.camera.half_dimension};
+	minimap.camera.centre = (t_vec2d){(int)(minimap.img.width / 2),
+		(int)(minimap.img.height / 2)};
 	minimap.background_colour = create_colour(0x00, 0x54, 0x88, 0xF7);
 	minimap.wall_colour = create_colour(0x00, 0xAC, 0xA6, 0xB3);
 	minimap.open_door_colour = create_colour(0x0, 0x0, 0x30, 0x30);

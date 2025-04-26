@@ -15,13 +15,10 @@
 
 # include <stddef.h>
 
-# include "Vector.h"
-
 void	*xmalloc(size_t size);
 double	radians(double degrees);
 double	degrees(double radians);
 void	error(const char *err_msg, const char *thing);
-t_vec2i	vec2i(t_vec2d dv);
 int		count_occurrences(char c, const char *string);
 void	free_2d_array(char **arr);
 

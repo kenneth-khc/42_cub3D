@@ -16,8 +16,6 @@
 # include "Settings.h"
 # include "Player.h"
 # include "Vector.h"
-# include "Map.h"
-# include "Doors.h"
 # include <stdint.h>
 # include <stdbool.h>
 
@@ -56,15 +54,11 @@ typedef struct s_ray
 
 typedef struct s_raycaster
 {
-	bool	init;
 	int		ray_count;
 	t_ray	rays[SCREEN_WIDTH];
 	double	angle_increment;
 	double	leftmost_ray_angle;
 	double	rightmost_ray_angle;
-
-	// TODO: implement projection plane maybe
-	t_vec2d	projection_plane;
 }	t_raycaster;
 
 typedef struct s_game	t_game;
