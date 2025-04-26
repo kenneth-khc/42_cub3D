@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 17:43:08 by kecheong          #+#    #+#             */
-/*   Updated: 2024/12/02 10:00:25 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:18:28 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "Player.h"
 # include "Vector.h"
 # include "Map.h"
+# include "Doors.h"
 # include <stdint.h>
 # include <stdbool.h>
 
@@ -43,6 +44,7 @@ typedef struct s_ray
 	double	y_step; // how much worldY to step by when it goes 1 mapX
 	bool	hit;
 	uint8_t	hit_side;
+	bool	hit_door;
 
 	double	dx; // distance it travels when going from 1 X to the next
 	double	dy; // distance it travels when going from 1 Y to the next
@@ -69,10 +71,7 @@ typedef struct s_game	t_game;
 
 t_raycaster	init_raycaster(t_player *player,
 				t_dimensions *screen, t_dimensions *tile);
-void		update_raycaster(t_raycaster *raycaster, t_player *player,
-				t_dimensions *tile);
 void		raycast(t_raycaster *raycaster, t_player *player, t_game *game);
-void		cast(t_ray *ray, t_player *player, t_map *map);
 void		init_dda(t_ray *ray);
 void		get_distance(t_ray *ray, t_player *player);
 void		check_wall_side_hit(t_ray *ray);

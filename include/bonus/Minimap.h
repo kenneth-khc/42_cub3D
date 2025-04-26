@@ -37,6 +37,8 @@ typedef struct s_minimap
 	int			border_thickness;
 	t_colour	background_colour;
 	t_colour	wall_colour;
+	t_colour	open_door_colour;
+	t_colour	closed_door_colour;
 	t_colour	player_indicator_colour;
 	int			player_box_half_dimension;
 	t_colour	direction_indicator_colour;

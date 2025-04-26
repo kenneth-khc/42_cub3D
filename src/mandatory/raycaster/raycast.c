@@ -64,6 +64,7 @@ void	update_raycaster(t_raycaster *raycaster, t_player *player,
 void	cast(t_ray *ray, t_player *player, t_map *map)
 {
 	init_dda(ray);
+	ray->hit_door = false;
 	while (!ray->hit)
 	{
 		if (ray->x_axis_distance < ray->y_axis_distance)

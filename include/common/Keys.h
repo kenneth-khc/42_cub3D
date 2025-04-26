@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 14:00:51 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/14 03:57:10 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 03:59:40 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,13 @@ enum e_mlx_keycodes
 	MLX_KEY_RIGHT = 65363,
 	MLX_KEY_DOWN = 65364,
 	MLX_KEY_ESC = 65307,
-	MLX_KEY_M = 109
+	MLX_KEY_M = 109,
+	MLX_KEY_SPACEBAR = 32
 };
 
 # elif defined(__APPLE__)
 
+/* Incomplete because I don't have an Apple machine to know this ... */
 enum e_mlx_keycodes
 {
 	MLX_KEY_W = 13,
@@ -78,10 +80,11 @@ enum e_keycodes
 	KEY_ESC = 6,
 	KEY_M = 7,
 	KEY_UP = 8,
-	KEY_DOWN = 9
+	KEY_DOWN = 9,
+	KEY_SPACEBAR = 10
 };
 
-# define N_KEYS 10 // number of keys that we care about
+# define N_KEYS 11 // number of keys that we care about
 
 typedef struct s_game	t_game;
 typedef struct s_key	t_key;
@@ -114,7 +117,7 @@ typedef struct s_player	t_player;
 
 t_key		map_key(int interest, enum e_mlx_keycodes keycode, t_action action);
 t_keystates	init_keybindings(void);
-int			press_release_key(int mlx_keycode, t_keystates *keys);
+bool		pressed_and_released(const t_key *key, enum e_keycodes keycode);
 int			press_key(int mlx_keycode, t_keystates *keys);
 int			release_key(int mlx_keycode, t_keystates *keys);
 void		process_keys(t_keystates *keys, t_game *game);
@@ -125,6 +128,7 @@ int			move_forward(t_game *game);
 int			move_backward(t_game *game);
 int			strafe_left(t_game *game);
 int			strafe_right(t_game *game);
+int			open_door(t_game *game);
 
 int			rotate_left(t_game *game);
 int			rotate_right(t_game *game);

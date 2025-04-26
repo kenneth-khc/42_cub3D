@@ -1,41 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_utils.c                                        :+:      :+:    :+:   */
+/*   parse_map.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/12/02 07:08:15 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/26 05:04:52 by kecheong         ###   ########.fr       */
+/*   Created: 2025/04/26 08:53:03 by kecheong          #+#    #+#             */
+/*   Updated: 2025/04/26 09:11:55 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "Config.h"
+#include "Utils.h"
+#include "libft.h"
 #include <stdbool.h>
-#include "Map.h"
 
-bool	is_wall(t_map *map, int x, int y)
+static bool	is_valid_map_character(char c);
+
+void	parse_map_content(t_config *config, char *line)
 {
-	return (map->layout[y][x] == '1');
+	size_t			i;
+	const size_t	line_len = ft_strlen(line);
+
+	i = 0;
+	while (i < line_len)
+	{
+		if (!is_valid_map_character(line[i]))
+		{
+			error("Invalid map character\n");
+		}
+		i++;
+	}
+	add_row(&config->map, line);
 }
 
-bool	is_whitespace(char c)
-{
-	return (c == ' ' || c == '\f' || c == '\n'
-		|| c == '\r' || c == '\t' || c == '\v');
-}
-
-bool	is_player(char c)
-{
-	return (c == 'N' || c == 'S' || c == 'E' || c == 'W');
-}
-
-bool	is_floor(char c)
-{
-	return (c == '0' || is_player(c));
-}
-
-bool	is_valid_map_character(char c)
+static bool	is_valid_map_character(char c)
 {
 	return (c == ' ' || c == '0' || c == '1'
-		|| c == 'N' || c == 'S' || c == 'E' || c == 'W');
+		|| c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == 'D');
 }

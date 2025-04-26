@@ -6,10 +6,11 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 05:29:47 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/24 17:20:14 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 05:08:43 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "Config.h"
 #include "Game.h"
 #include "Settings.h"
 #include "Minimap.h"
@@ -27,6 +28,7 @@ void	init_game(t_game *game, t_config *config)
 	game->mlx = init_mlx();
 	game->keystates = init_keybindings();
 	game->map = init_map(config);
+	game->doors = init_doors(&game->map);
 	game->player = init_player(&game->map);
 	game->minimap = init_minimap(game);
 	game->raycaster = init_raycaster(&game->player, &game->screen, &game->tile);

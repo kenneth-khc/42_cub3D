@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/30 12:24:47 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/15 17:17:08 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 09:20:31 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,5 +39,6 @@ typedef struct s_game	t_game;
 typedef struct s_map	t_map;
 
 t_player	init_player(struct s_map *map);
+void		move_player(t_player *player, double dx, double dy);
 
 #endif

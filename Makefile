@@ -6,7 +6,7 @@
 #    By: kytan <kytan@student.42kl.edu.my>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/23 08:37:12 by kecheong          #+#    #+#              #
-#    Updated: 2025/04/24 17:15:23 by kecheong         ###   ########.fr        #
+#    Updated: 2025/04/26 09:26:54 by kecheong         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -55,26 +55,31 @@ bonus := $(src_dir)/bonus
 
 # common sources
 common_srcs := src/common/main.c \
-	$(addprefix $(common)/parser/, parse.c config.c file_helpers.c) \
+	$(addprefix $(common)/parser/, parse.c file_helpers.c) \
 	$(addprefix $(common)/map/, map.c map_padding.c map_validation.c map_utils.c) \
-	$(addprefix $(common)/keys/, init.c key_events.c movement_keys.c camera_keys.c) \
-	$(addprefix $(common)/player/, init.c) \
-	$(addprefix $(common)/raycast/, init.c raycast.c raycast_utils.c) \
-	$(addprefix $(common)/utils/, utils.c math_utils.c collision.c) \
+	$(addprefix $(common)/keys/, init.c key_events.c camera_keys.c) \
+	$(addprefix $(common)/player/, init.c player.c) \
+	$(addprefix $(common)/raycaster/, init.c raycast_utils.c) \
+	$(addprefix $(common)/utils/, utils.c math_utils.c) \
 	$(addprefix $(common)/mouse/, mouse.c) \
-	$(addprefix $(common)/mlx_utils/, draw.c image.c colors.c pixels.c)
+	$(addprefix $(common)/mlx_utils/, draw.c image.c colors.c pixels.c) \
 
 # mandatory sources
-mandatory_srcs := $(addprefix $(mandatory)/, game_init.c game_update.c) \
-	$(addprefix $(mandatory)/keys/, keybinds.c ui_keys.c) \
-	$(addprefix $(mandatory)/renderer/, init.c render.c render_utils.c)
+mandatory_srcs := $(addprefix $(mandatory)/game/, game_init.c game_update.c) \
+	$(addprefix $(mandatory)/parser/, parse_configurable.c parse_map.c) \
+	$(addprefix $(mandatory)/keys/, keybinds.c ui_keys.c movement_keys.c) \
+	$(addprefix $(mandatory)/raycaster/, raycast.c) \
+	$(addprefix $(mandatory)/renderer/, init.c render.c render_utils.c) \
 
 # bonus sources
-bonus_srcs := $(addprefix $(bonus)/, game_init.c game_update.c) \
-	$(addprefix $(bonus)/keys/, keybinds.c ui_keys.c) \
+bonus_srcs := $(addprefix $(bonus)/game/, game_init.c game_update.c) \
+	$(addprefix $(bonus)/parser/, parse_configurable.c parse_map.c) \
+	$(addprefix $(bonus)/keys/, keybinds.c ui_keys.c movement_keys.c action_keys.c) \
+	$(addprefix $(bonus)/raycaster/, raycast.c) \
 	$(addprefix $(bonus)/renderer/, init.c render.c render_utils.c) \
 	$(addprefix $(bonus)/minimap/, init.c minimap.c triangle.c) \
-	$(addprefix $(bonus)/animation/, animation.c animation_utils.c)
+	$(addprefix $(bonus)/doors/, init.c door_utils.c) \
+	$(addprefix $(bonus)/animation/, animation.c animation_utils.c) \
 
 # object files depending on mandatory or bonus
 obj := obj/$(build_type)
