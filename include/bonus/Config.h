@@ -6,7 +6,7 @@
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/22 23:59:49 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/26 09:13:17 by kecheong         ###   ########.fr       */
+/*   Updated: 2025/04/26 09:22:30 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ typedef struct s_config
 	t_map			map;
 }	t_config;
 
-t_config		init_blank_config(void);
 void			destroy_config(t_config *config);
 const char		*validate_type_identifier(char *line);
 t_configurable	set(const char *type_identifier, char *line);

@@ -16,7 +16,7 @@
 #include "Map.h"
 #include <math.h>
 
-bool	movable(t_vec2d pos, t_map *map, t_dimensions dimensions);
+static bool	movable(t_vec2d pos, t_map *map);
 
 /* For player movement, WASD is used
  * W - move player forward
@@ -31,12 +31,12 @@ int	move_forward(t_game *game)
 	const double	dy = player->direction.y * player->speed;
 	const t_vec2d	ori = player->world_pos;
 
-	if (movable((t_vec2d){ori.x + dx, ori.y}, &game->map, game->tile))
+	if (movable((t_vec2d){ori.x + dx, ori.y}, &game->map))
 	{
 		player->world_pos.x += dx;
 		player->is_moving = true;
 	}
-	if (movable((t_vec2d){ori.x, ori.y + dy}, &game->map, game->tile))
+	if (movable((t_vec2d){ori.x, ori.y + dy}, &game->map))
 	{
 		player->world_pos.y += dy;
 		player->is_moving = true;
@@ -51,12 +51,12 @@ int	move_backward(t_game *game)
 	const double	dy = -player->direction.y * player->speed;
 	const t_vec2d	ori = player->world_pos;
 
-	if (movable((t_vec2d){ori.x + dx, ori.y}, &game->map, game->tile))
+	if (movable((t_vec2d){ori.x + dx, ori.y}, &game->map))
 	{
 		player->world_pos.x += dx;
 		player->is_moving = true;
 	}
-	if (movable((t_vec2d){ori.x, ori.y + dy}, &game->map, game->tile))
+	if (movable((t_vec2d){ori.x, ori.y + dy}, &game->map))
 	{
 		player->world_pos.y += dy;
 		player->is_moving = true;
@@ -71,12 +71,12 @@ int	strafe_left(t_game *game)
 	const double	dy = -sin(player->angle + M_PI_2) * player->speed;
 	const t_vec2d	ori = player->world_pos;
 
-	if (movable((t_vec2d){ori.x + dx, ori.y}, &game->map, game->tile))
+	if (movable((t_vec2d){ori.x + dx, ori.y}, &game->map))
 	{
 		player->is_moving = true;
 		player->world_pos.x += dx;
 	}
-	if (movable((t_vec2d){ori.x, ori.y + dy}, &game->map, game->tile))
+	if (movable((t_vec2d){ori.x, ori.y + dy}, &game->map))
 	{
 		player->is_moving = true;
 		player->world_pos.y += dy;
@@ -91,15 +91,31 @@ int	strafe_right(t_game *game)
 	const double	dy = -sin(player->angle - M_PI_2) * player->speed;
 	const t_vec2d	ori = player->world_pos;
 
-	if (movable((t_vec2d){ori.x + dx, ori.y}, &game->map, game->tile))
+	if (movable((t_vec2d){ori.x + dx, ori.y}, &game->map))
 	{
 		player->is_moving = true;
 		player->world_pos.x += dx;
 	}
-	if (movable((t_vec2d){ori.x, ori.y + dy}, &game->map, game->tile))
+	if (movable((t_vec2d){ori.x, ori.y + dy}, &game->map))
 	{
 		player->is_moving = true;
 		player->world_pos.y += dy;
 	}
 	return (1);
+}
+
+static bool	movable(t_vec2d pos, t_map *map)
+{
+	t_vec2i	tile_index;
+
+	tile_index.x = pos.x / TILE_WIDTH;
+	tile_index.y = pos.y / TILE_HEIGHT;
+	if (map->layout[tile_index.y][tile_index.x] == '1')
+	{
+		return (false);
+	}
+	else
+	{
+		return (true);
+	}
 }

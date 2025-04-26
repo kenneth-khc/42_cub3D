@@ -1,35 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   collision.c                                        :+:      :+:    :+:   */
+/*   player.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: kecheong <kecheong@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 01:53:56 by kecheong          #+#    #+#             */
-/*   Updated: 2025/04/26 04:28:33 by kecheong         ###   ########.fr       */
+/*   Created: 2025/04/26 09:19:50 by kecheong          #+#    #+#             */
+/*   Updated: 2025/04/26 09:20:06 by kecheong         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Map.h"
-#include "Doors.h"
-#include "Vector.h"
+#include "Player.h"
 #include "Settings.h"
 
-bool	movable(t_vec2d pos, t_map *map, t_doors *doors)
+/* Move the player by dy and dx and calculate its new tile index within
+ * the map */
+void	move_player(t_player *player, double dx, double dy)
 {
-	t_vec2i	tile_index;
-	t_door	*door;
-
-	tile_index.x = pos.x / TILE_WIDTH;
-	tile_index.y = pos.y / TILE_HEIGHT;
-	door = get_door(doors, tile_index.x, tile_index.y);
-	if (map->layout[tile_index.y][tile_index.x] == '1'
-		|| (door && door->is_closed))
-	{
-		return (false);
-	}
-	else
-	{
-		return (true);
-	}
+	player->world_pos.x += dx;
+	player->world_pos.y += dy;
+	player->tile_index.x = player->world_pos.x / TILE_WIDTH;
+	player->tile_index.y = player->world_pos.y / TILE_HEIGHT;
+	player->is_moving = true;
 }
